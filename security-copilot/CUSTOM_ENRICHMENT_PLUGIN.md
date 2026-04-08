@@ -264,15 +264,15 @@ cd security-copilot/plugins/ip-enrichment
 func init --python
 
 # Deploy to Azure
-func azure functionapp publish cyberprobe-enrichment
+func azure functionapp publish your-enrichment-app
 ```
 
 ### 2. Configure API Keys
 ```bash
 # Set environment variables in Azure
 az functionapp config appsettings set \
-  --name cyberprobe-enrichment \
-  --resource-group cyberprobe-rg \
+  --name your-enrichment-app \
+  --resource-group your-resource-group \
   --settings \
     ABUSEIPDB_API_KEY="your-key" \
     IPINFO_TOKEN="your-token" \
@@ -324,7 +324,7 @@ Step 3: CyberProbe.IPEnrichment/EnrichIPAddresses
    ↓
 Step 4: NL2KQLDefenderSentinel
    → Query: DeviceNetworkEvents for 213.209.159.181
-   → Finds: mb-wap.internal.niseko.alpineskihouse.co
+   → Finds: wap-01.internal.branch.contoso.com
    ↓
 Step 5: GenerateReportFromTemplate
    → Produces: Executive report with enriched IOC data
@@ -369,7 +369,7 @@ For production, upgrade to paid API tiers:
 
 ### Test Request
 ```bash
-curl -X POST https://cyberprobe-enrichment.azurewebsites.net/api/enrich-ip \
+curl -X POST https://your-enrichment-app.azurewebsites.net/api/enrich-ip \
   -H "Content-Type: application/json" \
   -H "x-functions-key: YOUR_FUNCTION_KEY" \
   -d '{

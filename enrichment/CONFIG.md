@@ -327,7 +327,7 @@ For enterprise deployments, store API keys in Azure Key Vault:
 from azure.keyvault.secrets import SecretClient
 from azure.identity import DefaultAzureCredential
 
-vault_url = "https://cyberprobe-keyvault.vault.azure.net/"
+vault_url = "https://your-keyvault-name.vault.azure.net/"
 client = SecretClient(vault_url=vault_url, credential=DefaultAzureCredential())
 abuseipdb_key = client.get_secret("abuseipdb-api-key").value
 ```

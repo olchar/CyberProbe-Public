@@ -1,4 +1,4 @@
-﻿# Investigation Reports
+# Investigation Reports
 
 This directory contains HTML and JSON reports generated from CyberProbe security investigations.
 
@@ -391,7 +391,7 @@ Before finalizing reports:
 
 | Date | Type | Description | File |
 |------|------|-------------|------|
-| 2026-01-27 | Executive | Network device compromise - mb-wap.internal | [executive_report_threat_intel_2026-01-27.html](executive_report_threat_intel_2026-01-27.html) |
+| 2026-01-27 | Executive | Network device compromise - wap-01.internal | [executive_report_threat_intel_2026-01-27.html](executive_report_threat_intel_2026-01-27.html) |
 | 2026-01-27 | Incident | DLP email exfiltration - Incident 42953 | [incident_report_42953_2026-01-27.html](incident_report_42953_2026-01-27.html) |
 | 2026-01-22 | Investigation | Compromised account u3174 investigation | [incident_report_u3174_compromised_account_2026-01-22.html](incident_report_u3174_compromised_account_2026-01-22.html) |
 | 2026-01-21 | Executive | Incident 42149 critical analysis | [executive_report_incident_42149_2026-01-21.html](executive_report_incident_42149_2026-01-21.html) |

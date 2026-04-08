@@ -18,20 +18,20 @@ These resources appear in multiple attack paths - remediating them blocks multip
 
 | Choke Point | Attack Paths | Priority |
 |-------------|--------------|----------|
-| **getPetById** (API) | 8 | High |
-| **alpine-srv1** (VM) | 8 | Critical |
-| **alpine-sql** (VM) | 3 | Critical |
-| **vnevado-proxy** (VM) | 1 | High |
-| **secretsvm** (VM) | 1 | High |
+| **SampleAPI** (API) | 8 | High |
+| **contoso-srv1** (VM) | 8 | Critical |
+| **contoso-sql** (VM) | 3 | Critical |
+| **contoso-proxy** (VM) | 1 | High |
+| **contoso-secrets-vm** (VM) | 1 | High |
 
 ## High-Value Targets
 
 | Target | Type | Risk |
 |--------|------|------|
-| alpine-mdc-vault-demo | Key Vault | Critical |
-| demo-func | Function App | High |
-| demo-webapp-vuln | Web App | High |
-| mdcd4aistorage1 | Storage | High |
+| contoso-security-vault | Key Vault | Critical |
+| contoso-func-test | Function App | High |
+| contoso-webapp-test | Web App | High |
+| contosostorage001 | Storage | High |
 
 ## Usage
 
@@ -71,12 +71,12 @@ Start-AttackPathRemediation
 ## Remediation Actions
 
 ### Phase 1: Critical (Week 1-2)
-- [ ] Restrict internet exposure on `alpine-sql` and `alpine-srv1`
-- [ ] Enable Key Vault firewall on `alpine-mdc-vault-demo`
+- [ ] Restrict internet exposure on `contoso-sql` and `contoso-srv1`
+- [ ] Enable Key Vault firewall on `contoso-security-vault`
 - [ ] Review managed identity permissions
 
 ### Phase 2: High Priority (Week 3-4)
-- [ ] Secure `getPetById` API endpoint
+- [ ] Secure `SampleAPI` API endpoint
 - [ ] Enable storage account firewalls
 - [ ] Patch vulnerable VMs
 

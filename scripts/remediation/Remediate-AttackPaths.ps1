@@ -23,20 +23,20 @@ param(
 # ============================================================================
 
 $ChokePoints = @{
-    "alpine-sql" = @{
-        ResourceGroup = "alpine-mdc-rg"
+    "contoso-sql" = @{
+        ResourceGroup = "rg-contoso-security"
         Subscription = "4fc2c46b-4b55-49c7-9621-730e0a08c4aa"
         Priority = "Critical"
         AttackPaths = 3
     }
-    "alpine-srv1" = @{
-        ResourceGroup = "alpine-mdc-rg"
+    "contoso-srv1" = @{
+        ResourceGroup = "rg-contoso-security"
         Subscription = "4fc2c46b-4b55-49c7-9621-730e0a08c4aa"
         Priority = "Critical"
         AttackPaths = 8
     }
-    "getPetById" = @{
-        ResourceGroup = "alpine-mdc-rg"
+    "SampleAPI" = @{
+        ResourceGroup = "rg-contoso-security"
         Subscription = "4fc2c46b-4b55-49c7-9621-730e0a08c4aa"
         Priority = "High"
         AttackPaths = 8
@@ -45,10 +45,10 @@ $ChokePoints = @{
 }
 
 $HighValueTargets = @(
-    @{ Name = "alpine-mdc-vault-demo"; Type = "KeyVault"; ResourceGroup = "alpine-mdc-rg" }
-    @{ Name = "demo-func"; Type = "FunctionApp"; ResourceGroup = "alpine-mdc-rg" }
-    @{ Name = "demo-webapp-vuln"; Type = "WebApp"; ResourceGroup = "alpine-mdc-rg" }
-    @{ Name = "mdcd4aistorage1"; Type = "StorageAccount"; ResourceGroup = "alpine-mdc-rg" }
+    @{ Name = "contoso-security-vault"; Type = "KeyVault"; ResourceGroup = "rg-contoso-security" }
+    @{ Name = "contoso-func-test"; Type = "FunctionApp"; ResourceGroup = "rg-contoso-security" }
+    @{ Name = "contoso-webapp-test"; Type = "WebApp"; ResourceGroup = "rg-contoso-security" }
+    @{ Name = "contosostorage001"; Type = "StorageAccount"; ResourceGroup = "rg-contoso-security" }
 )
 
 # ============================================================================

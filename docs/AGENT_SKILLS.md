@@ -1390,11 +1390,11 @@ Step 1: Retrieved incident details from Defender XDR
         - Incident #41272: Suspicious C2 communication
         - Severity: High
         - Status: Active
-        - Affected Asset: alpine-srv1
+        - Affected Asset: contoso-srv1
 
 Step 2: Extracted entities
         - IP: 206.168.34.210
-        - Device: alpine-srv1
+        - Device: contoso-srv1
         - User: Not applicable (device-initiated)
 
 Step 3: Enriched IP 206.168.34.210
@@ -1412,7 +1412,7 @@ Step 5: Generated HTML report
 Report Complete: reports/incident_report_41272_2026-01-15.html
 
 Executive Summary:
-Command & Control (C2) communication detected from critical asset alpine-srv1 
+Command & Control (C2) communication detected from critical asset contoso-srv1 
 to known malicious IP 206.168.34.210 (100% abuse confidence, 1,363 reports). 
 Immediate isolation required.
 ```

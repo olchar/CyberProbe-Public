@@ -28,11 +28,11 @@ securityresources
 // ----------------------------------------------------------------------------
 // QUERY 2: Choke Point Activity Monitoring
 // Description: Monitor for suspicious activity on identified choke points
-// Choke Points: alpine-sql, alpine-srv1, getPetById API, vnevado-proxy
+// Choke Points: contoso-sql, contoso-srv1, SampleAPI Gateway, contoso-proxy
 // Schedule: Real-time
 // ----------------------------------------------------------------------------
 
-let ChokePointVMs = dynamic(["alpine-sql", "alpine-srv1", "vnevado-proxy", "secretsvm", "mb-wap"]);
+let ChokePointVMs = dynamic(["contoso-sql", "contoso-srv1", "contoso-proxy", "contoso-secrets-vm", "wap-01"]);
 //
 SecurityEvent
 | where TimeGenerated > ago(24h)
@@ -50,14 +50,14 @@ SecurityEvent
 
 // ----------------------------------------------------------------------------
 // QUERY 3: High-Value Target Access - Key Vault
-// Description: Monitor access to critical Key Vault (alpine-mdc-vault-demo)
+// Description: Monitor access to critical Key Vault (contoso-security-vault)
 // Schedule: Real-time alerting
 // ----------------------------------------------------------------------------
 
 AzureDiagnostics
 | where TimeGenerated > ago(24h)
 | where ResourceType == "VAULTS"
-| where Resource =~ "alpine-mdc-vault-demo"
+| where Resource =~ "contoso-security-vault"
 | extend CallerIP = CallerIPAddress
 | extend Operation = OperationName
 | extend ResultStatus = ResultType
@@ -74,11 +74,11 @@ AzureDiagnostics
 // ----------------------------------------------------------------------------
 // QUERY 4: Storage Account Access Anomalies
 // Description: Detect unusual access patterns to high-value storage accounts
-// Targets: mdcd4aistorage1, c5uj5lrp6r3dm, stcontosoent399975579637
+// Targets: contosostorage001, stcontososec001, stcontosoent001
 // Schedule: Every 15 minutes
 // ----------------------------------------------------------------------------
 
-let TargetStorageAccounts = dynamic(["mdcd4aistorage1", "c5uj5lrp6r3dm", "stcontosoent399975579637", "mdcd4aiaistudi6131736853"]);
+let TargetStorageAccounts = dynamic(["contosostorage001", "stcontososec001", "stcontosoent001", "contoso-ai-studio-001"]);
 //
 StorageBlobLogs
 | where TimeGenerated > ago(1h)
@@ -120,14 +120,14 @@ AzureActivity
 
 
 // ----------------------------------------------------------------------------
-// QUERY 6: API Gateway / APIM Suspicious Activity (getPetById endpoint)
+// QUERY 6: API Gateway / APIM Suspicious Activity (SampleAPI endpoint)
 // Description: Monitor for attack attempts via exposed API endpoints
 // Schedule: Real-time
 // ----------------------------------------------------------------------------
 
 ApiManagementGatewayLogs
 | where TimeGenerated > ago(1h)
-| where OperationId has "getPetById" or ApiId has "petstore"
+| where OperationId has "SampleAPI" or ApiId has "petstore"
 | extend ClientIP = CallerIpAddress
 | extend ResponseCode = ResponseCode
 | extend IsError = ResponseCode >= 400
@@ -144,15 +144,15 @@ ApiManagementGatewayLogs
 // ----------------------------------------------------------------------------
 // QUERY 7: Function App & Web App Deployment Changes
 // Description: Detect unauthorized changes to high-value function/web apps
-// Targets: demo-func, demo-webapp-vuln
+// Targets: contoso-func-test, contoso-webapp-test
 // Schedule: Real-time alerting
 // ----------------------------------------------------------------------------
 
-let TargetApps = dynamic(["demo-func", "demo-webapp-vuln"]);
+let TargetApps = dynamic(["contoso-func-test", "contoso-webapp-test"]);
 //
 AzureActivity
 | where TimeGenerated > ago(24h)
-| where ResourceGroup =~ "alpine-mdc-rg"
+| where ResourceGroup =~ "rg-contoso-security"
 | where Resource has_any (TargetApps)
 | where OperationNameValue has_any ("Microsoft.Web/sites/write", "Microsoft.Web/sites/config/write", "Microsoft.Web/sites/functions/write", "Microsoft.Web/sites/slots/write", "Microsoft.Web/sites/deploymentStatus/write")
 | project 
@@ -207,7 +207,7 @@ securityresources
 // Schedule: Daily
 // ----------------------------------------------------------------------------
 
-let ChokePointVMs = dynamic(["alpine-sql", "alpine-srv1", "vnevado-proxy", "secretsvm"]);
+let ChokePointVMs = dynamic(["contoso-sql", "contoso-srv1", "contoso-proxy", "contoso-secrets-vm"]);
 //
 securityresources
 | where type == "microsoft.security/assessments"

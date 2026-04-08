@@ -129,7 +129,7 @@
                 <div class="detail" style="margin-top:8px;">Hands-on-keyboard multi-device attack, SMB lateral movement target</div>
             </div>
             <div class="card medium">
-                <h3>🖥️ alpine-sql</h3>
+                <h3>🖥️ contoso-sql</h3>
                 <div class="metric" style="color:#d29922;">1 High</div>
                 <div class="detail">13 total alerts | Internet-exposed SQL server</div>
                 <div class="detail" style="margin-top:8px;">
@@ -241,10 +241,10 @@ graph LR
             </div>
         </div>
 
-        <!-- ==================== SECONDARY BLAST RADIUS: alpine-sql ==================== -->
+        <!-- ==================== SECONDARY BLAST RADIUS: contoso-sql ==================== -->
         <div class="diagram-section">
-            <h2>💥 Secondary Blast Radius — alpine-sql (Internet-Exposed Entry Point)</h2>
-            <p class="subtitle"><code>alpine-sql</code> is the internet-facing entry point with 30+ unique external IPs connecting to it. Compromise of this node provides direct access to internal SQL services and lateral path to other choke points.</p>
+            <h2>💥 Secondary Blast Radius — contoso-sql (Internet-Exposed Entry Point)</h2>
+            <p class="subtitle"><code>contoso-sql</code> is the internet-facing entry point with 30+ unique external IPs connecting to it. Compromise of this node provides direct access to internal SQL services and lateral path to other choke points.</p>
 
             <div class="diagram-container" id="sqlContainer">
                 <div class="zoom-controls">
@@ -267,7 +267,7 @@ graph LR
     end
 
     %% ===== ENTRY POINT =====
-    SQL["🔴 alpine-sql<br/><b>INTERNET-EXPOSED</b><br/><i>13 alerts</i><br/><i>SQL Server</i>"]
+    SQL["🔴 contoso-sql<br/><b>INTERNET-EXPOSED</b><br/><i>13 alerts</i><br/><i>SQL Server</i>"]
 
     %% ===== SQL SERVICE ACCOUNTS =====
     subgraph SQLAccounts["🟠 SQL Service Accounts"]
@@ -281,7 +281,7 @@ graph LR
 
     %% ===== CONNECTED HOSTS =====
     subgraph Connected["🔵 Connected Infrastructure"]
-        MBWAP["🖥️ mb-wap<br/><i>Web App Proxy</i><br/><i>internal.niseko.contoso.com</i>"]
+        MBWAP["🖥️ wap-01<br/><i>Web App Proxy</i><br/><i>internal.niseko.contoso.com</i>"]
         CONT1["🐳 e8a72f6b3fb3<br/><i>Container</i>"]
         CONT2["🐳 e8a72f6b388b<br/><i>Container</i>"]
     end
@@ -394,8 +394,8 @@ graph TB
     end
 
     subgraph DMZ["📡 DMZ / Internet-Facing"]
-        SQL["🔴 alpine-sql<br/><i>SQL Server · 13 alerts</i><br/><i>Internet-exposed</i>"]
-        MBWAP["🖥️ mb-wap<br/><i>Web App Proxy</i>"]
+        SQL["🔴 contoso-sql<br/><i>SQL Server · 13 alerts</i><br/><i>Internet-exposed</i>"]
+        MBWAP["🖥️ wap-01<br/><i>Web App Proxy</i>"]
     end
 
     subgraph CorpNet["🏢 CORPORATE NETWORK"]
@@ -500,12 +500,12 @@ graph TB
                         <td><span class="badge badge-critical">🔴 IMMEDIATE</span></td>
                     </tr>
                     <tr>
-                        <td><strong>alpine-sql</strong></td>
+                        <td><strong>contoso-sql</strong></td>
                         <td><span class="badge badge-high">Internet-Exposed SQL</span></td>
                         <td>13</td>
                         <td><span class="badge badge-high">1</span></td>
                         <td><span class="badge badge-user">mssqlserver</span> <span class="badge badge-user">system</span> + 7 svc accts</td>
-                        <td><span class="badge badge-device">mb-wap</span> <span class="badge badge-device">containers ×2</span></td>
+                        <td><span class="badge badge-device">wap-01</span> <span class="badge badge-device">containers ×2</span></td>
                         <td><span class="badge badge-ip">30+</span></td>
                         <td>INC-30292</td>
                         <td>T1078 (Valid Accounts)</td>
@@ -690,8 +690,8 @@ graph TB
                     </tr>
                     <tr>
                         <td><span class="badge badge-critical">🔴 P1</span></td>
-                        <td><strong>Restrict alpine-sql internet exposure</strong></td>
-                        <td>alpine-sql NSG / firewall</td>
+                        <td><strong>Restrict contoso-sql internet exposure</strong></td>
+                        <td>contoso-sql NSG / firewall</td>
                         <td>30+ external IPs performing remote logon. Direct internet-to-SQL path. Immediate network segmentation required.</td>
                     </tr>
                     <tr>
@@ -716,7 +716,7 @@ graph TB
                         <td><span class="badge badge-high">🟠 P2</span></td>
                         <td><strong>Review SQL service account permissions</strong></td>
                         <td>mssqlserver, sqlserveragent + 7 svc accts</td>
-                        <td>9 service accounts on internet-exposed alpine-sql. Verify least-privilege, disable unnecessary accounts.</td>
+                        <td>9 service accounts on internet-exposed contoso-sql. Verify least-privilege, disable unnecessary accounts.</td>
                     </tr>
                     <tr>
                         <td><span class="badge badge-medium">🟡 P3</span></td>
@@ -819,7 +819,7 @@ SecurityAlert
                 <h3>Query 2 — Blast Radius Entity Extraction (per Choke Point Device)</h3>
                 <p class="detail" style="margin-bottom: 8px;"><span class="badge badge-info">Section Fed</span> Primary/Secondary/Tertiary Blast Radius Diagrams, Environment-Wide Map</p>
 <pre style="background:#0d1117; color:#79c0ff; padding:14px; border-radius:6px; overflow-x:auto; font-size:12px; line-height:1.6;">
-let chokePoints = dynamic(["rayt-pc","alpine-sql","main-dc","aaronb-pc","sap-ash"]);
+let chokePoints = dynamic(["rayt-pc","contoso-sql","main-dc","aaronb-pc","sap-ash"]);
 SecurityAlert
 | where TimeGenerated > ago(30d)
 | extend Entities = parse_json(Entities)
@@ -838,14 +838,14 @@ SecurityAlert
 | summarize ConnectedEntities = make_set(EntityName, 50) by DeviceName, EntityType
 | order by DeviceName asc, EntityType asc
 </pre>
-                <p class="detail" style="margin-top: 8px;"><strong>Result:</strong> Per-device entity maps extracted — rayt-pc connected to 3 accounts + 2 hosts + 4 IPs; alpine-sql connected to 9 service accounts + 4 hosts + 30 external IPs; main-dc connected to 2 accounts + 3 hosts + 2 IPs.</p>
+                <p class="detail" style="margin-top: 8px;"><strong>Result:</strong> Per-device entity maps extracted — rayt-pc connected to 3 accounts + 2 hosts + 4 IPs; contoso-sql connected to 9 service accounts + 4 hosts + 30 external IPs; main-dc connected to 2 accounts + 3 hosts + 2 IPs.</p>
             </div>
 
             <div class="card" style="margin: 16px 0;">
                 <h3>Query 3 — Incident Correlation (Choke Point → Incident Mapping)</h3>
                 <p class="detail" style="margin-bottom: 8px;"><span class="badge badge-info">Section Fed</span> sap-ash Blast Radius (Linked Incidents), Blast Radius Summary Table</p>
 <pre style="background:#0d1117; color:#79c0ff; padding:14px; border-radius:6px; overflow-x:auto; font-size:12px; line-height:1.6;">
-let chokePoints = dynamic(["rayt-pc","alpine-sql","main-dc","aaronb-pc","sap-ash"]);
+let chokePoints = dynamic(["rayt-pc","contoso-sql","main-dc","aaronb-pc","sap-ash"]);
 let relevantAlerts = SecurityAlert
 | where TimeGenerated > ago(30d)
 | extend Entities = parse_json(Entities)
@@ -914,7 +914,7 @@ SecurityAlert
                     <tr>
                         <td><strong>CyberProbe Query Library</strong></td>
                         <td><code>queries/attack_path_monitoring.kql</code> (Line 37)</td>
-                        <td>Known choke point list: <code>alpine-sql, alpine-srv1, northwind-proxy, secretsvm, mb-wap</code>. Used as initial seed, then expanded by query results to include <code>rayt-pc, aaronb-pc, main-dc, sap-ash</code> based on alert severity ranking.</td>
+                        <td>Known choke point list: <code>contoso-sql, contoso-srv1, northwind-proxy, contoso-secrets-vm, wap-01</code>. Used as initial seed, then expanded by query results to include <code>rayt-pc, aaronb-pc, main-dc, sap-ash</code> based on alert severity ranking.</td>
                     </tr>
                     <tr>
                         <td><strong>Exposure Management Schema</strong></td>
@@ -973,7 +973,7 @@ SecurityAlert
                             <td><strong>Defender XDR Exposure Management</strong><br/>ExposureGraphNodes / ExposureGraphEdges</td>
                             <td>Advanced Hunting (Triage MCP)</td>
                             <td>Identity + endpoint lateral movement paths, credential theft chains, device-to-device blast radius</td>
-                            <td>rayt-pc, aaronb-pc, main-dc, alpine-sql, sap-ash <span class="badge badge-device">ContosoHouse</span></td>
+                            <td>rayt-pc, aaronb-pc, main-dc, contoso-sql, sap-ash <span class="badge badge-device">ContosoHouse</span></td>
                         </tr>
                         <tr>
                             <td><strong>Defender for Cloud Attack Paths</strong><br/><code>microsoft.security/attackpaths</code></td>

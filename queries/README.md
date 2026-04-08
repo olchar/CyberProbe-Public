@@ -319,7 +319,7 @@ incident_configuration:
     {
       "type": "HTTP",
       "method": "POST",
-      "uri": "https://cyberprobe.azurewebsites.net/api/enrich",
+      "uri": "https://your-enrichment-app.azurewebsites.net/api/enrich",
       "body": "@triggerBody()?['entities']"
     }
   ]

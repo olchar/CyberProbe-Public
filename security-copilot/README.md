@@ -1,4 +1,4 @@
-﻿# Security Copilot Integration
+# Security Copilot Integration
 
 This directory contains Security Copilot agent definitions, custom plugins, and integration documentation for CyberProbe.
 
@@ -239,7 +239,7 @@ Investigate incident 42918
 
 **Agent performs:**
 1. Retrieves incident 42918 from Defender XDR
-2. Extracts device: mb-wap.internal.niseko.alpineskihouse.co
+2. Extracts device: wap-01.internal.branch.contoso.com
 3. Finds 7 malicious IPs
 4. Enriches IPs with Microsoft Threat Intelligence
 5. Maps to MITRE ATT&CK (T1071 - C2, T1204 - Execution)

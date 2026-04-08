@@ -452,7 +452,7 @@
     </div>
   </div>
   <h1 class="header-title">Incident #51873 — AI Foundry Agent Jailbreak via Prompt Injection</h1>
-  <p class="header-subtitle">A direct prompt injection attack was detected on Azure AI Foundry agent <strong>chat_agent_vii</strong> deployed on the <strong>ais-anhx-procurementagent</strong> Cognitive Services resource. The attack was blocked by Azure Responsible AI Prompt Shields.</p>
+  <p class="header-subtitle">A direct prompt injection attack was detected on Azure AI Foundry agent <strong>chat_agent_vii</strong> deployed on the <strong>ais-contoso-procurementagent</strong> Cognitive Services resource. The attack was blocked by Azure Responsible AI Prompt Shields.</p>
   <div class="header-meta">
     <div class="meta-item"><span class="meta-label">Report Date</span><span class="meta-value">March 18, 2026</span></div>
     <div class="meta-item"><span class="meta-label">Investigation Window</span><span class="meta-value">Mar 3 – Mar 18, 2026 (15 days)</span></div>
@@ -500,7 +500,7 @@
     </div>
   </div>
   <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
-    On <strong>March 17, 2026 at 09:02 UTC</strong>, Microsoft Defender for AI Services detected a <strong>User Prompt Injection Attack (UPIA)</strong> — also known as a jailbreak — targeting the Azure AI Foundry agent <code>chat_agent_vii</code> (Agent ID: <code>asst_nDelHyfVwFQ7Bz3jFvztVnpQ</code>) deployed on the <strong>ais-anhx-procurementagent</strong> Cognitive Service. The attack originated from IP <strong>168.61.150.239</strong> (Des Moines, Iowa, US) and was executed through the <code>AIProjectClient azsdk-python-ai-agents/1.2.0b5</code> SDK running on Linux. This is the <strong style="color: var(--accent2);">first agentic jailbreak</strong> detected in this environment — previous attacks targeted standard Azure OpenAI model deployments. The attack was <strong style="color: var(--success);">detected by Azure Responsible AI Content Filtering (Prompt Shields)</strong>. Across the full 15-day investigation window, <strong>12 jailbreak attacks</strong> were detected across <strong>3 AI resources</strong>, with <strong>4 high-severity anonymized IP access alerts</strong> indicating potential threat actor reconnaissance.
+    On <strong>March 17, 2026 at 09:02 UTC</strong>, Microsoft Defender for AI Services detected a <strong>User Prompt Injection Attack (UPIA)</strong> — also known as a jailbreak — targeting the Azure AI Foundry agent <code>chat_agent_vii</code> (Agent ID: <code>asst_nDelHyfVwFQ7Bz3jFvztVnpQ</code>) deployed on the <strong>ais-contoso-procurementagent</strong> Cognitive Service. The attack originated from IP <strong>168.61.150.239</strong> (Des Moines, Iowa, US) and was executed through the <code>AIProjectClient azsdk-python-ai-agents/1.2.0b5</code> SDK running on Linux. This is the <strong style="color: var(--accent2);">first agentic jailbreak</strong> detected in this environment — previous attacks targeted standard Azure OpenAI model deployments. The attack was <strong style="color: var(--success);">detected by Azure Responsible AI Content Filtering (Prompt Shields)</strong>. Across the full 15-day investigation window, <strong>12 jailbreak attacks</strong> were detected across <strong>3 AI resources</strong>, with <strong>4 high-severity anonymized IP access alerts</strong> indicating potential threat actor reconnaissance.
   </p>
 </div>
 
@@ -521,7 +521,7 @@
     <div class="entity-card">
       <div class="entity-icon cloud">☁️</div>
       <div>
-        <div class="entity-name">ais-anhx-procurementagent</div>
+        <div class="entity-name">ais-contoso-procurementagent</div>
         <div class="entity-detail">Cognitive Service — Azure Resource</div>
         <div class="entity-detail">RG: <code>rg-Contoso-Foundry-anhx</code></div>
         <div class="entity-detail">Sub: <code>4fc2c46b-...c4aa</code></div>
@@ -620,7 +620,7 @@
       <!-- Node: Procurement Resource -->
       <rect x="340" y="250" width="180" height="60" rx="12" fill="#0a1628" stroke="#ffa502" stroke-width="2"/>
       <text x="365" y="280" fill="#ffa502" font-size="18">☁️</text>
-      <text x="388" y="276" fill="#e6edf3" font-size="10" font-weight="600">ais-anhx-procurement</text>
+      <text x="388" y="276" fill="#e6edf3" font-size="10" font-weight="600">ais-contoso-procurement</text>
       <text x="388" y="292" fill="#8b949e" font-size="9">Cognitive Service</text>
 
       <!-- Node: MSI Identity -->
@@ -687,7 +687,7 @@
     <div class="flow-step step-initial">
       <div class="flow-phase" style="color: var(--info);">Phase 1 — Infrastructure Provisioning</div>
       <div class="flow-title">Azure AI Foundry Resource Group Deployed</div>
-      <div class="flow-detail">Resource group <code>rg-Contoso-Foundry-anhx</code> provisioned with Cognitive Services (<code>ais-anhx-procurementagent</code>), CosmosDB, Azure Search, App Service, and managed identities. Over 2,000 Azure Activity operations logged by service principal <code>27bf9e71-...</code> in the 15-day window — including 100 DocumentDB connection string listings and 65 managed identity writes.</div>
+      <div class="flow-detail">Resource group <code>rg-Contoso-Foundry-anhx</code> provisioned with Cognitive Services (<code>ais-contoso-procurementagent</code>), CosmosDB, Azure Search, App Service, and managed identities. Over 2,000 Azure Activity operations logged by service principal <code>27bf9e71-...</code> in the 15-day window — including 100 DocumentDB connection string listings and 65 managed identity writes.</div>
       <span class="flow-mitre">T1583.003 — Acquire Infrastructure: Virtual Private Server</span>
     </div>
 
@@ -715,7 +715,7 @@
     <div class="flow-step step-exfil">
       <div class="flow-phase" style="color: var(--critical);">Phase 5 — Broader Campaign Context</div>
       <div class="flow-title">12 Jailbreak Attacks Across 3 Resources in 15 Days</div>
-      <div class="flow-detail">This incident is part of a broader AI exploitation campaign. In the same 15-day window: <strong>11 prior jailbreak attacks</strong> targeted <code>mdc-d4ai-aoai-1</code> (GPT-4o) and <code>mdcd4aiaistudi3411011129</code> (GPT-4o) from multiple IPs including known Tor exit nodes (<code>185.220.101.10</code>) and anonymized proxies. <strong>4 high-severity anonymized IP access alerts</strong> confirm adversarial reconnaissance. This latest attack represents a <strong>pivot to agentic targets</strong> — the first attempt against an Azure AI Foundry agent rather than a standard model deployment.</div>
+      <div class="flow-detail">This incident is part of a broader AI exploitation campaign. In the same 15-day window: <strong>11 prior jailbreak attacks</strong> targeted <code>contoso-aoai-001</code> (GPT-4o) and <code>contoso-ai-studio-002</code> (GPT-4o) from multiple IPs including known Tor exit nodes (<code>185.220.101.10</code>) and anonymized proxies. <strong>4 high-severity anonymized IP access alerts</strong> confirm adversarial reconnaissance. This latest attack represents a <strong>pivot to agentic targets</strong> — the first attempt against an Azure AI Foundry agent rather than a standard model deployment.</div>
       <span class="flow-mitre">T1190 — Exploit Public-Facing Application</span>
     </div>
   </div>
@@ -797,7 +797,7 @@
           <td><strong>Mar 17, 09:02</strong></td>
           <td>Jailbreak on <strong>Foundry agent</strong> detected by Prompt Shields <span class="inline-badge badge-info">THIS INCIDENT</span></td>
           <td><span class="inline-badge badge-medium">Medium</span></td>
-          <td><code>ais-anhx-procurementagent</code></td>
+          <td><code>ais-contoso-procurementagent</code></td>
           <td>chat_agent_vii (Foundry)</td>
           <td>168.61.150.239 🇺🇸</td>
           <td>PrivEsc, DefEvasion</td>
@@ -806,7 +806,7 @@
           <td>Mar 11, 18:17</td>
           <td>Jailbreak on model deployment blocked + <span class="inline-badge badge-high">Anon IP</span></td>
           <td><span class="inline-badge badge-medium">Medium</span></td>
-          <td><code>mdc-d4ai-aoai-1</code></td>
+          <td><code>contoso-aoai-001</code></td>
           <td>gpt-4o</td>
           <td>192.159.99.162</td>
           <td>PrivEsc, DefEvasion</td>
@@ -815,7 +815,7 @@
           <td>Mar 11, 06:38</td>
           <td>Jailbreak on model deployment blocked + <span class="inline-badge badge-high">Anon IP</span></td>
           <td><span class="inline-badge badge-medium">Medium</span></td>
-          <td><code>mdc-d4ai-aoai-1</code></td>
+          <td><code>contoso-aoai-001</code></td>
           <td>gpt-4o</td>
           <td>185.220.101.10 🧅</td>
           <td>PrivEsc, DefEvasion</td>
@@ -824,7 +824,7 @@
           <td>Mar 9, 17:32</td>
           <td>Jailbreak on model deployment blocked</td>
           <td><span class="inline-badge badge-medium">Medium</span></td>
-          <td><code>mdc-d4ai-aoai-1</code></td>
+          <td><code>contoso-aoai-001</code></td>
           <td>gpt-4o</td>
           <td>76.182.132.142 🇺🇸</td>
           <td>PrivEsc, DefEvasion</td>
@@ -833,7 +833,7 @@
           <td>Mar 6, 07:35</td>
           <td>Jailbreak on model deployment blocked</td>
           <td><span class="inline-badge badge-medium">Medium</span></td>
-          <td><code>mdc-d4ai-aoai-1</code></td>
+          <td><code>contoso-aoai-001</code></td>
           <td>gpt-4o</td>
           <td>52.167.115.14</td>
           <td>PrivEsc, DefEvasion</td>
@@ -842,7 +842,7 @@
           <td>Mar 5, 03:17</td>
           <td>Jailbreak on model deployment blocked</td>
           <td><span class="inline-badge badge-medium">Medium</span></td>
-          <td><code>mdcd4aiaistudi3411011129</code></td>
+          <td><code>contoso-ai-studio-002</code></td>
           <td>gpt-4o</td>
           <td>122.169.23x.xxx 🇮🇳</td>
           <td>PrivEsc, DefEvasion</td>
@@ -851,7 +851,7 @@
           <td>Mar 4, 13:11</td>
           <td>Jailbreak blocked + <span class="inline-badge badge-high">Anon IP</span></td>
           <td><span class="inline-badge badge-medium">Medium</span></td>
-          <td><code>mdc-d4ai-aoai-1</code></td>
+          <td><code>contoso-aoai-001</code></td>
           <td>gpt-4o</td>
           <td>46.165.194.56 🇩🇪</td>
           <td>PrivEsc, DefEvasion</td>
@@ -860,7 +860,7 @@
           <td>Mar 4, 10:02</td>
           <td>Jailbreak on model deployment blocked</td>
           <td><span class="inline-badge badge-medium">Medium</span></td>
-          <td><code>mdcd4aiaistudi3411011129</code></td>
+          <td><code>contoso-ai-studio-002</code></td>
           <td>gpt-4o</td>
           <td>122.169.237.135 🇮🇳</td>
           <td>PrivEsc, DefEvasion</td>
@@ -869,7 +869,7 @@
           <td>Mar 4, 08:53</td>
           <td>Jailbreak on model deployment blocked</td>
           <td><span class="inline-badge badge-medium">Medium</span></td>
-          <td><code>mdcd4aiaistudi3411011129</code></td>
+          <td><code>contoso-ai-studio-002</code></td>
           <td>gpt-4o</td>
           <td>122.169.237.135 🇮🇳</td>
           <td>PrivEsc, DefEvasion</td>
@@ -878,7 +878,7 @@
           <td>Mar 4, 01:41</td>
           <td>Jailbreak on model deployment blocked</td>
           <td><span class="inline-badge badge-medium">Medium</span></td>
-          <td><code>mdc-d4ai-aoai-1</code></td>
+          <td><code>contoso-aoai-001</code></td>
           <td>gpt-4o</td>
           <td>—</td>
           <td>PrivEsc, DefEvasion</td>
@@ -1033,7 +1033,7 @@
     <div>
       <h3 style="color: var(--critical); margin-bottom: 12px;">🔴 Priority 1 — Immediate</h3>
       <ul style="list-style: none; padding: 0;">
-        <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">⚠️ <strong>Enable Jailbreak Content Filters:</strong> Verify that Prompt Shields blocking mode (not just detection) is enabled for <code>ais-anhx-procurementagent</code> — current detection is in Preview.</li>
+        <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">⚠️ <strong>Enable Jailbreak Content Filters:</strong> Verify that Prompt Shields blocking mode (not just detection) is enabled for <code>ais-contoso-procurementagent</code> — current detection is in Preview.</li>
         <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">⚠️ <strong>Investigate User Identity:</strong> Resolve the full identity behind <code>2d7a7c73-...cadc</code> and verify if the managed identity's access to the AI agent is authorized.</li>
         <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">⚠️ <strong>Review Agent Prompt Logs:</strong> Examine the full prompt history for <code>chat_agent_vii</code> to validate no sensitive data was exfiltrated and no data poisoning occurred.</li>
       </ul>
@@ -1043,7 +1043,7 @@
       <ul style="list-style: none; padding: 0;">
         <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">⚙️ <strong>Apply Least Privilege:</strong> Validate the AI agent deployment has minimal access to sensitive data stores and privileged functions.</li>
         <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">⚙️ <strong>Restrict Network Access:</strong> Implement IP allowlists or VNet integration for the Cognitive Services endpoint to limit external attack surface.</li>
-        <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">⚙️ <strong>Review All AI Resources:</strong> Audit Prompt Shield configuration across all 3 targeted resources (<code>ais-anhx-procurementagent</code>, <code>mdc-d4ai-aoai-1</code>, <code>mdcd4aiaistudi3411011129</code>).</li>
+        <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">⚙️ <strong>Review All AI Resources:</strong> Audit Prompt Shield configuration across all 3 targeted resources (<code>ais-contoso-procurementagent</code>, <code>contoso-aoai-001</code>, <code>contoso-ai-studio-002</code>).</li>
       </ul>
     </div>
   </div>
@@ -1082,7 +1082,7 @@
       <p style="margin-bottom: 8px;"><strong>2. SecurityAlert — Incident Entity Search:</strong></p>
       <code style="display: block; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 6px; white-space: pre-wrap; margin-bottom: 16px; font-size: 11px;">SecurityAlert
 | where TimeGenerated > ago(15d)
-| where Entities has "2d7a7c73-..." or Entities has "chat_agent_vii" or Entities has "ais-anhx-procurementagent" or Entities has "168.61.150.239"
+| where Entities has "2d7a7c73-..." or Entities has "chat_agent_vii" or Entities has "ais-contoso-procurementagent" or Entities has "168.61.150.239"
 | summarize arg_max(TimeGenerated, *) by SystemAlertId
 <strong>Result: 1 alert — the primary jailbreak detection</strong></code>
 

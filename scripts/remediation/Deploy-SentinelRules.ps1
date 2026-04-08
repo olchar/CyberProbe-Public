@@ -15,11 +15,11 @@ param(
 $rules = @(
     @{
         displayName = "Critical Attack Path - Choke Point Compromise Attempt"
-        description = "Detects potential compromise attempts on identified choke point VMs (alpine-sql, alpine-srv1, vnevado-proxy)"
+        description = "Detects potential compromise attempts on identified choke point VMs (contoso-sql, contoso-srv1, contoso-proxy)"
         severity = "High"
         enabled = $true
         query = @'
-let ChokePointVMs = dynamic(["alpine-sql", "alpine-srv1", "vnevado-proxy", "secretsvm", "mb-wap"]);
+let ChokePointVMs = dynamic(["contoso-sql", "contoso-srv1", "contoso-proxy", "contoso-secrets-vm", "wap-01"]);
 SecurityEvent
 | where TimeGenerated > ago(1h)
 | where Computer has_any (ChokePointVMs)
@@ -47,14 +47,14 @@ SecurityEvent
     },
     @{
         displayName = "High-Value Key Vault Access Anomaly"
-        description = "Detects unusual access patterns to the critical Key Vault (alpine-mdc-vault-demo)"
+        description = "Detects unusual access patterns to the critical Key Vault (contoso-security-vault)"
         severity = "High"
         enabled = $true
         query = @'
 AzureDiagnostics
 | where TimeGenerated > ago(1h)
 | where ResourceType == "VAULTS"
-| where Resource =~ "alpine-mdc-vault-demo"
+| where Resource =~ "contoso-security-vault"
 | extend ClientIP = CallerIPAddress
 | extend Operation = OperationName
 | extend IsSecretAccess = Operation has_any ("SecretGet", "SecretList", "KeyGet", "KeyList")
@@ -113,7 +113,7 @@ AzureActivity
         severity = "High"
         enabled = $true
         query = @'
-let TargetStorageAccounts = dynamic(["mdcd4aistorage1", "c5uj5lrp6r3dm", "stcontosoent399975579637"]);
+let TargetStorageAccounts = dynamic(["contosostorage001", "stcontososec001", "stcontosoent001"]);
 StorageBlobLogs
 | where TimeGenerated > ago(30m)
 | where AccountName has_any (TargetStorageAccounts)
@@ -138,13 +138,13 @@ StorageBlobLogs
     },
     @{
         displayName = "API Endpoint Attack Detected"
-        description = "Detects attack attempts via exposed API endpoints (getPetById choke point)"
+        description = "Detects attack attempts via exposed API endpoints (SampleAPI choke point)"
         severity = "Medium"
         enabled = $true
         query = @'
 ApiManagementGatewayLogs
 | where TimeGenerated > ago(15m)
-| where OperationId has "getPetById" or ApiId has "petstore"
+| where OperationId has "SampleAPI" or ApiId has "petstore"
 | extend IsError = ResponseCode >= 400
 | extend IsSQLi = RequestBody has_any ("SELECT", "UNION", "DROP", "INSERT", "--", "/*", "*/", "OR 1=1", "' OR '")
 | extend IsXSS = RequestBody has_any ("<script>", "javascript:", "onerror=", "onload=")

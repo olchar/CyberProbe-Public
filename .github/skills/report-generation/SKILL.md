@@ -136,7 +136,7 @@ create_file(
   
   <div class="section">
     <h2>Executive Summary</h2>
-    <p>Command & Control (C2) communication detected from alpine-srv1...</p>
+    <p>Command & Control (C2) communication detected from contoso-srv1...</p>
   </div>
   
   <div class="section">
@@ -159,7 +159,7 @@ create_file(
     <h2>Immediate Actions Required</h2>
     <h3>Priority 1 (Immediate - 0-15 min)</h3>
     <ol>
-      <li>Isolate alpine-srv1 from network</li>
+      <li>Isolate contoso-srv1 from network</li>
       <li>Block IP 206.168.34.210 at firewall</li>
     </ol>
   </div>

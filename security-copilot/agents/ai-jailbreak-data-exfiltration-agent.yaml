@@ -1,4 +1,4 @@
-﻿Descriptor:
+Descriptor:
   Name: AIJailbreakDataExfiltrationAgent
   Description: >-
     Automates SOC investigation of multi-stage incidents combining AI model
@@ -143,7 +143,7 @@ SkillGroups:
 
             8. For each jailbreak alert, extract:
                - Model deployment name (e.g., "gpt-4o")
-               - Azure AI resource name (e.g., "mdc-d4ai-aoai-1")
+               - Azure AI resource name (e.g., "contoso-aoai-001")
                - Attack technique (direct prompt injection, indirect,
                  UPIA — User Prompt Injection Attack)
                - Whether blocked by Prompt Shields or succeeded
@@ -394,7 +394,7 @@ SkillGroups:
 
             ## 6. AI JAILBREAK / PROMPT INJECTION ANALYSIS
 
-            **Model Deployment:** [e.g., gpt-4o on mdc-d4ai-aoai-1]
+            **Model Deployment:** [e.g., gpt-4o on contoso-aoai-001]
             **Total Attempts:** [Count]
             **Date Range:** [First attempt — Last attempt]
             **Attack Technique:** [Direct prompt injection / Indirect / UPIA]

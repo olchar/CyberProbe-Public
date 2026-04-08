@@ -1,7 +1,7 @@
 # Network Device Investigation Agent
 
 ## Overview
-This Security Copilot agent automates the investigation of compromised network devices flagged by threat intelligence feeds. It was created based on the investigation of device `mb-wap.internal.niseko.alpineskihouse.co` on January 27, 2026.
+This Security Copilot agent automates the investigation of compromised network devices flagged by threat intelligence feeds. It was created based on the investigation of device `wap-01.internal.branch.contoso.com` on January 27, 2026.
 
 ## Use Case
 **Target Scenario:** SOC analysts investigating network infrastructure compromise alerts from Sentinel threat intelligence rules, specifically when:
@@ -56,7 +56,7 @@ Generates comprehensive reports including:
 
 ## Real-World Investigation Example
 
-**Incident:** mb-wap.internal.niseko.alpineskihouse.co Compromise (Jan 27, 2026)
+**Incident:** wap-01.internal.branch.contoso.com Compromise (Jan 27, 2026)
 
 ### Findings
 - **7 malicious IPs** flagged by threat intelligence
@@ -190,7 +190,7 @@ DeviceNetworkEvents
 ### Check for Persistence Mechanisms
 ```kql
 union DeviceRegistryEvents, DeviceProcessEvents, DeviceFileEvents
-| where DeviceName == "mb-wap.internal.niseko.alpineskihouse.co"
+| where DeviceName == "wap-01.internal.branch.contoso.com"
 | where ActionType in ("RegistryValueSet", "ScheduledTaskCreated", "ServiceInstalled")
 ```
 
@@ -203,7 +203,7 @@ union DeviceRegistryEvents, DeviceProcessEvents, DeviceFileEvents
 
 ## Version History
 
-- **v1.0** (2026-01-27): Initial agent created from mb-wap.internal.niseko.alpineskihouse.co investigation
+- **v1.0** (2026-01-27): Initial agent created from wap-01.internal.branch.contoso.com investigation
   - Based on 5 Defender XDR incidents
   - 7 malicious IPs enriched
   - MITRE ATT&CK mapping (T1071, T1204)
@@ -212,5 +212,5 @@ union DeviceRegistryEvents, DeviceProcessEvents, DeviceFileEvents
 ---
 
 **Created:** January 27, 2026  
-**Based on:** mb-wap.internal.niseko.alpineskihouse.co incident investigation  
+**Based on:** wap-01.internal.branch.contoso.com incident investigation  
 **Author:** CyberProbe Threat Intelligence Platform

@@ -1,4 +1,4 @@
-﻿# Exposure Management & CTEM — User Guide
+# Exposure Management & CTEM — User Guide
 
 This guide covers how CyberProbe implements **Continuous Threat Exposure Management (CTEM)** and how the `exposure-management` skill accelerates security posture assessments.
 
@@ -50,7 +50,7 @@ The skill is activated automatically when your prompt contains any of these phra
 | `exposure KPI` | "Give me exposure KPI metrics" |
 | `attack paths` | "How many attack paths do we have?" |
 | `internet-exposed` | "What's internet-exposed in our environment?" |
-| `blast radius` | "What's the blast radius of alpine-sql?" |
+| `blast radius` | "What's the blast radius of contoso-sql?" |
 
 ### Example Prompts
 
@@ -61,7 +61,7 @@ The skill is activated automatically when your prompt contains any of these phra
 "What's internet-exposed?"                       → Runs Phase 1.2 + 1.3
 "Generate an exposure KPI report"                → Runs all phases + HTML report output
 "Drill into device ds-contoso exposure"             → Runs targeted Phase 3.5 + 2.1
-"What's the blast radius of alpine-srv1?"        → Runs Phase 5 (Sentinel Graph MCP)
+"What's the blast radius of contoso-srv1?"        → Runs Phase 5 (Sentinel Graph MCP)
 ```
 
 ### Smart Phase Selection
