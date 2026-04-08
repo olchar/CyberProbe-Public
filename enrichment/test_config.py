@@ -5,6 +5,18 @@ Test and validate the enrichment config.json file
 import json
 from pathlib import Path
 
+
+def _is_placeholder(api_keys: dict, key: str) -> bool:
+    """Check if an API key value is a placeholder without exposing the raw value."""
+    val = api_keys.get(key, '')
+    return 'YOUR_' in val or val == 'NO_KEY_NEEDED'
+
+
+def _is_free_source(api_keys: dict, key: str) -> bool:
+    """Check if an API key slot requires no key (free source)."""
+    return api_keys.get(key, '') == 'NO_KEY_NEEDED'
+
+
 def test_config():
     config_file = Path(__file__).parent / 'config.json'
     
@@ -35,11 +47,7 @@ def test_config():
     print()
     
     for i, key in enumerate(active_keys, 1):
-        # Check status without storing the raw key value
-        raw = data['api_keys'].get(key, '')
-        is_placeholder = 'YOUR_' in raw or raw == 'NO_KEY_NEEDED'
-        del raw  # discard sensitive value immediately
-        status = "⚠ PLACEHOLDER" if is_placeholder else "✓ CONFIGURED"
+        status = "⚠ PLACEHOLDER" if _is_placeholder(data['api_keys'], key) else "✓ CONFIGURED"
         print(f"  {i}. {key:20} {status}")
     
     print()
@@ -48,10 +56,9 @@ def test_config():
     print("=" * 60)
     
     free_sources = []
-    for k, v in data['api_keys'].items():
+    for k in data['api_keys']:
         if k.startswith('_') and not k.startswith('_comment'):
-            # Store only the name and whether it's free (no key needed)
-            free_sources.append((k.lstrip('_'), v == 'NO_KEY_NEEDED'))
+            free_sources.append((k.lstrip('_'), _is_free_source(data['api_keys'], k)))
     
     print(f"Total: {len(free_sources)} additional sources available")
     print()
