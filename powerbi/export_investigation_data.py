@@ -1,4 +1,4 @@
-﻿"""
+"""
 Power BI Investigation Data Exporter
 Exports user01 insider threat investigation data to Power BI-ready JSON format
 
@@ -297,7 +297,7 @@ def export_user01_investigation():
     
     # Create summary manifest
     manifest = {
-        "investigation_id": "INV-U1899-20260121",
+        "investigation_id": "INV-USER01-20260121",
         "incident_id": "42120",
         "subject": "user01@contoso.com",
         "export_date": datetime.now().isoformat(),

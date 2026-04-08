@@ -1,4 +1,4 @@
-﻿# Power BI Dashboard Setup Guide - CyberProbe Insider Threat Investigation
+# Power BI Dashboard Setup Guide - CyberProbe Insider Threat Investigation
 
 **Dashboard Name:** Insider Threat Investigation Dashboard  
 **Data Sources:** Microsoft Sentinel (KQL), Microsoft Defender XDR (Graph API), Local JSON Exports  
@@ -554,7 +554,7 @@ For multi-tenancy or department isolation:
 
 ---
 
-## 📥 Quick Start: U1899 Investigation Dashboard
+## 📥 Quick Start: USER01 Investigation Dashboard
 
 ### Step 1: Export Investigation Data
 

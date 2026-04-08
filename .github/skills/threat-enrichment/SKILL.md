@@ -302,7 +302,7 @@ Response:
 ```json
 {
   "sentinel_workspace_id": "e34d562e-...",
-  "tenant_id": "0527ecb7-...",
+  "tenant_id": "00000000-...",
   "api_keys": {
     "abuseipdb": "6a1efcd9bd...",
     "ipinfo": "a4a8be9afcba56",
