@@ -404,7 +404,6 @@ graph LR
     V["📦 ASSET & VULN<br/><i>Inventory, TVM,<br/>Server Posture</i>"]
 
     V --> V1["🟣 Triage MCP<br/><code>GetMachine</code><br/><code>GetVulnerabilities</code>"]
-    V --> V2["🟣 CyberProbe<br/><code>security_posture<br/>_dashboard</code>"]
     V --> V3["🔴 ARM API<br/><code>resources</code>"]
     V --> V4["🟡 Adv Hunting<br/><code>DeviceTvm*</code><br/><code>ExposureGraph*</code>"]
     V --> V5["🔵 Python<br/><code>enrich_ips.py</code>"]
@@ -412,7 +411,7 @@ graph LR
     classDef hub fill:#238636,stroke:#3fb950,color:#fff,stroke-width:2px
     classDef tool fill:#161b22,stroke:#30363d,color:#c9d1d9
     class V hub
-    class V1,V2,V3,V4,V5 tool
+    class V1,V3,V4,V5 tool
                     </pre>
                 </div>
 
@@ -510,7 +509,7 @@ graph LR
                     </tr>
                     <tr>
                         <td><strong>🖥️ Server/VM Security Posture</strong></td>
-                        <td><span class="badge badge-mcp">Triage MCP</span> <span class="badge badge-mcp">CyberProbe</span> <span class="badge badge-mcp">Data Lake</span></td>
+                        <td><span class="badge badge-mcp">Triage MCP</span> <span class="badge badge-mcp">Data Lake</span></td>
                         <td><span class="badge badge-api">DfC API</span></td>
                         <td><span class="badge badge-kql">Sentinel</span> <span class="badge badge-kql">AH</span></td>
                         <td><span class="badge badge-script">Python Enrichment</span></td>
