@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident 49370 — Multi-stage Execution & Privilege Escalation - CyberProbe</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --bg-hover: #30363d;
+            --border-color: #30363d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-red: #f85149;
+            --accent-orange: #d29922;
+            --accent-yellow: #e3b341;
+            --accent-green: #3fb950;
+            --accent-purple: #a371f7;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .container { display: flex; flex-direction: column; min-height: 100vh; }
+        .header {
+            background: var(--bg-secondary);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 8px 12px 8px 36px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+        }
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            opacity: 0.6;
+        }
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            padding: 12px 24px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .stat-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+        .chip {
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .chip:hover { background: var(--bg-hover); }
+        .chip.active { background: var(--accent-blue); border-color: var(--accent-blue); color: white; }
+        .entity-list { padding: 16px 24px; }
+        .entity-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .entity-card:hover { border-color: var(--accent-blue); }
+        .entity-card.critical { border-left: 4px solid var(--accent-red); }
+        .entity-card.high { border-left: 4px solid var(--accent-orange); }
+        .entity-card.medium { border-left: 4px solid var(--accent-yellow); }
+        .entity-card.low { border-left: 4px solid var(--accent-green); }
+        .entity-card.info { border-left: 4px solid var(--accent-blue); }
+        .entity-header {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+        .entity-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .entity-main { flex: 1; min-width: 0; }
+        .entity-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        .entity-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .entity-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+        .badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .badge.ip { background: rgba(88, 166, 255, 0.15); color: var(--accent-blue); }
+        .badge.user { background: rgba(163, 113, 247, 0.15); color: var(--accent-purple); }
+        .badge.device { background: rgba(63, 185, 80, 0.15); color: var(--accent-green); }
+        .badge.domain { background: rgba(210, 153, 34, 0.15); color: var(--accent-orange); }
+        .badge.email { background: rgba(248, 81, 73, 0.15); color: var(--accent-red); }
+        .badge.url { background: rgba(248, 81, 73, 0.2); color: var(--accent-red); }
+        .badge.alert { background: rgba(227, 179, 65, 0.15); color: var(--accent-yellow); }
+        .badge.file { background: rgba(139, 148, 158, 0.15); color: var(--text-muted); }
+        .badge.hash { background: rgba(163, 113, 247, 0.15); color: var(--accent-purple); }
+        .tag { background: rgba(88, 166, 255, 0.1); color: var(--accent-blue); }
+        .expand-icon { color: var(--text-muted); transition: transform 0.2s; font-size: 12px; }
+        .entity-card.expanded .expand-icon { transform: rotate(90deg); }
+        .entity-details {
+            display: none;
+            padding: 0 16px 16px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-primary);
+        }
+        .entity-card.expanded .entity-details { display: block; }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            padding-top: 14px;
+        }
+        .detail-item {
+            background: var(--bg-secondary);
+            padding: 10px 12px;
+            border-radius: 6px;
+        }
+        .detail-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .detail-value {
+            font-size: 13px;
+            color: var(--text-primary);
+            word-break: break-all;
+            cursor: pointer;
+        }
+        .detail-value:hover { color: var(--accent-blue); }
+        .entity-actions {
+            display: flex;
+            gap: 8px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 12px;
+        }
+        .action-btn {
+            padding: 8px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .action-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .action-btn.primary { background: var(--accent-blue); border-color: var(--accent-blue); color: white; }
+        .empty-state { text-align: center; padding: 60px; color: var(--text-muted); }
+        .footer { padding: 16px 24px; text-align: center; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border-color); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔎 Incident 49370 — Multi-stage Execution & Privilege Escalation</h1>
+            <div class="search-box">
+                <input type="text" id="search" placeholder="Search entities..." oninput="filterEntities()">
+            </div>
+        </div>
+        
+        <div class="stats-bar">
+            <div class="stat"><span class="stat-dot" style="background: #f85149;"></span> Critical: 0</div>
+            <div class="stat"><span class="stat-dot" style="background: #d29922;"></span> High: 0</div>
+            <div class="stat"><span class="stat-dot" style="background: #e3b341;"></span> Medium: 10</div>
+            <div class="stat"><span class="stat-dot" style="background: #3fb950;"></span> Low: 1</div>
+            <div class="stat"><span class="stat-dot" style="background: #58a6ff;"></span> Info: 0</div>
+            <div class="stat" style="margin-left: auto;">Total: 11</div>
+        </div>
+        
+        <div class="filter-chips" id="filter-chips">
+            <div class="chip" data-type="alert" onclick="toggleFilter('alert')">⚠️ alert (4)</div><div class="chip" data-type="ip" onclick="toggleFilter('ip')">🌐 ip (2)</div><div class="chip" data-type="incident" onclick="toggleFilter('incident')">📌 incident (1)</div><div class="chip" data-type="user" onclick="toggleFilter('user')">👤 user (1)</div><div class="chip" data-type="file" onclick="toggleFilter('file')">📄 file (1)</div><div class="chip" data-type="device" onclick="toggleFilter('device')">💻 device (1)</div><div class="chip" data-type="other" onclick="toggleFilter('other')">📌 other (1)</div>
+        </div>
+        
+        <div class="entity-list" id="entity-list">
+            
+                <div class="entity-card medium" data-idx="0" data-type="incident" data-searchable="49370 multi-stage incident involving execution & privilege escalation  active assigned: defender experts priority: 40">
+                  <div class="entity-header" onclick="toggleExpand(0)">
+                    <div class="entity-icon">📌</div>
+                    <div class="entity-main">
+                      <div class="entity-title">Multi-stage incident involving Execution & Privilege escalation</div>
+                      <div class="entity-subtitle">incident</div>
+                    </div>
+                    <div class="entity-badges"><span class="badge incident">incident</span><span class="badge tag">Active</span><span class="badge tag">Assigned: Defender Experts</span><span class="badge tag">Priority: 40</span></div>
+                    <div class="expand-icon">▶</div>
+                  </div>
+                  <div class="entity-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <div class="detail-label">Value</div>
+                        <div class="detail-value" onclick="copyText('49370')">49370</div>
+                      </div>
+                      
+                <div class="detail-item">
+                  <div class="detail-label">Created</div>
+                  <div class="detail-value" onclick="copyText('2026-03-06T03:03:26Z')">2026-03-06T03:03:26Z</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Last Updated</div>
+                  <div class="detail-value" onclick="copyText('2026-03-09T17:28:53Z')">2026-03-09T17:28:53Z</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Classification</div>
+                  <div class="detail-value" onclick="copyText('Unknown')">Unknown</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Attack Categories</div>
+                  <div class="detail-value" onclick="copyText('Execution, Privilege Escalation')">Execution, Privilege Escalation</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Alert Count</div>
+                  <div class="detail-value" onclick="copyText('4')">4</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Portal</div>
+                  <div class="detail-value" onclick="copyText('https://security.microsoft.com/incident2/49370/overview')">https://security.microsoft.com/incident2/49370/overview</div>
+                </div>
+              
+                    </div>
+                    
+                  </div>
+                </div>
+              
+                <div class="entity-card medium" data-idx="1" data-type="user" data-searchable="john.doe@northwind.contoso.com irvin sayers  suspicious primary entity sid: s-1-5-21-1840151660-3534030288-105586563-1119">
+                  <div class="entity-header" onclick="toggleExpand(1)">
+                    <div class="entity-icon">👤</div>
+                    <div class="entity-main">
+                      <div class="entity-title">Irvin Sayers</div>
+                      <div class="entity-subtitle">user</div>
+                    </div>
+                    <div class="entity-badges"><span class="badge user">user</span><span class="badge tag">Suspicious</span><span class="badge tag">Primary Entity</span><span class="badge tag">SID: S-1-5-21-1840151660-3534030288-105586563-1119</span></div>
+                    <div class="expand-icon">▶</div>
+                  </div>
+                  <div class="entity-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <div class="detail-label">Value</div>
+                        <div class="detail-value" onclick="copyText('john.doe@northwind.contoso.com')">john.doe@northwind.contoso.com</div>
+                      </div>
+                      
+                <div class="detail-item">
+                  <div class="detail-label">UPN</div>
+                  <div class="detail-value" onclick="copyText('john.doe@northwind.contoso.com')">john.doe@northwind.contoso.com</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Azure AD Object ID</div>
+                  <div class="detail-value" onclick="copyText('e1f2a3b4-c5d6-7890-efab-901234567890')">e1f2a3b4-c5d6-7890-efab-901234567890</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Domain</div>
+                  <div class="detail-value" onclick="copyText('northwind.contoso.com')">northwind.contoso.com</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Verdict</div>
+                  <div class="detail-value" onclick="copyText('Suspicious')">Suspicious</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Associated Alerts</div>
+                  <div class="detail-value" onclick="copyText('4 (2x file sharing, 2x AI jailbreak)')">4 (2x file sharing, 2x AI jailbreak)</div>
+                </div>
+              
+                    </div>
+                    
+                  </div>
+                </div>
+              
+                <div class="entity-card medium" data-idx="2" data-type="alert" data-searchable="ca69aa7a89ac03af0433524799 shared with unauthorized domain (2026-03-06)  execution defender for cloud apps file policy violation">
+                  <div class="entity-header" onclick="toggleExpand(2)">
+                    <div class="entity-icon">⚠️</div>
+                    <div class="entity-main">
+                      <div class="entity-title">Shared with unauthorized domain (2026-03-06)</div>
+                      <div class="entity-subtitle">alert</div>
+                    </div>
+                    <div class="entity-badges"><span class="badge alert">alert</span><span class="badge tag">Execution</span><span class="badge tag">Defender for Cloud Apps</span><span class="badge tag">File Policy Violation</span></div>
+                    <div class="expand-icon">▶</div>
+                  </div>
+                  <div class="entity-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <div class="detail-label">Value</div>
+                        <div class="detail-value" onclick="copyText('ca69aa7a89ac03af0433524799')">ca69aa7a89ac03af0433524799</div>
+                      </div>
+                      
+                <div class="detail-item">
+                  <div class="detail-label">Source</div>
+                  <div class="detail-value" onclick="copyText('Microsoft Defender for Cloud Apps')">Microsoft Defender for Cloud Apps</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Category</div>
+                  <div class="detail-value" onclick="copyText('Execution')">Execution</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Created</div>
+                  <div class="detail-value" onclick="copyText('2026-03-06T06:56:15Z')">2026-03-06T06:56:15Z</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">File</div>
+                  <div class="detail-value" onclick="copyText('EmployeeInfo_EDM.xlsx')">EmployeeInfo_EDM.xlsx</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Application</div>
+                  <div class="detail-value" onclick="copyText('Microsoft OneDrive for Business')">Microsoft OneDrive for Business</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Description</div>
+                  <div class="detail-value" onclick="copyText('File policy \'Shared with unauthorized domain\' matched')">File policy 'Shared with unauthorized domain' matched</div>
+                </div>
+              
+                    </div>
+                    
+                  </div>
+                </div>
+              
+                <div class="entity-card medium" data-idx="3" data-type="alert" data-searchable="ca69aefb1558788246c052fbf1 shared with unauthorized domain (2026-03-09)  execution defender for cloud apps recurrence">
+                  <div class="entity-header" onclick="toggleExpand(3)">
+                    <div class="entity-icon">⚠️</div>
+                    <div class="entity-main">
+                      <div class="entity-title">Shared with unauthorized domain (2026-03-09)</div>
+                      <div class="entity-subtitle">alert</div>
+                    </div>
+                    <div class="entity-badges"><span class="badge alert">alert</span><span class="badge tag">Execution</span><span class="badge tag">Defender for Cloud Apps</span><span class="badge tag">Recurrence</span></div>
+                    <div class="expand-icon">▶</div>
+                  </div>
+                  <div class="entity-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <div class="detail-label">Value</div>
+                        <div class="detail-value" onclick="copyText('ca69aefb1558788246c052fbf1')">ca69aefb1558788246c052fbf1</div>
+                      </div>
+                      
+                <div class="detail-item">
+                  <div class="detail-label">Source</div>
+                  <div class="detail-value" onclick="copyText('Microsoft Defender for Cloud Apps')">Microsoft Defender for Cloud Apps</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Category</div>
+                  <div class="detail-value" onclick="copyText('Execution')">Execution</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Created</div>
+                  <div class="detail-value" onclick="copyText('2026-03-09T16:53:52Z')">2026-03-09T16:53:52Z</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">File</div>
+                  <div class="detail-value" onclick="copyText('EmployeeInfo_EDM.xlsx')">EmployeeInfo_EDM.xlsx</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Application</div>
+                  <div class="detail-value" onclick="copyText('Microsoft OneDrive for Business')">Microsoft OneDrive for Business</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Description</div>
+                  <div class="detail-value" onclick="copyText('Recurring file sharing violation — same file shared again')">Recurring file sharing violation — same file shared again</div>
+                </div>
+              
+                    </div>
+                    
+                  </div>
+                </div>
+              
+                <div class="entity-card medium" data-idx="4" data-type="alert" data-searchable="dcbb22cc33-dd44-ee55-ff66-778899001122 jailbreak attempt blocked — prompt shields (2026-03-06)  privilege escalation defender for cloud ai security blocked">
+                  <div class="entity-header" onclick="toggleExpand(4)">
+                    <div class="entity-icon">⚠️</div>
+                    <div class="entity-main">
+                      <div class="entity-title">Jailbreak attempt blocked — Prompt Shields (2026-03-06)</div>
+                      <div class="entity-subtitle">alert</div>
+                    </div>
+                    <div class="entity-badges"><span class="badge alert">alert</span><span class="badge tag">Privilege Escalation</span><span class="badge tag">Defender for Cloud</span><span class="badge tag">AI Security</span><span class="badge tag">Blocked</span></div>
+                    <div class="expand-icon">▶</div>
+                  </div>
+                  <div class="entity-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <div class="detail-label">Value</div>
+                        <div class="detail-value" onclick="copyText('dcbb22cc33-dd44-ee55-ff66-778899001122')">dcbb22cc33-dd44-ee55-ff66-778899001122</div>
+                      </div>
+                      
+                <div class="detail-item">
+                  <div class="detail-label">Source</div>
+                  <div class="detail-value" onclick="copyText('Microsoft Defender for Cloud (Defender for AI Services)')">Microsoft Defender for Cloud (Defender for AI Services)</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Category</div>
+                  <div class="detail-value" onclick="copyText('Privilege Escalation')">Privilege Escalation</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Created</div>
+                  <div class="detail-value" onclick="copyText('2026-03-06T03:03:25Z')">2026-03-06T03:03:25Z</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Target Resource</div>
+                  <div class="detail-value" onclick="copyText('mdc-d4ai-aoai-1 (Azure OpenAI)')">mdc-d4ai-aoai-1 (Azure OpenAI)</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Model</div>
+                  <div class="detail-value" onclick="copyText('gpt-4o (version 2024-08-06)')">gpt-4o (version 2024-08-06)</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Deployment</div>
+                  <div class="detail-value" onclick="copyText('gpt-4o-model-1')">gpt-4o-model-1</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Operation</div>
+                  <div class="detail-value" onclick="copyText('ChatCompletions_Create')">ChatCompletions_Create</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Auth Method</div>
+                  <div class="detail-value" onclick="copyText('AAD')">AAD</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Source IP</div>
+                  <div class="detail-value" onclick="copyText('52.167.115.14 (Virginia, US)')">52.167.115.14 (Virginia, US)</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">User Agent</div>
+                  <div class="detail-value" onclick="copyText('Chrome/145.0.0.0 Edge/145.0.0.0')">Chrome/145.0.0.0 Edge/145.0.0.0</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Outcome</div>
+                  <div class="detail-value" onclick="copyText('BLOCKED by Prompt Shields')">BLOCKED by Prompt Shields</div>
+                </div>
+              
+                    </div>
+                    
+                  </div>
+                </div>
+              
+                <div class="entity-card medium" data-idx="5" data-type="alert" data-searchable="dccc33dd44-ee55-ff66-7788-990011223344 jailbreak attempt blocked — prompt shields (2026-03-09)  privilege escalation defender for cloud ai security blocked recurrence">
+                  <div class="entity-header" onclick="toggleExpand(5)">
+                    <div class="entity-icon">⚠️</div>
+                    <div class="entity-main">
+                      <div class="entity-title">Jailbreak attempt blocked — Prompt Shields (2026-03-09)</div>
+                      <div class="entity-subtitle">alert</div>
+                    </div>
+                    <div class="entity-badges"><span class="badge alert">alert</span><span class="badge tag">Privilege Escalation</span><span class="badge tag">Defender for Cloud</span><span class="badge tag">AI Security</span><span class="badge tag">Blocked</span><span class="badge tag">Recurrence</span></div>
+                    <div class="expand-icon">▶</div>
+                  </div>
+                  <div class="entity-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <div class="detail-label">Value</div>
+                        <div class="detail-value" onclick="copyText('dccc33dd44-ee55-ff66-7788-990011223344')">dccc33dd44-ee55-ff66-7788-990011223344</div>
+                      </div>
+                      
+                <div class="detail-item">
+                  <div class="detail-label">Source</div>
+                  <div class="detail-value" onclick="copyText('Microsoft Defender for Cloud (Defender for AI Services)')">Microsoft Defender for Cloud (Defender for AI Services)</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Category</div>
+                  <div class="detail-value" onclick="copyText('Privilege Escalation')">Privilege Escalation</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Created</div>
+                  <div class="detail-value" onclick="copyText('2026-03-09T02:03:55Z')">2026-03-09T02:03:55Z</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Target Resource</div>
+                  <div class="detail-value" onclick="copyText('mdc-d4ai-aoai-1 (Azure OpenAI)')">mdc-d4ai-aoai-1 (Azure OpenAI)</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Model</div>
+                  <div class="detail-value" onclick="copyText('gpt-4o (version 2024-08-06)')">gpt-4o (version 2024-08-06)</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Deployment</div>
+                  <div class="detail-value" onclick="copyText('gpt-4o-model-1')">gpt-4o-model-1</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Operation</div>
+                  <div class="detail-value" onclick="copyText('ChatCompletions_Create')">ChatCompletions_Create</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Auth Method</div>
+                  <div class="detail-value" onclick="copyText('AAD')">AAD</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Source IP</div>
+                  <div class="detail-value" onclick="copyText('76.182.132.142 (Ohio, US)')">76.182.132.142 (Ohio, US)</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">User Agent</div>
+                  <div class="detail-value" onclick="copyText('Chrome/145.0.0.0 Edge/145.0.0.0')">Chrome/145.0.0.0 Edge/145.0.0.0</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Outcome</div>
+                  <div class="detail-value" onclick="copyText('BLOCKED by Prompt Shields')">BLOCKED by Prompt Shields</div>
+                </div>
+              
+                    </div>
+                    
+                  </div>
+                </div>
+              
+                <div class="entity-card medium" data-idx="6" data-type="ip" data-searchable="52.167.115.14 jailbreak source ip #1  suspicious virginia us boydton">
+                  <div class="entity-header" onclick="toggleExpand(6)">
+                    <div class="entity-icon">🌐</div>
+                    <div class="entity-main">
+                      <div class="entity-title">Jailbreak Source IP #1</div>
+                      <div class="entity-subtitle">ip</div>
+                    </div>
+                    <div class="entity-badges"><span class="badge ip">ip</span><span class="badge tag">Suspicious</span><span class="badge tag">Virginia US</span><span class="badge tag">Boydton</span></div>
+                    <div class="expand-icon">▶</div>
+                  </div>
+                  <div class="entity-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <div class="detail-label">Value</div>
+                        <div class="detail-value" onclick="copyText('52.167.115.14')">52.167.115.14</div>
+                      </div>
+                      
+                <div class="detail-item">
+                  <div class="detail-label">Country</div>
+                  <div class="detail-value" onclick="copyText('United States')">United States</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">State</div>
+                  <div class="detail-value" onclick="copyText('Virginia')">Virginia</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">City</div>
+                  <div class="detail-value" onclick="copyText('Boydton')">Boydton</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Latitude</div>
+                  <div class="detail-value" onclick="copyText('36.668')">36.668</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Longitude</div>
+                  <div class="detail-value" onclick="copyText('-78.389')">-78.389</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Associated Alert</div>
+                  <div class="detail-value" onclick="copyText('Jailbreak attempt (2026-03-06)')">Jailbreak attempt (2026-03-06)</div>
+                </div>
+              
+                    </div>
+                    
+                  </div>
+                </div>
+              
+                <div class="entity-card medium" data-idx="7" data-type="ip" data-searchable="76.182.132.142 jailbreak source ip #2  suspicious ohio us pataskala">
+                  <div class="entity-header" onclick="toggleExpand(7)">
+                    <div class="entity-icon">🌐</div>
+                    <div class="entity-main">
+                      <div class="entity-title">Jailbreak Source IP #2</div>
+                      <div class="entity-subtitle">ip</div>
+                    </div>
+                    <div class="entity-badges"><span class="badge ip">ip</span><span class="badge tag">Suspicious</span><span class="badge tag">Ohio US</span><span class="badge tag">Pataskala</span></div>
+                    <div class="expand-icon">▶</div>
+                  </div>
+                  <div class="entity-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <div class="detail-label">Value</div>
+                        <div class="detail-value" onclick="copyText('76.182.132.142')">76.182.132.142</div>
+                      </div>
+                      
+                <div class="detail-item">
+                  <div class="detail-label">Country</div>
+                  <div class="detail-value" onclick="copyText('United States')">United States</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">State</div>
+                  <div class="detail-value" onclick="copyText('Ohio')">Ohio</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">City</div>
+                  <div class="detail-value" onclick="copyText('Pataskala')">Pataskala</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Latitude</div>
+                  <div class="detail-value" onclick="copyText('39.998')">39.998</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Longitude</div>
+                  <div class="detail-value" onclick="copyText('-82.697')">-82.697</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Associated Alert</div>
+                  <div class="detail-value" onclick="copyText('Jailbreak attempt (2026-03-09)')">Jailbreak attempt (2026-03-09)</div>
+                </div>
+              
+                    </div>
+                    
+                  </div>
+                </div>
+              
+                <div class="entity-card medium" data-idx="8" data-type="file" data-searchable="d29d80834948030cd1c64aa43eabdb9806c28e1e60593394803cf6bdc8492331 employeeinfo_edm.xlsx  suspicious data sharing violation onedrive">
+                  <div class="entity-header" onclick="toggleExpand(8)">
+                    <div class="entity-icon">📄</div>
+                    <div class="entity-main">
+                      <div class="entity-title">EmployeeInfo_EDM.xlsx</div>
+                      <div class="entity-subtitle">file</div>
+                    </div>
+                    <div class="entity-badges"><span class="badge file">file</span><span class="badge tag">Suspicious</span><span class="badge tag">Data Sharing Violation</span><span class="badge tag">OneDrive</span></div>
+                    <div class="expand-icon">▶</div>
+                  </div>
+                  <div class="entity-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <div class="detail-label">Value</div>
+                        <div class="detail-value" onclick="copyText('d29d80834948030cd1c64aa43eabdb9806c28e1e60593394803cf6bdc8492331')">d29d80834948030cd1c64aa43eabdb9806c28e1e60593394803cf6bdc8492331</div>
+                      </div>
+                      
+                <div class="detail-item">
+                  <div class="detail-label">SHA256</div>
+                  <div class="detail-value" onclick="copyText('d29d80834948030cd1c64aa43eabdb9806c28e1e60593394803cf6bdc8492331')">d29d80834948030cd1c64aa43eabdb9806c28e1e60593394803cf6bdc8492331</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">SHA1</div>
+                  <div class="detail-value" onclick="copyText('91c88af0a639776eece782a5e4862895255bceed')">91c88af0a639776eece782a5e4862895255bceed</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">MD5</div>
+                  <div class="detail-value" onclick="copyText('dc62c542bd3648ff18d166b499534225')">dc62c542bd3648ff18d166b499534225</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Application</div>
+                  <div class="detail-value" onclick="copyText('Microsoft OneDrive for Business')">Microsoft OneDrive for Business</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Policy Violated</div>
+                  <div class="detail-value" onclick="copyText('Shared with unauthorized domain')">Shared with unauthorized domain</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Occurrences</div>
+                  <div class="detail-value" onclick="copyText('2 (2026-03-06 and 2026-03-09)')">2 (2026-03-06 and 2026-03-09)</div>
+                </div>
+              
+                    </div>
+                    
+                  </div>
+                </div>
+              
+                <div class="entity-card medium" data-idx="9" data-type="device" data-searchable="mdc-d4ai-aoai-1 azure openai resource — mdc-d4ai-aoai-1  cognitive service azure openai gpt-4o">
+                  <div class="entity-header" onclick="toggleExpand(9)">
+                    <div class="entity-icon">💻</div>
+                    <div class="entity-main">
+                      <div class="entity-title">Azure OpenAI Resource — mdc-d4ai-aoai-1</div>
+                      <div class="entity-subtitle">device</div>
+                    </div>
+                    <div class="entity-badges"><span class="badge device">device</span><span class="badge tag">Cognitive Service</span><span class="badge tag">Azure OpenAI</span><span class="badge tag">gpt-4o</span></div>
+                    <div class="expand-icon">▶</div>
+                  </div>
+                  <div class="entity-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <div class="detail-label">Value</div>
+                        <div class="detail-value" onclick="copyText('mdc-d4ai-aoai-1')">mdc-d4ai-aoai-1</div>
+                      </div>
+                      
+                <div class="detail-item">
+                  <div class="detail-label">Resource Type</div>
+                  <div class="detail-value" onclick="copyText('Cognitive Service (Azure OpenAI)')">Cognitive Service (Azure OpenAI)</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Resource ID</div>
+                  <div class="detail-value" onclick="copyText('/subscriptions/aa11bb22-cc33-dd44-ee55-ff6677889900/resourceGroups/MDC-D4AI/providers/Microsoft.CognitiveServices/accounts/mdc-d4ai-aoai-1')">/subscriptions/aa11bb22-cc33-dd44-ee55-ff6677889900/resourceGroups/MDC-D4AI/providers/Microsoft.CognitiveServices/accounts/mdc-d4ai-aoai-1</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Resource Group</div>
+                  <div class="detail-value" onclick="copyText('MDC-D4AI')">MDC-D4AI</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Model Deployed</div>
+                  <div class="detail-value" onclick="copyText('gpt-4o (2024-08-06)')">gpt-4o (2024-08-06)</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Deployment Name</div>
+                  <div class="detail-value" onclick="copyText('gpt-4o-model-1')">gpt-4o-model-1</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Jailbreak Attempts</div>
+                  <div class="detail-value" onclick="copyText('2 (both blocked)')">2 (both blocked)</div>
+                </div>
+              
+                    </div>
+                    
+                  </div>
+                </div>
+              
+                <div class="entity-card low" data-idx="10" data-type="other" data-searchable="playbook-awsiam-deleteaccesskeys failed playbook — aws iam key deletion  automation failed 3 attempts">
+                  <div class="entity-header" onclick="toggleExpand(10)">
+                    <div class="entity-icon">📌</div>
+                    <div class="entity-main">
+                      <div class="entity-title">Failed Playbook — AWS IAM Key Deletion</div>
+                      <div class="entity-subtitle">other</div>
+                    </div>
+                    <div class="entity-badges"><span class="badge other">other</span><span class="badge tag">Automation</span><span class="badge tag">Failed</span><span class="badge tag">3 attempts</span></div>
+                    <div class="expand-icon">▶</div>
+                  </div>
+                  <div class="entity-details">
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <div class="detail-label">Value</div>
+                        <div class="detail-value" onclick="copyText('Playbook-AWSIAM-DeleteAccessKeys')">Playbook-AWSIAM-DeleteAccessKeys</div>
+                      </div>
+                      
+                <div class="detail-item">
+                  <div class="detail-label">Playbook</div>
+                  <div class="detail-value" onclick="copyText('Playbook-AWSIAM-DeleteAccessKeys')">Playbook-AWSIAM-DeleteAccessKeys</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Target User</div>
+                  <div class="detail-value" onclick="copyText('john.doe')">john.doe</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Status</div>
+                  <div class="detail-value" onclick="copyText('FAILED (3 times)')">FAILED (3 times)</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Timestamps</div>
+                  <div class="detail-value" onclick="copyText('2026-03-06T03:07, 2026-03-06T06:58, 2026-03-09T02:07')">2026-03-06T03:07, 2026-03-06T06:58, 2026-03-09T02:07</div>
+                </div>
+              
+                <div class="detail-item">
+                  <div class="detail-label">Note</div>
+                  <div class="detail-value" onclick="copyText('Playbook could not delete access keys — manual review needed')">Playbook could not delete access keys — manual review needed</div>
+                </div>
+              
+                    </div>
+                    
+                  </div>
+                </div>
+              
+        </div>
+        
+        <div class="footer">Generated: 2026-03-10 17:39 | CyberProbe Entity Explorer</div>
+    </div>
+    
+    <script>
+        const activeFilters = new Set();
+        
+        function toggleExpand(idx) {
+            const card = document.querySelector(`[data-idx="${idx}"]`);
+            card.classList.toggle('expanded');
+        }
+        
+        function toggleFilter(type) {
+            const chip = document.querySelector(`[data-type="${type}"].chip`);
+            if (activeFilters.has(type)) {
+                activeFilters.delete(type);
+                chip.classList.remove('active');
+            } else {
+                activeFilters.add(type);
+                chip.classList.add('active');
+            }
+            filterEntities();
+        }
+        
+        function filterEntities() {
+            const search = document.getElementById('search').value.toLowerCase();
+            const cards = document.querySelectorAll('.entity-card');
+            
+            cards.forEach(card => {
+                const type = card.dataset.type;
+                const searchable = card.dataset.searchable;
+                
+                const matchesFilter = activeFilters.size === 0 || activeFilters.has(type);
+                const matchesSearch = !search || searchable.includes(search);
+                
+                card.style.display = (matchesFilter && matchesSearch) ? 'block' : 'none';
+            });
+        }
+        
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Optional: show feedback
+            });
+        }
+    </script>
+</body>
+</html>
