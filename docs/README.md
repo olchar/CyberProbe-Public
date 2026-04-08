@@ -17,7 +17,6 @@ This directory contains comprehensive documentation for the CyberProbe threat in
 |------|-------------|
 | [AGENT_SKILLS.md](AGENT_SKILLS.md) | Security Copilot agent skills and capabilities |
 | [MERGE_SUMMARY.md](MERGE_SUMMARY.md) | Project merge and integration summary |
-| [POWERBI_SETUP.md](POWERBI_SETUP.md) | Power BI dashboard configuration guide |
 
 ## Quick Links
 
@@ -35,15 +34,14 @@ docs/
 ├── USER_GUIDE.md           # Primary user documentation
 ├── USER_GUIDE.html         # User guide (HTML format)
 ├── AGENT_SKILLS.md         # Security Copilot agent reference
-├── MERGE_SUMMARY.md        # Technical integration notes
-└── POWERBI_SETUP.md        # Dashboard setup instructions
+└── MERGE_SUMMARY.md        # Technical integration notes
 ```
 
 ## Target Audience
 
 - **SOC Analysts:** USER_GUIDE.md, AGENT_SKILLS.md
 - **Security Engineers:** All documentation
-- **Administrators:** POWERBI_SETUP.md, MERGE_SUMMARY.md
+- **Administrators:** MERGE_SUMMARY.md
 
 ## Related Documentation
 

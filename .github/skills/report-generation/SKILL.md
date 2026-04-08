@@ -1,6 +1,6 @@
 ---
 name: report-generation
-description: Generate comprehensive security investigation reports in HTML and JSON formats. Use when creating incident reports, investigation summaries, or executive briefings. Includes dark theme templates, MITRE ATT&CK mapping, and Power BI dataset export.
+description: Generate comprehensive security investigation reports in HTML and JSON formats. Use when creating incident reports, investigation summaries, or executive briefings. Includes dark theme templates and MITRE ATT&CK mapping.
 ---
 
 # Report Generation Skill
@@ -12,7 +12,6 @@ This skill creates professional security investigation reports in multiple forma
 Use this skill when:
 - Completing security investigations (need final documentation)
 - Responding to critical incidents (executive briefings required)
-- Generating Power BI datasets for analytics dashboards
 - Creating audit trails for compliance
 - Sharing investigation findings with stakeholders
 - Archiving investigation data for future reference
@@ -178,43 +177,6 @@ create_file(
 8. **Investigation Queries**: KQL queries used
 9. **Methodology**: Data extraction pipeline (see [Methodology Section](#methodology-section-mandatory) below)
 10. **Recommendations**: Long-term improvements
-
-### 3. Power BI Datasets
-**Purpose**: Refreshable datasets for analytics dashboards
-
-**Script**: `enrichment/powerbi_data_export.py`
-
-**Output Files:**
-- `powerbi_incidents.xlsx` - Incidents table
-- `powerbi_alerts.xlsx` - Alerts table
-- `powerbi_entities.xlsx` - Entities table
-- `powerbi_incidents.csv` - CSV format
-- `powerbi_incidents.json` - JSON format
-
-**Execution:**
-```powershell
-python enrichment/powerbi_data_export.py
-```
-
-**Data Schema:**
-```
-Incidents Table:
-- IncidentId, IncidentNumber, Severity, Status, Classification
-- Title, Description, FirstActivityTime, LastActivityTime
-- AssignedTo, AlertCount, ProviderName
-
-Alerts Table:
-- AlertId, IncidentId, Severity, Title, Category
-- DetectionSource, FirstActivityTime, Status
-- ProviderAlertId, ServiceSource
-
-Entities Table:
-- EntityId, IncidentId, EntityType (IP, User, Device, File)
-- EntityValue (actual IP/username/hostname)
-- AdditionalData (JSON blob)
-```
-
-See [POWERBI_SETUP.md](../../../docs/POWERBI_SETUP.md) for complete integration guide.
 
 ## Dark Theme Color Palette
 
@@ -451,33 +413,6 @@ create_file(filename, html_content)
 </div>
 ```
 
-## Power BI Integration
-
-### Dataset Export Process
-1. **Run export script**:
-   ```powershell
-   python enrichment/powerbi_data_export.py
-   ```
-
-2. **Import to Power BI Desktop**:
-   - Get Data → Excel → Select `powerbi_incidents.xlsx`
-   - Get Data → Excel → Select `powerbi_alerts.xlsx`
-   - Get Data → Excel → Select `powerbi_entities.xlsx`
-
-3. **Create relationships**:
-   - Incidents[IncidentId] → Alerts[IncidentId] (One-to-Many)
-   - Incidents[IncidentId] → Entities[IncidentId] (One-to-Many)
-
-4. **Build visualizations** (see [POWERBI_SETUP.md](../../../docs/POWERBI_SETUP.md) for DAX measures)
-
-### Scheduled Refresh
-Configure Azure Automation to run export script daily:
-```powershell
-# Azure Runbook
-$date = Get-Date -Format "yyyy-MM-dd"
-python C:\CyberProbe\enrichment\powerbi_data_export.py
-```
-
 ## Output File Naming Conventions
 
 | Report Type | Filename Pattern | Example |
@@ -486,9 +421,6 @@ python C:\CyberProbe\enrichment\powerbi_data_export.py
 | User Investigation (HTML) | `investigation_<upn_prefix>_YYYY-MM-DD.html` | `investigation_jsmith_2026-01-15.html` |
 | Incident Report | `incident_report_<incident_id>_YYYY-MM-DD.html` | `incident_report_41272_2026-01-15.html` |
 | IP Enrichment | `ip_enrichment_<count>_ips_YYYY-MM-DD.json` | `ip_enrichment_15_ips_2026-01-15.json` |
-| Power BI Incidents | `powerbi_incidents.{xlsx\|csv\|json}` | `powerbi_incidents.xlsx` |
-| Power BI Alerts | `powerbi_alerts.{xlsx\|csv\|json}` | `powerbi_alerts.xlsx` |
-| Power BI Entities | `powerbi_entities.{xlsx\|csv\|json}` | `powerbi_entities.xlsx` |
 
 ## Best Practices
 
@@ -540,25 +472,8 @@ Workflow:
 7. Export to: reports/incident_report_41272_2026-01-15.html
 ```
 
-### Scenario 3: Power BI Dataset Refresh
-```
-User: "Refresh Power BI datasets"
-
-Workflow:
-1. Run: python enrichment/powerbi_data_export.py
-2. Authenticate to Defender API (Azure AD)
-3. Fetch incidents, alerts, entities
-4. Flatten nested JSON structures
-5. Export to Excel: powerbi_incidents.xlsx (3 sheets)
-6. Export to CSV: powerbi_incidents.csv
-7. Export to JSON: powerbi_incidents.json
-8. Report: "Exported 150 incidents, 342 alerts, 567 entities"
-```
-
 ## Resources
 
-- [POWERBI_SETUP.md](../../../docs/POWERBI_SETUP.md) - Complete Power BI integration guide
-- [powerbi_data_export.py](../../../enrichment/powerbi_data_export.py) - Dataset export script
 - [Investigation-Guide.md](../../../Investigation-Guide.md) - Investigation workflows
 - [Example HTML Report](../../../reports/incident_41272_critical_report.html) - Template reference
 

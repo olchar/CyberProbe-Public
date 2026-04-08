@@ -778,13 +778,6 @@ def generate_heatmap(data):
     return html
 ```
 
-**For Power BI:**
-- Use Matrix visualization
-- Rows: Hour of day
-- Columns: Severity
-- Values: Count of incidents
-- Conditional formatting: Color scale (white → red)
-
 ---
 
 ## Common Analytics Patterns
@@ -837,42 +830,6 @@ SecurityAlert
 
 ---
 
-## Integration with Power BI
-
-### Export Data for Dashboards
-
-**Incidents Table:**
-```kql
-SecurityIncident
-| where CreatedTime > ago(30d)
-| project 
-    IncidentNumber,
-    Title,
-    Severity,
-    Status,
-    CreatedTime,
-    ClosedTime,
-    ProductName = tostring(parse_json(AdditionalData).productName),
-    UserCount = array_length(parse_json(AdditionalData).userPrincipalNames),
-    DeviceCount = array_length(parse_json(AdditionalData).DeviceIds)
-```
-
-**Export to CSV:**
-```python
-# In Python enrichment script or report generator
-import pandas as pd
-
-df = pd.DataFrame(kql_results)
-df.to_csv('powerbi/data/incidents_last_30d.csv', index=False)
-```
-
-**Power BI Connection:**
-- Data Source: CSV folder (automatic refresh)
-- Scheduled Refresh: Daily at 6 AM
-- Relationships: Link incidents to enrichment data by IncidentNumber
-
----
-
 ## Best Practices
 
 1. **Baseline First**: Establish normal incident volume before detecting anomalies
@@ -897,7 +854,6 @@ df.to_csv('powerbi/data/incidents_last_30d.csv', index=False)
 
 ## References
 
-- [Power BI Setup Guide](../../../powerbi/POWERBI_DASHBOARD_SETUP.md)
 - [Investigation Guide Section 17](../../../Investigation-Guide.md#17-investigation-report-template)
 - [SOC Daily Report Example](../../../reports/soc_daily_report_2026-01-20.html)
 - [MITRE ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/)

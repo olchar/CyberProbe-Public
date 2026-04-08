@@ -27,11 +27,6 @@
 		"Sentinel Graph": {
 			"url": "https://sentinel.microsoft.com/mcp/graph",
 			"type": "http"
-		},
-		"CyberProbe Apps": {
-			"type": "stdio",
-			"command": "node",
-			"args": ["${workspaceFolder}/cyberprobe-mcp-apps/dist/index.js"]
 		}
 	},
 	"inputs": []

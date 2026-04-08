@@ -451,7 +451,7 @@ This system uses [VS Code Agent Skills](https://code.visualstudio.com/docs/copil
 | 🔍 Core Investigation | `incident-correlation-analytics` | SOC reporting: campaign detection, heatmaps, MTTD/MTTA/MTTR metrics, top impacted users/devices, analyst workload, executive dashboards | "incident trends", "campaign detection", "SOC metrics", "heatmap", "MTTA", "top impacted", "analyst workload" |
 | 📊 Posture & Exposure | `exposure-management` | CTEM metrics, CNAPP posture, attack surface inventory, vulnerability posture, choke points, attack paths, internet exposure, regulatory compliance, container security, CIEM entitlements, DSPM data security, DevSecOps posture, security recommendations, KPI dashboards | "exposure management", "CTEM", "attack surface", "choke points", "vulnerability posture", "exposure KPI", "CNAPP", "compliance posture", "container security", "CIEM", "permission sprawl", "DSPM", "data security posture", "DevSecOps", "security recommendations" |
 | 🔐 Auth & Response | `defender-response` | Active response: device isolation, user compromise marking, AV scans, forensic packages, incident management | "isolate device", "block user", "containment", "response action" |
-| 📊 Reporting | `report-generation` | HTML/JSON/Power BI reports with dark theme, MITRE ATT&CK mapping, executive briefings | "generate report", "create report", "executive summary" |
+| 📊 Reporting | `report-generation` | HTML/JSON reports with dark theme, MITRE ATT&CK mapping, executive briefings | "generate report", "create report", "executive summary" |
 | 🔧 Tooling | `kql-sentinel-queries` | Execute KQL against Sentinel data lake with pre-built queries for sign-ins, alerts, audit logs | "run KQL", "query Sentinel", "search logs" |
 | 🔧 Tooling | `kql-query-builder` | AI-assisted KQL generation, validation, ASIM normalization, Sentinel Analytic Rule generation | "write KQL", "create KQL query", "help with KQL", "build query" |
 | 📖 Reference | `microsoft-learn-docs` | Official Microsoft Learn documentation lookup for remediation guidance, code samples, KQL examples | "Microsoft docs", "how to remediate", "official guidance" |
@@ -546,17 +546,6 @@ The investigation system integrates with these MCP servers (configured in `.vsco
 ### Security Copilot Agent Creation MCP
 
 - Build custom Security Copilot agents with YAML definitions
-
-### CyberProbe MCP Apps (Local)
-
-Custom MCP Apps rendered inline in VS Code Copilot chat:
-
-| App | Tool | Description |
-|-----|------|-------------|
-| IP Threat Map | `analyze_ip_threats` | Interactive geographic map with color-coded threat severity |
-| Entity Explorer | `explore_entities` | Interactive entity list with filtering/search/drill-down |
-| Response Actions Console | `response_actions_console` | Device isolation, identity containment, incident management |
-| Security Posture Dashboard | `security_posture_dashboard` | VM inventory, cost analysis, AV compliance, attack paths |
 
 ### 🔴 MCP UNAVAILABILITY — DEFENDER API FALLBACK
 

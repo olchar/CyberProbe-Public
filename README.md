@@ -23,7 +23,6 @@ CyberProbe is a comprehensive investigation and threat intelligence platform des
 - **HTML Investigation Reports**: Dark-themed, interactive reports with geographic IP mapping and country flags
 - **SOC Daily Reports**: Automated incident summaries with statistics, trends, and recommendations
 - **Threat Relationship Graphs**: SVG-based visualization showing connections between IPs, devices, and threat indicators
-- **Power BI Integration**: Automated data export to Power BI for executive dashboards and trend analysis
 - **Incident Timeline**: Chronological attack progression with MITRE ATT&CK mapping
 - **Enriched Incident Reports**: Multi-incident correlation with IP threat intelligence integration
 
@@ -38,7 +37,7 @@ CyberProbe is a comprehensive investigation and threat intelligence platform des
   - **kql-sentinel-queries** - 40+ pre-built KQL queries for Sentinel data lake
   - **kql-query-builder** - Generate, validate, and optimize custom KQL queries with 331+ table schemas
   - **microsoft-learn-docs** - Real-time access to Microsoft Learn for remediation guidance
-  - **report-generation** - HTML/JSON/Power BI report templates with MITRE ATT&CK mapping
+  - **report-generation** - HTML/JSON report templates with MITRE ATT&CK mapping
   - **endpoint-device-investigation** - Device forensics, lateral movement, and vulnerability assessment
   - **incident-correlation-analytics** - Campaign detection, trend analysis, and SOC metrics
   - **ioc-management** - IOC extraction, enrichment, deduplication, and watchlist management
@@ -132,13 +131,13 @@ CyberProbe's Investigation Guide follows Microsoft's **"Anatomy of a Security Ag
         │                           │                           │
         ▼                           ▼                           ▼
 ┌──────────────────┐    ┌──────────────────────┐    ┌──────────────────┐
-│  HTML Reports    │    │   Power BI Datasets  │    │  JSON/CSV/Excel  │
+│  HTML Reports    │    │   Investigation JSON │    │  JSON/CSV/Excel  │
 │                  │    │                      │    │     Exports      │
 ├──────────────────┤    ├──────────────────────┤    ├──────────────────┤
-│ • Dark Theme     │    │ • Incidents Table    │    │ • Audit Logs     │
-│ • Interactive    │    │ • Alerts Table       │    │ • API Responses  │
-│ • Geo IP Maps    │    │ • Entities Table     │    │ • Enrichment Data│
-│ • Country Flags  │    │ • Timeline Table     │    │ • Investigation  │
+│ • Dark Theme     │    │ • Incidents Data     │    │ • Audit Logs     │
+│ • Interactive    │    │ • Alerts Data        │    │ • API Responses  │
+│ • Geo IP Maps    │    │ • Entities Data      │    │ • Enrichment Data│
+│ • Country Flags  │    │ • Timeline Data      │    │ • Investigation  │
 │ • Threat Graphs  │    │ • Risk Metrics       │    │   Packages       │
 │ • MITRE ATT&CK   │    │ • Trend Analysis     │    │ • SIEM/SOAR      │
 │ • Recommendations│    │ • Executive KPIs     │    │   Integration    │
@@ -327,30 +326,22 @@ CyberProbe/
 │       ├── ioc-management/               # IOC extraction & watchlist management
 │       ├── defender-response/            # Active containment & remediation actions
 │       └── exposure-management/          # CTEM metrics, CNAPP posture & compliance
-├── cyberprobe-mcp-apps/         # MCP Apps server — inline UI in VS Code Copilot
-│   ├── src/tools/              # Tool implementations
-│   │   ├── analyze-ips.ts      # 🌐 IP Threat Map (interactive Leaflet map)
-│   │   ├── entity-explorer.ts  # 🔍 Entity Explorer (filterable entity list)
-│   │   ├── response-actions.ts # ⚡ Response Actions Console (isolation, AV, forensics)
-│   │   └── security-posture.ts # 📊 Security Posture Dashboard (VM inventory, compliance)
-│   └── package.json            # MCP Apps server configuration
 ├── enrichment/                  # Core enrichment and automation scripts
 │   ├── enrich_ips.py           # Multi-source IP threat intelligence (AbuseIPDB, IPInfo, VPNapi, Shodan)
 │   ├── enrich_iocs.py          # Domain & file hash enrichment (VirusTotal)
-│   ├── powerbi_data_export.py  # Power BI dataset generator
 │   ├── config.json             # API keys and configuration (gitignored)
 │   └── config.json.template    # Configuration template for onboarding
 ├── reports/                     # Generated investigation reports
 │   ├── incident_report_*.html  # Interactive HTML reports
 │   ├── investigation_graph_*.html
 │   ├── ip_enrichment_*.json    # Raw enrichment data
-│   └── powerbi_*.xlsx          # Power BI datasets
+│   └── investigation_*.json    # Investigation data packages
 ├── docs/                        # Documentation
 │   ├── AGENT_SKILLS.md         # Complete Agent Skills documentation
 │   ├── EXPOSURE_MANAGEMENT.md  # Exposure management & CTEM reference
 │   ├── USER_GUIDE.md           # End-to-end user guide (with HTML version)
 │   ├── XDR_TABLES_AND_APIS.md  # XDR table schemas, APIs & fallback patterns
-│   └── POWERBI_SETUP.md        # Power BI integration guide
+│   └── USER_GUIDE.html         # Interactive user guide
 ├── queries/                     # Verified KQL query library
 │   ├── identity/               # Entra ID / Azure AD queries
 │   ├── endpoint/               # Defender for Endpoint queries
@@ -416,16 +407,6 @@ mcp_microsoft_sen_query_lake(
 )
 ```
 
-### Generate Power BI Dataset
-
-```powershell
-# Export last 30 days of incidents for Power BI
-python enrichment/powerbi_data_export.py --days 30 --format excel
-
-# Output: reports/powerbi_dataset_TIMESTAMP.xlsx
-# Contains: incidents, alerts, entities tables
-```
-
 ### Investigation Playbooks
 
 The platform includes pre-built playbooks for common scenarios:
@@ -462,12 +443,6 @@ See [Investigation-Guide.md Part I: Orchestration](Investigation-Guide.md#part-i
 - **Tiered layout: Critical → VPN → Suspicious IPs**
 - **Hover tooltips with detailed threat intelligence**
 - **Device and user entity connections**
-
-### Power BI Dashboard
-- **Executive KPIs: Total incidents, MTTR, severity distribution**
-- **Trend analysis: Incident volume over time**
-- **Threat analysis: MITRE ATT&CK coverage, top affected users/devices**
-- **Performance metrics: Analyst workload, resolution rates**
 
 ---
 
@@ -849,37 +824,6 @@ See [Investigation-Guide.md Part II](Investigation-Guide.md#microsoft-sentinel-c
 
 ---
 
-#### 8️⃣ CyberProbe MCP Apps Server 🆕
-
-**Purpose**: Interactive security investigation UIs rendered inline in VS Code Copilot chat
-
-**Configuration**:
-- ✅ **Local MCP server** — runs from `cyberprobe-mcp-apps/` directory
-- ✅ **Implements MCP Apps spec** (2026-01-26) for bidirectional Copilot↔UI communication
-- ✅ **Vite-bundled single-file HTML** — no external dependencies at runtime
-
-**Available Tools (4 interactive apps)**:
-
-| App | Tool | Description |
-|-----|------|-------------|
-| 🌐 IP Threat Map | `analyze_ip_threats` | Interactive Leaflet map with color-coded threat severity markers. Click IPs for abuse reports, filter by risk level. |
-| 🔍 Entity Explorer | `explore_entities` | Filterable entity list (IPs, users, devices, alerts). Search, sort, and drill-down with severity tagging. |
-| ⚡ Response Actions Console | `response_actions_console` | Device isolation, identity containment, AV scans, forensic package collection — all from inline UI. |
-| 📊 Security Posture Dashboard | `security_posture_dashboard` | VM inventory, cost analysis, AV compliance status, attack path visualization. |
-
-**Use Cases**:
-- **Visual Triage**: See geographic distribution of threat IPs on a live map during incident analysis
-- **Entity Drill-down**: Interactively explore all entities extracted from an investigation
-- **One-click Response**: Isolate devices, quarantine files, or disable users without leaving Copilot chat
-- **Posture Overview**: Get real-time VM security posture with compliance metrics
-
-**Integration with CyberProbe**:
-MCP Apps tools are auto-triggered when Copilot detects relevant investigation context (e.g., enriched IP data, entity lists). The apps render directly in the chat panel — no browser popups.
-
-See [cyberprobe-mcp-apps/README.md](cyberprobe-mcp-apps/README.md) for setup and development guide.
-
----
-
 ### MCP Server Comparison
 
 | MCP Server | Purpose | Tools | Authentication | Key Use Cases |
@@ -890,9 +834,8 @@ See [cyberprobe-mcp-apps/README.md](cyberprobe-mcp-apps/README.md) for setup and
 | **Triage** | Defender XDR | 27 | Azure AD (Security Reader) | Incidents, devices, files, threat hunting |
 | **Agent Creation** | Custom AI agents | 5 | Azure AD | SOC automation, specialized workflows |
 | **GitHub** | Code search, repos | 5+ | GitHub Token | Detection rules, community patterns |
-| **CyberProbe MCP Apps** | Interactive inline UIs | 4 | Local | IP maps, entity explorer, response console, posture |
 
-**Total MCP Tools: 57+**
+**Total MCP Tools: 53+**
 
 **Purpose-Built Graph Investigation Tools (NEW):**
 | Tool | Use Case |
@@ -1007,10 +950,8 @@ while True:
 Export incident data for automation:
 
 ```powershell
-# Export to JSON for Sentinel automation rules
-python enrichment/powerbi_data_export.py --format json
-
-# Use in Logic Apps, Power Automate, or custom SOAR solutions
+# Export to JSON for Sentinel automation rules or custom SOAR solutions
+python enrichment/enrich_ips.py --file reports/investigation_user_20260115.json
 ```
 
 ---
@@ -1096,7 +1037,7 @@ CyberProbe includes **11 specialized VS Code Agent Skills** that teach GitHub Co
 - **Trigger**: "How do I remediate this OAuth application attack?"
 
 📁 **report-generation** (`.github/skills/report-generation/SKILL.md`)
-- JSON/HTML/Power BI report generation
+- JSON/HTML report generation
 - Dark theme templates with MITRE ATT&CK mapping
 - Executive briefing format
 - **Trigger**: "Generate critical incident report for #41272"
@@ -1220,7 +1161,6 @@ User Request: "Investigate jsmith@contoso.com for suspicious activity"
 │ • Exports: reports/investigation_jsmith_2026-01-15.json        │
 │ • Generates HTML report with dark theme                         │
 │ • Exports: reports/investigation_jsmith_2026-01-15.html        │
-│ • (Optional) Power BI dataset for dashboards                   │
 │ Uses: Investigation-Guide.md Part IV (Report Templates)        │
 └─────────────────────────────────────────────────────────────────┘
                                     ↓
@@ -1230,7 +1170,6 @@ User Request: "Investigate jsmith@contoso.com for suspicious activity"
 │ ✓ reports/investigation_jsmith_2026-01-15.json (machine-readable)│
 │ ✓ reports/investigation_jsmith_2026-01-15.html (executive report)│
 │ ✓ enrichment/ip_enrichment_15_ips_2026-01-15.json (threat intel)│
-│ ✓ (Optional) powerbi_incidents.xlsx (dashboard dataset)        │
 │                                                                  │
 │ Total Time: ~5-6 minutes for 7-day investigation                │
 └─────────────────────────────────────────────────────────────────┘
@@ -1310,7 +1249,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 - **Documentation**: [Investigation-Guide.md](Investigation-Guide.md)
-- **Power BI Setup**: [docs/POWERBI_SETUP.md](docs/POWERBI_SETUP.md)
 - **Issues**: [GitHub Issues](https://github.com/YOUR-USERNAME/CyberProbe/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/YOUR-USERNAME/CyberProbe/discussions)
 
@@ -1334,8 +1272,6 @@ This tool is designed for authorized security operations only. Always ensure you
 - [x] File hash enrichment (VirusTotal)
 - [x] Domain reputation scoring (VirusTotal)
 - [x] Exposure Management & CTEM posture skill (ExposureGraph, CNAPP, compliance)
-- [x] CyberProbe MCP Apps — interactive inline UIs (IP map, entity explorer, response console, posture dashboard)
-- [x] IOC enrichment utility (`enrich_iocs.py`) for domains and file hashes
 - [x] XDR Tables & APIs reference guide (`docs/XDR_TABLES_AND_APIS.md`)
 
 ### Planned Features
@@ -1348,7 +1284,6 @@ This tool is designed for authorized security operations only. Always ensure you
 - [ ] Integration with Slack/Teams for notifications
 
 ### In Progress
-- [x] Power BI dataset automation
 - [x] IP enrichment with multiple sources
 - [x] HTML report generation
 - [x] Investigation graph visualization

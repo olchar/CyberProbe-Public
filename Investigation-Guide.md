@@ -3164,7 +3164,7 @@ Agent detects 5 countries in 2 weeks, verifies each SessionId had interactive MF
 1. **Agent investigation** → Export priority IPs
 2. **CyberProbe enrichment** → `python enrichment/enrich_ips.py <IPs>`
 3. **Compare results** → Defender TI vs external sources (AbuseIPDB, VirusTotal)
-4. **Generate HTML report** → `powerbi_data_export.py`
+4. **Generate HTML report** → report-generation skill
 
 ### Resources
 
@@ -3346,11 +3346,6 @@ CyberProbe provides **10 specialized skills** for security investigations:
 - Features: Dark theme, MITRE ATT&CK mapping, interactive visuals
 - Sections: Executive summary, timeline, threat intel, remediation steps
 
-**C. Power BI Datasets**
-- Script: `enrichment/powerbi_data_export.py`
-- Outputs: Excel/CSV/JSON (incidents, alerts, entities tables)
-- Usage: Executive dashboards and trend analysis
-
 **Dark Theme Colors:**
 - Primary: `#1a1a2e` (background)
 - Accent: `#00d4ff` (highlights)
@@ -3360,7 +3355,6 @@ CyberProbe provides **10 specialized skills** for security investigations:
 **When to use**:
 - "Generate report for the investigation"
 - "Create critical incident report for #41272"
-- "Export Power BI datasets"
 
 #### 7. **defender-response** ⭐ NEW
 📁 Location: `.github/skills/defender-response/SKILL.md`
@@ -3506,7 +3500,7 @@ Copilot (auto-activates kql-sentinel-queries skill):
 | incident-investigation | Investigation-Guide.md (Section 8 queries) | reports/*.json, reports/*.html |
 | threat-enrichment | enrichment/enrich_ips.py, config.json | enrichment/ip_enrichment_*.json |
 | kql-sentinel-queries | Investigation-Guide.md, MCP tools | Query results, JSON exports |
-| report-generation | enrichment/powerbi_data_export.py | reports/*.html, powerbi_*.xlsx |
+| report-generation | report-generation SKILL.md templates | reports/*.html, reports/*.json |
 | defender-response | Defender Response MCP tools | Containment/remediation actions |
 
 **All skills reference:**

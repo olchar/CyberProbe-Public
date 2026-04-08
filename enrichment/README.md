@@ -10,7 +10,6 @@ This directory contains threat intelligence enrichment scripts, configuration fi
 |------|-------------|-------|
 | [enrich_ips.py](enrich_ips.py) | IP address enrichment with AbuseIPDB, IPInfo, VPNapi, Shodan | `python enrich_ips.py <ip1> <ip2> ...` |
 | [enrich_iocs.py](enrich_iocs.py) | IOC enrichment for IPs, domains, hashes | `python enrich_iocs.py <ioc1> <ioc2> ...` |
-| [powerbi_data_export.py](powerbi_data_export.py) | Export enrichment data for Power BI | `python powerbi_data_export.py` |
 | [test_config.py](test_config.py) | Validate configuration file | `python test_config.py` |
 
 ### Configuration
@@ -156,17 +155,6 @@ Enrichment results are saved as JSON files in `reports/` directory:
 
 **Output:** JSON file in `reports/ioc_enrichment_YYYYMMDD_HHMMSS.json`
 
-### powerbi_data_export.py
-
-**Purpose:** Export enrichment data in Power BI compatible format.
-
-**Features:**
-- Aggregates multiple enrichment results
-- Formats data for Power BI ingestion
-- Generates CSV and JSON outputs
-
-**Output:** `../powerbi/data/enrichment_export.csv`
-
 ### test_config.py
 
 **Purpose:** Validate configuration file and display settings.
@@ -184,15 +172,6 @@ Enrichment results are saved as JSON files in `reports/` directory:
 
 Enrichment can be integrated with Security Copilot agents via custom plugin. See:
 - [../security-copilot/CUSTOM_ENRICHMENT_PLUGIN.md](../security-copilot/CUSTOM_ENRICHMENT_PLUGIN.md)
-
-### Power BI
-
-Export enrichment data for visualization:
-```powershell
-.venv\Scripts\python.exe enrichment/powerbi_data_export.py
-```
-
-See [../powerbi/POWERBI_DASHBOARD_SETUP.md](../powerbi/POWERBI_DASHBOARD_SETUP.md)
 
 ### Microsoft Sentinel
 
@@ -271,7 +250,6 @@ Check API usage:
 - **Configuration Guide:** [CONFIG.md](CONFIG.md)
 - **Investigation Guide:** [../Investigation-Guide.md](../Investigation-Guide.md)
 - **Security Copilot Plugin:** [../security-copilot/CUSTOM_ENRICHMENT_PLUGIN.md](../security-copilot/CUSTOM_ENRICHMENT_PLUGIN.md)
-- **Power BI Integration:** [../powerbi/POWERBI_DASHBOARD_SETUP.md](../powerbi/POWERBI_DASHBOARD_SETUP.md)
 
 ## Examples
 
