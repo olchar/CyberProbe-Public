@@ -27,6 +27,11 @@
 		"Sentinel Graph": {
 			"url": "https://sentinel.microsoft.com/mcp/graph",
 			"type": "http"
+		},
+		"Exposure Management": {
+			"command": "node",
+			"args": ["${workspaceFolder}/mcp-apps/sentinel-exposure-server/dist/main.js", "--stdio"],
+			"type": "stdio"
 		}
 	},
 	"inputs": []
