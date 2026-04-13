@@ -2,7 +2,7 @@
 
 **VS Code Copilot Skills for AI-Assisted Security Investigations**
 
-Last Updated: February 18, 2026
+Last Updated: April 13, 2026
 
 ---
 
@@ -120,7 +120,7 @@ Copilot needs: Sample KQL queries
 
 ## CyberProbe Skills Architecture
 
-CyberProbe provides **10 specialized skills** that cover the complete investigation lifecycle:
+CyberProbe provides **11 specialized skills** that cover the complete investigation lifecycle:
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────┐
@@ -143,21 +143,20 @@ CyberProbe provides **10 specialized skills** that cover the complete investigat
         │               │               │               │               │              │
         └───────────────┴───────────────┼───────────────┴───────────────┴──────────────┘
                                         ▼
-        ┌───────────────┬───────────────┼───────────────┬──────────────────────────────┐
-        │               │               │               │                              │
-        ▼               ▼               ▼               ▼                              ▼
+        ┌───────────────┬───────────────┼───────────────┬───────────────┬──────────────┐
+        │               │               │               │               │              │
+        ▼               ▼               ▼               ▼               ▼              ▼
 ┌──────────────┐ ┌─────────────────┐ ┌────────────┐ ┌──────────────────┐ ┌──────────────────┐
-│   report-    │ │    incident-    │ │    ioc-    │ │   defender-      │ │  (Future Skills) │
-│ generation   │ │  correlation-   │ │ management │ │   response       │ │                  │
-│              │ │   analytics     │ │            │ │   ⭐ NEW         │ │ • User Behavior  │
-│ • JSON       │ │                 │ │ • Extract  │ │                  │ │ • Email Analysis │
-│ • HTML       │ │ • Heatmaps      │ │ • Enrich   │ │ • Isolate Device │ │ • Cloud App Inv  │
-│ • MITRE Map  │ │ • Campaigns     │ │ • Watchlist │ │ • Disable User   │ │                  │
-│ • MITRE Map  │ │ • MITRE Matrix  │ │ • STIX     │ │ • Force PW Reset │ │                  │
-│              │ │ • SOC KPIs      │ │ • Correlate│ │ • AV Scan        │ │                  │
-└──────────────┘ └─────────────────┘ └────────────┘ │ • Forensics      │ └──────────────────┘
-                                                    │ • Incident Mgmt  │
-                                                    └──────────────────┘
+│   report-    │ │    incident-    │ │    ioc-    │ │   defender-      │ │  exposure-       │
+│ generation   │ │  correlation-   │ │ management │ │   response       │ │  management      │
+│              │ │   analytics     │ │            │ │                  │ │                  │
+│ • JSON       │ │                 │ │ • Extract  │ │ • Isolate Device │ │ • CTEM Metrics   │
+│ • HTML       │ │ • Heatmaps      │ │ • Enrich   │ │ • Disable User   │ │ • Vuln Posture   │
+│ • MITRE Map  │ │ • Campaigns     │ │ • Watchlist │ │ • Force PW Reset │ │ • Choke Points   │
+│ • MITRE Map  │ │ • MITRE Matrix  │ │ • STIX     │ │ • AV Scan        │ │ • Attack Paths   │
+│              │ │ • SOC KPIs      │ │ • Correlate│ │ • Forensics      │ │ • CNAPP Posture  │
+└──────────────┘ └─────────────────┘ └────────────┘ │ • Incident Mgmt  │ │ • Compliance     │
+                                                    └──────────────────┘ └──────────────────┘
 ```
 
 ### Skill Dependencies
@@ -1224,6 +1223,97 @@ Category 5: Device Monitoring (Read-Only)
 
 ---
 
+### 11. exposure-management ⭐ NEW
+
+**Purpose**: Retrieve Exposure Management data, CTEM metrics, CNAPP posture KPIs, and security insights from Microsoft Defender XDR and Defender for Cloud
+
+**Location**: `.github/skills/exposure-management/SKILL.md`
+
+**Triggers**: Copilot activates when you say:
+- "What's our exposure posture?"
+- "Show me CTEM metrics"
+- "What's our vulnerability posture?"
+- "Show me choke points and attack paths"
+- "What's our CNAPP posture?"
+- "Show compliance posture"
+- "Container security status"
+- "Show permission sprawl / CIEM"
+- "DevSecOps findings"
+
+**Investigation Phases** (5 phases):
+
+```
+Phase 1: Attack Surface Inventory
+├─ 1.1 Asset classification summary (ExposureGraphNodes)
+├─ 1.2 Internet-exposed assets
+├─ 1.3 RCE-vulnerable assets
+└─ 1.4 Onboarding & sensor health
+
+Phase 2: Vulnerability Posture
+├─ 2.1 Top vulnerable devices (weighted scoring)
+├─ 2.2 Severity distribution (fleet-wide)
+├─ 2.3 OS platform breakdown
+└─ 2.4 Most prevalent CVEs
+
+Phase 3: Attack Paths & Choke Points
+├─ 3.1 Relationship type distribution
+├─ 3.2 Top choke points (incoming edge count)
+├─ 3.3 Edge type breakdown per choke point
+└─ 3.5 Choke point × vulnerability cross-reference
+
+Phase 4: CNAPP Posture & Compliance
+├─ 4.1 Attack path analysis (Defender for Cloud)
+├─ 4.2 Regulatory compliance (CIS, NIST, PCI-DSS, ISO)
+└─ 4.3 Security recommendations (unhealthy/healthy)
+
+Phase 5: Blast Radius Analysis (optional)
+└─ 5.1 Sentinel Graph MCP blast radius for specific nodes
+```
+
+**Key Features**:
+- **Smart phase selection**: Automatically selects which phases to execute based on user intent
+- **ExposureGraph expertise**: Queries ExposureGraphNodes/Edges with proper `parse_json(NodeProperties)` handling
+- **DeviceTvm inventory**: No time filters on snapshot tables
+- **Weighted vulnerability scoring**: `(Critical×4) + (High×2) + (Medium×1) + Low`
+- **Choke point analysis**: Cross-references vulnerability data with attack graph topology
+- **CNAPP posture**: Azure Resource Graph queries against `securityresources`
+- **Remediation prioritization**: P1–P4 structured matrix
+
+**Data Sources**:
+
+| Table | Tool | Notes |
+|-------|------|-------|
+| `ExposureGraphNodes` | Advanced Hunting | No time filter — inventory snapshot |
+| `ExposureGraphEdges` | Advanced Hunting | No time filter — inventory snapshot |
+| `DeviceTvmSoftwareVulnerabilities` | Advanced Hunting | No time filter — inventory snapshot |
+| `securityresources` | Azure Resource Graph (Data Lake) | Defender for Cloud assessments |
+
+**MCP App Visualizations**:
+
+The `sentinel-exposure-server` MCP App provides 3 inline visualization tools that render the data collected by this skill:
+
+| MCP App Tool | Visualization |
+|-------------|---------------|
+| `show-exposure-graph` | Force-directed SVG graph with color-coded nodes and choke point analysis |
+| `show-vulnerability-dashboard` | Severity distribution, device ranking, OS platforms, top CVEs |
+| `show-compliance-posture` | Gauge charts per standard, attack path cards, recommendation table |
+
+See [mcp-apps/README.md](../mcp-apps/README.md) for build and architecture details.
+
+**Performance Expectations**:
+- Attack surface inventory (Phase 1): ~15-20 seconds
+- Vulnerability posture (Phase 2): ~10-15 seconds
+- Choke points & attack paths (Phase 3): ~15-20 seconds
+- CNAPP posture (Phase 4): ~10-15 seconds
+- Full CTEM dashboard (all phases): ~1-2 minutes
+
+**References**:
+- [docs/EXPOSURE_MANAGEMENT.md](EXPOSURE_MANAGEMENT.md) — Full user guide with scoring methodologies
+- [docs/XDR_TABLES_AND_APIS.md](XDR_TABLES_AND_APIS.md) — Table schemas and API fallback patterns
+- .github/skills/exposure-management/SKILL.md
+
+---
+
 ## Using Skills with Copilot
 
 ### Prerequisites
@@ -1930,7 +2020,14 @@ Use these keywords to activate specific skills:
 | incident-investigation | investigate, security investigation, user investigation, analyze user, check user activity |
 | threat-enrichment | enrich, threat intelligence, IP analysis, is malicious, abuse confidence, VPN detection |
 | kql-sentinel-queries | query, KQL, Sentinel, sign-in logs, audit logs, policy changes, anomalies |
+| kql-query-builder | write KQL, create KQL query, help with KQL, build query, validate query |
+| microsoft-learn-docs | Microsoft docs, how to remediate, official guidance |
 | report-generation | generate report, create report, export, HTML report, incident report |
+| endpoint-device-investigation | investigate device, check machine, endpoint forensics, malware |
+| incident-correlation-analytics | incident trends, campaign detection, SOC metrics, heatmap, MTTA |
+| ioc-management | IOC, indicators of compromise, watchlist, threat intel feed |
+| defender-response | isolate device, block user, containment, response action |
+| exposure-management | exposure posture, CTEM metrics, attack surface, choke points, CNAPP, compliance |
 
 ### Naming Conventions
 
@@ -1958,6 +2055,6 @@ Use these keywords to activate specific skills:
 
 ---
 
-**Last Updated**: February 18, 2026  
-**Version**: 1.2.0  
+**Last Updated**: April 13, 2026  
+**Version**: 1.3.0  
 **Maintainer**: CyberProbe Security Team

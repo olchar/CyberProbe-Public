@@ -418,7 +418,36 @@ Before running the skill, verify:
 |----------|-------------|
 | [Skill Definition](../.github/skills/exposure-management/SKILL.md) | The full skill file with all KQL queries and workflow logic |
 | [XDR Tables & APIs Reference](XDR_TABLES_AND_APIS.md) | Complete table schemas, API endpoints, and KQL Query Cookbook |
+| [MCP App: Exposure Visualizations](../mcp-apps/README.md) | Interactive inline visualizations (exposure graph, vuln dashboard, compliance posture) |
 | [Attack Path Monitoring Queries](../queries/attack_path_monitoring.kql) | 10 standalone verified queries for attack path trend monitoring |
 | [Remediation Scripts](../scripts/remediation/README.md) | Automated choke point remediation and Sentinel rule deployment |
 | [Copilot Instructions](../.github/copilot-instructions.md) | Global rules for KQL pre-flight, tool routing, and MCP fallbacks |
 | [Investigation Guide](../Investigation-Guide.md) | Full investigation workflow patterns and sample KQL queries |
+
+---
+
+## MCP App: Inline Visualizations
+
+The `sentinel-exposure-server` MCP App renders exposure management data as interactive visualizations inline in VS Code Copilot Chat. This provides a visual complement to the text-based KPI output from the skill.
+
+### Available Visualizations
+
+| Tool | What it Renders | Skill Phase |
+|------|----------------|-------------|
+| `show-exposure-graph` | Force-directed SVG graph of ExposureGraphNodes/Edges with color-coded node types, choke point glow rings, internet-facing dashed rings, click-to-inspect detail panel, and remediation priority table | Phase 1 + Phase 3 |
+| `show-vulnerability-dashboard` | KPI cards, stacked severity distribution bar, device ranking with weighted score bars, OS platform table, top CVE table | Phase 2 |
+| `show-compliance-posture` | KPI cards, attack path severity cards, SVG gauge charts per standard, filterable recommendations table with unhealthy-only toggle | Phase 4 |
+
+### How to Trigger
+
+After running an exposure management skill query that collects the data, invoke the visualization:
+
+```
+"Show me the exposure graph"           → renders show-exposure-graph
+"Show vulnerability dashboard"         → renders show-vulnerability-dashboard
+"Show compliance posture visual"       → renders show-compliance-posture
+```
+
+### Build & Configuration
+
+See [mcp-apps/README.md](../mcp-apps/README.md) for build instructions, architecture, and how to create additional MCP Apps.

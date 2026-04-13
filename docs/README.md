@@ -16,6 +16,8 @@ This directory contains comprehensive documentation for the CyberProbe threat in
 | File | Description |
 |------|-------------|
 | [AGENT_SKILLS.md](AGENT_SKILLS.md) | Security Copilot agent skills and capabilities |
+| [EXPOSURE_MANAGEMENT.md](EXPOSURE_MANAGEMENT.md) | Exposure management, CTEM, and CNAPP reference |
+| [XDR_TABLES_AND_APIS.md](XDR_TABLES_AND_APIS.md) | XDR table schemas, APIs, and fallback patterns |
 | [MERGE_SUMMARY.md](MERGE_SUMMARY.md) | Project merge and integration summary |
 
 ## Quick Links
@@ -25,6 +27,7 @@ This directory contains comprehensive documentation for the CyberProbe threat in
 - **Investigation Guide:** [../Investigation-Guide.md](../Investigation-Guide.md) (human reference)
 - **Lab Exercises:** [../labs/README.md](../labs/README.md)
 - **Query Library:** [../queries/README.md](../queries/README.md)
+- **MCP Apps:** [../mcp-apps/README.md](../mcp-apps/README.md)
 - **Security Copilot:** [../security-copilot/](../security-copilot/)
 
 ## Documentation Structure
@@ -34,6 +37,8 @@ docs/
 ├── USER_GUIDE.md           # Primary user documentation
 ├── USER_GUIDE.html         # User guide (HTML format)
 ├── AGENT_SKILLS.md         # Security Copilot agent reference
+├── EXPOSURE_MANAGEMENT.md  # CTEM & CNAPP reference
+├── XDR_TABLES_AND_APIS.md  # XDR table schemas & APIs
 └── MERGE_SUMMARY.md        # Technical integration notes
 ```
 
@@ -48,9 +53,10 @@ docs/
 - [Enrichment Configuration](../enrichment/CONFIG.md)
 - [Lab Exercises](../labs/README.md)
 - [Query Deployment](../queries/DEPLOYMENT_GUIDE.md)
+- [MCP Apps (Inline Visualizations)](../mcp-apps/README.md)
 - [Security Copilot Quickstart](../security-copilot/SECURITY_COPILOT_QUICKSTART.md)
 
 ---
 
-**Last Updated:** February 18, 2026  
+**Last Updated:** April 13, 2026  
 **Maintained by:** CyberProbe Security Team

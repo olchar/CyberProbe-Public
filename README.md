@@ -331,6 +331,11 @@ CyberProbe/
 │   ├── enrich_iocs.py          # Domain & file hash enrichment (VirusTotal)
 │   ├── config.json             # API keys and configuration (gitignored)
 │   └── config.json.template    # Configuration template for onboarding
+├── mcp-apps/                    # MCP App visualizations (inline in Copilot Chat)
+│   └── sentinel-exposure-server/ # Unified Exposure/CTEM/CNAPP visualization
+│       ├── server.ts            # 3 tools: exposure graph, vuln dashboard, compliance
+│       ├── src/mcp-app.tsx      # React frontend with SVG visualizations
+│       └── dist/                # Build output (gitignored)
 ├── reports/                     # Generated investigation reports
 │   ├── incident_report_*.html  # Interactive HTML reports
 │   ├── investigation_graph_*.html
@@ -450,7 +455,7 @@ See [Investigation-Guide.md Part I: Orchestration](Investigation-Guide.md#part-i
 
 ### Model Context Protocol (MCP) Servers
 
-CyberProbe leverages **six MCP servers** for comprehensive security investigations:
+CyberProbe leverages **eight MCP servers** (7 remote + 1 local) for comprehensive security investigations:
 
 #### 1️⃣ Microsoft Sentinel MCP Server
 
@@ -824,6 +829,38 @@ See [Investigation-Guide.md Part II](Investigation-Guide.md#microsoft-sentinel-c
 
 ---
 
+#### 8️⃣ Exposure Management MCP App (Local) 🆕
+
+**Purpose**: Interactive inline visualizations for Exposure Management, CTEM, and CNAPP posture data
+
+**Configuration**:
+- ✅ **Local stdio server** — runs as a Node.js process from `mcp-apps/sentinel-exposure-server/`
+- ✅ **No external authentication** — renders data passed from other MCP tools
+- ✅ **React 18 + Vite single-file build** — renders inline in Copilot Chat
+
+**Available Tools (3 tools)**:
+
+| Tool | Visualization | Data Source |
+|------|---------------|-------------|
+| `show-exposure-graph` | Force-directed SVG graph with color-coded nodes, choke point glow, internet-facing rings, click-to-inspect detail panel | `ExposureGraphNodes` + `ExposureGraphEdges` via Advanced Hunting |
+| `show-vulnerability-dashboard` | Severity distribution bar, device ranking with weighted scores, OS platform breakdown, top CVE table | `DeviceTvmSoftwareVulnerabilities` via Advanced Hunting |
+| `show-compliance-posture` | Gauge charts per standard, attack path severity cards, filterable recommendation table | `securityresources` via Azure Resource Graph |
+
+**How It Works**:
+1. The `exposure-management` skill collects data via KQL queries (Advanced Hunting + Resource Graph)
+2. Data is passed to MCP app tools as structured JSON
+3. React frontend renders interactive SVG visualizations inline in Copilot Chat
+4. Dark theme with automatic light mode support
+
+**Build & Development**:
+```bash
+cd mcp-apps/sentinel-exposure-server
+npm install
+npm run build    # Builds React app (single-file HTML) + compiles server
+```
+
+---
+
 ### MCP Server Comparison
 
 | MCP Server | Purpose | Tools | Authentication | Key Use Cases |
@@ -834,8 +871,9 @@ See [Investigation-Guide.md Part II](Investigation-Guide.md#microsoft-sentinel-c
 | **Triage** | Defender XDR | 27 | Azure AD (Security Reader) | Incidents, devices, files, threat hunting |
 | **Agent Creation** | Custom AI agents | 5 | Azure AD | SOC automation, specialized workflows |
 | **GitHub** | Code search, repos | 5+ | GitHub Token | Detection rules, community patterns |
+| **Exposure Management** | Inline visualizations | 3 | None (local) | Exposure graph, vuln dashboard, compliance posture |
 
-**Total MCP Tools: 53+**
+**Total MCP Tools: 56+**
 
 **Purpose-Built Graph Investigation Tools (NEW):**
 | Tool | Use Case |
@@ -1273,6 +1311,7 @@ This tool is designed for authorized security operations only. Always ensure you
 - [x] Domain reputation scoring (VirusTotal)
 - [x] Exposure Management & CTEM posture skill (ExposureGraph, CNAPP, compliance)
 - [x] XDR Tables & APIs reference guide (`docs/XDR_TABLES_AND_APIS.md`)
+- [x] MCP App: Unified Exposure/CTEM/CNAPP inline visualizations (`mcp-apps/sentinel-exposure-server/`)
 
 ### Planned Features
 - [ ] Real-time incident webhooks (event-driven automation)
