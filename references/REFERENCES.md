@@ -110,6 +110,9 @@ AI-powered security assistant — agents ecosystem, Security Store catalog, cust
 | Build Agent Using Manifest | https://learn.microsoft.com/copilot/security/developer/build-agent-gpt-sample | Agent manifest specification |
 | Build Agent Using MCP | https://learn.microsoft.com/copilot/security/developer/mcp-quickstart | MCP-based agent creation in compatible IDEs |
 | MCP Integration Overview | https://learn.microsoft.com/copilot/security/developer/mcp-overview | MCP tools and protocols for Security Copilot |
+| **Agent Manifest Reference** | https://learn.microsoft.com/copilot/security/developer/agent-manifest | Full YAML manifest spec — Descriptor, AgentDefinitions, SkillGroups (API, GPT, KQL, AGENT, LogicApp formats), authentication types |
+| Add Multiple Tools to Agent | https://learn.microsoft.com/copilot/security/developer/build-agent-multiple-tools | End-to-end sample: combine API, GPT, KQL, and global Microsoft tools in a single agent YAML |
+| Add API Tool (Plugin) to Agent | https://learn.microsoft.com/copilot/security/developer/build-agent-api-sample | Create an OpenAPI spec, upload API manifest, wire it into an agent as a ChildSkill |
 | Extend Agent with Tools | https://learn.microsoft.com/copilot/security/developer/create-agent-tool | Add custom tools (skills) to agents |
 | Test Agent | https://learn.microsoft.com/copilot/security/developer/test-agent-dev | Testing and validation workflows |
 | Publish Agent | https://learn.microsoft.com/copilot/security/developer/publish-agent-dev | Publishing to user scope, workspace scope, or Security Store |
