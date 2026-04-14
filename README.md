@@ -242,6 +242,58 @@ See [`scripts/README.md`](./scripts/README.md) for full documentation and [`scri
 - **Microsoft Defender XDR** (E5 Security license or standalone)
 - **Microsoft Sentinel** (Azure workspace with data connectors configured)
 - **Microsoft Entra ID** (for API authentication)
+- **Sentinel onboarded into the Defender XDR unified portal** (see below)
+
+### Sentinel Data Lake Onboarding into Defender XDR (Required)
+
+CyberProbe relies on the **unified security operations platform** where Microsoft Sentinel is connected to Microsoft Defender XDR through the Defender portal. This integration is **required** for the platform to function correctly — it enables:
+
+- **Unified incident queue**: Sentinel and Defender incidents correlated in a single view
+- **Advanced Hunting across both data sources**: Query Sentinel tables (SigninLogs, AuditLogs, SecurityAlert) and Defender XDR tables (Device*, Email*, Identity*, ExposureGraph*) from a single interface
+- **MCP tool interoperability**: The Triage MCP (Advanced Hunting) and Data Lake MCP (Sentinel) both depend on the unified data plane
+- **Cross-platform entity correlation**: Entities from Sentinel alerts can be enriched with Defender XDR telemetry and vice versa
+
+#### How to Onboard Sentinel into Defender XDR
+
+1. **Navigate to the Defender portal**: Go to [security.microsoft.com](https://security.microsoft.com)
+2. **Connect a workspace**: Go to **Settings** → **Microsoft Sentinel** → **Connect a workspace**
+3. **Select your Log Analytics workspace**: Choose the workspace that has your Sentinel data connectors
+4. **Wait for synchronization**: Initial sync takes a few minutes; historical incidents may take up to 24 hours
+5. **Verify**: Check that Sentinel incidents appear in the Defender portal's unified incident queue
+
+#### Prerequisites for Onboarding
+
+| Requirement | Details |
+|-------------|---------|
+| **Permissions** | Microsoft Entra **Global Administrator** or **Security Administrator** for the initial connection |
+| **Sentinel workspace** | Must have at least one active data connector configured |
+| **Defender XDR license** | E5 Security, Microsoft 365 E5, or standalone Defender plans |
+| **Region compatibility** | Sentinel workspace and Defender XDR tenant must be in [supported regions](https://learn.microsoft.com/en-us/azure/sentinel/microsoft-sentinel-defender-portal#region-support) |
+
+#### What Changes After Onboarding
+
+| Capability | Before (Standalone Sentinel) | After (Unified Portal) |
+|------------|------------------------------|------------------------|
+| Incident management | Azure Portal only | Defender Portal (unified queue) |
+| Advanced Hunting | Sentinel tables only (via Log Analytics) | Sentinel + Defender XDR tables (unified schema) |
+| Automation rules | Sentinel-only automation | Cross-platform automation with Defender XDR |
+| Entity investigation | Sentinel entity pages | Unified entity pages with Defender XDR enrichment |
+| SOAR playbooks | Logic Apps via Azure Portal | Logic Apps + Defender XDR automated response |
+
+#### Impact on CyberProbe Table Availability
+
+CyberProbe's investigation workflows depend on two data access methods that require this integration:
+
+| Data Access Method | Tables Available | Requires Unified Portal? |
+|--------------------|-----------------|--------------------------|
+| **Data Lake MCP** (`query_lake`) | Sentinel-native: SigninLogs, AuditLogs, SecurityAlert, SecurityIncident, OfficeActivity, AADUserRiskEvents, custom `*_CL` tables | Yes — workspace must be connected |
+| **Triage MCP** (`RunAdvancedHuntingQuery`) | XDR-native: Device*, Email*, Identity*, ExposureGraph*, DeviceTvm*, AIAgentsInfo, CloudAuditEvents, EntraIdSignInEvents, DisruptionAndResponseEvents, and 20+ more | Yes — Sentinel data streams into unified hunting |
+
+> **Without onboarding**, the Triage MCP can still query Defender XDR-native tables, but cross-correlation with Sentinel data (sign-in logs, audit logs, custom logs) will not work. The Data Lake MCP requires the workspace connection to function.
+
+For detailed table availability and schema reference, see [XDR Tables & APIs Guide](./docs/XDR_TABLES_AND_APIS.md).
+
+> **📘 Official Microsoft documentation**: [Connect Microsoft Sentinel to Microsoft Defender XDR](https://learn.microsoft.com/en-us/azure/sentinel/microsoft-sentinel-defender-portal)
 
 ### MCP Server Access (Default — No Extra Setup)
 

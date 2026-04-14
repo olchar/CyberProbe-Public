@@ -353,6 +353,9 @@ This section catalogs all available data sources across the Defender XDR suite, 
 - **DeviceFileCertificateInfo** - File signing information
 - **DeviceTvmSoftwareInventory** - Installed software inventory
 - **DeviceTvmSoftwareVulnerabilities** - Vulnerability assessments
+- **DeviceBaselineComplianceAssessment** - Baseline compliance status per device (Preview, AH-only, no Timestamp)
+- **DeviceBaselineComplianceAssessmentKB** - Baseline security configuration knowledge base (Preview, AH-only, no Timestamp)
+- **DeviceBaselineComplianceProfiles** - Baseline profiles for compliance monitoring (Preview, AH-only, no Timestamp)
 
 #### Defender for Office 365 Tables
 - **EmailEvents** - Email message metadata
@@ -360,18 +363,51 @@ This section catalogs all available data sources across the Defender XDR suite, 
 - **EmailUrlInfo** - URLs in email messages
 - **EmailPostDeliveryEvents** - Post-delivery actions (ZAP, quarantine)
 - **CloudAppEvents** - SaaS application activities
+- **FileMaliciousContentInfo** - Malicious files in SharePoint, OneDrive, and Teams (Preview, AH-only)
 
 #### Defender for Identity Tables
 - **IdentityInfo** - User and device identity information
 - **IdentityLogonEvents** - Domain controller authentication logs
 - **IdentityQueryEvents** - LDAP queries and reconnaissance
 - **IdentityDirectoryEvents** - Active Directory changes
+- **IdentityEvents** - Identity events from cloud identity providers (Preview, AH-only)
+
+#### Entra ID Tables (Advanced Hunting Only)
+- **EntraIdSignInEvents** - Interactive and non-interactive sign-ins (GA, replaces AADSignInEventsBeta)
+- **EntraIdSpnSignInEvents** - Service principal and managed identity sign-ins (GA, replaces AADSpnSignInEventsBeta)
+- **AADSignInEventsBeta** - Legacy beta sign-in table (being replaced by EntraIdSignInEvents)
+- **AADSpnSignInEventsBeta** - Legacy beta SPN sign-in table (being replaced by EntraIdSpnSignInEvents)
 
 #### Defender for Cloud Tables
 - **SecurityAlert** - Cloud workload protection alerts
 - **SecurityRecommendation** - Security posture recommendations
 - **AzureActivity** - Azure Resource Manager operations
 - **AzureNetworkAnalytics_CL** - Network Security Group flow logs
+- **CloudAuditEvents** - ARM and KubeAudit control plane events (Preview, AH-only)
+- **CloudProcessEvents** - Container process execution in AKS/EKS/GKE (Preview, AH-only)
+- **CloudStorageAggregatedEvents** - Aggregated cloud storage activity (Preview, AH-only)
+- **CloudDnsEvents** - DNS activity from cloud infrastructure (Preview, AH-only)
+- **CloudPolicyEnforcementEvents** - Policy enforcement and security gating events (Preview, AH-only)
+
+#### AI Agent Security Tables (Advanced Hunting Only)
+- **AIAgentsInfo** - Copilot Studio agent inventory, configuration, authentication, tools, and security posture (Preview, AH-only)
+
+#### Messaging & Collaboration Tables (Advanced Hunting Only)
+- **MessageEvents** - Messages sent/received at delivery time in Teams (AH-only)
+- **MessagePostDeliveryEvents** - Post-delivery security events for Teams messages (AH-only)
+- **MessageUrlInfo** - URLs in Teams messages (AH-only)
+- **CampaignInfo** - Email campaigns identified by Defender for Office 365 (Preview, AH-only)
+
+#### Data Security & Disruption Tables (Advanced Hunting Only)
+- **DataSecurityBehaviors** - Suspicious user behaviors violating Microsoft Purview policies (Preview, AH-only)
+- **DataSecurityEvents** - User activities violating Purview DLP/data classification policies (Preview, AH-only)
+- **DisruptionAndResponseEvents** - Automatic attack disruption events (Preview, AH-only)
+- **OAuthAppInfo** - OAuth app governance from Defender for Cloud Apps (Preview, AH-only)
+- **GraphApiAuditEvents** - Microsoft Graph API audit activity (AH-only)
+
+#### Exposure Management Tables (Advanced Hunting Only)
+- **ExposureGraphNodes** - Entities in the exposure management graph (AH-only, no Timestamp)
+- **ExposureGraphEdges** - Relationships between entities (AH-only, no Timestamp)
 
 #### Common Sentinel Tables
 - **AuditLogs** - Azure AD audit logs
