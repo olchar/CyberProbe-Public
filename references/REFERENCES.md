@@ -373,7 +373,7 @@ Model Context Protocol, GitHub Copilot extensibility, and AI agent standards.
 |----------|-----|-------------|
 | Model Context Protocol (MCP) Specification | https://modelcontextprotocol.io/ | Open standard for AI tool integration |
 | MCP GitHub Repository | https://github.com/modelcontextprotocol | Protocol source, SDKs, examples |
-| **Microsoft MCP Servers Catalog** | https://github.com/microsoft/mcp-servers | Official Microsoft MCP servers — Azure, Entra, Sentinel, Defender, Graph, Learn, and more |
+| **Microsoft MCP Servers Catalog** | https://github.com/microsoft/mcp | Official Microsoft MCP servers — Azure, Sentinel, Foundry, M365, Fabric, Playwright, and more |
 | VS Code Agent Skills | https://code.visualstudio.com/docs/copilot/customization/agent-skills | Agent skill definition standard |
 | VS Code Copilot Customization | https://code.visualstudio.com/docs/copilot/customization | Custom instructions, prompt files |
 | Agent Skills Standard | https://agentskills.io | Cross-platform agent skill interchange format |
