@@ -429,7 +429,7 @@ Research, blog posts, and community resources relevant to CyberProbe investigati
 
 | Resource | URL | Description |
 |----------|-----|-------------|
-| Microsoft Security Blog | https://www.microsoft.com/security/blog/ | Threat intelligence, product updates |
+| **Microsoft Security Blog (Official)** | https://www.microsoft.com/en-us/security/blog/ | Official Microsoft security blog — threat intelligence, product updates, research, advisories |
 | Microsoft Threat Intelligence Blog | https://www.microsoft.com/security/blog/topic/threat-intelligence/ | Threat actor tracking (Midnight Blizzard, Volt Typhoon, etc.) |
 | Microsoft Incident Response Blog | https://www.microsoft.com/security/blog/topic/incident-response/ | IR case studies and methodologies |
 | CTI-REALM (Detection Rule Benchmark) | https://www.microsoft.com/security/blog/2025/04/09/new-open-source-tool-from-microsoft-helps-evaluate-ai-generated-detection-rules/ | Open-source benchmark for AI-generated detection rules |
