@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Standards Compliance Report — April 13, 2026</title>
+  <style>
+    :root {
+      --bg-primary: #1a1a2e;
+      --bg-secondary: #16213e;
+      --bg-section: #0f3460;
+      --accent: #00d4ff;
+      --text-primary: #e0e0e0;
+      --text-secondary: #a0a0a0;
+      --critical: #ff4757;
+      --warning: #ffa502;
+      --success: #2ed573;
+      --info: #00d4ff;
+      --border: rgba(255,255,255,0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      color: var(--text-primary);
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    .header {
+      background: var(--bg-section);
+      border-left: 5px solid var(--accent);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .header .subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .header .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .meta-item label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-item span {
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .section {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section h2 {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Score Cards */
+    .score-hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      margin: 1.5rem 0;
+    }
+
+    .score-ring {
+      position: relative;
+      width: 160px;
+      height: 160px;
+    }
+
+    .score-ring svg {
+      transform: rotate(-90deg);
+      width: 160px;
+      height: 160px;
+    }
+
+    .score-ring .bg { stroke: rgba(255,255,255,0.1); }
+    .score-ring .fg { stroke: var(--warning); stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+
+    .score-ring .score-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .score-ring .score-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--warning);
+      line-height: 1;
+    }
+
+    .score-ring .score-max {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .score-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .score-detail {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .score-detail .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-healthy { background: var(--success); }
+    .dot-unhealthy { background: var(--critical); }
+    .dot-na { background: var(--text-secondary); }
+    .dot-nodata { background: rgba(255,255,255,0.15); }
+
+    /* Standards Table */
+    .standards-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .standards-table th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      background: var(--bg-section);
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .standards-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .standards-table tr:hover td {
+      background: rgba(0, 212, 255, 0.04);
+    }
+
+    .standard-name {
+      font-weight: 500;
+    }
+
+    .standard-type {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .type-custom { background: rgba(0, 212, 255, 0.15); color: var(--accent); }
+    .type-compliance { background: rgba(46, 213, 115, 0.15); color: var(--success); }
+
+    /* Score Bar */
+    .score-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .score-bar {
+      flex: 1;
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      min-width: 120px;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.8s ease;
+    }
+
+    .score-bar-fill.critical { background: var(--critical); }
+    .score-bar-fill.warning { background: var(--warning); }
+    .score-bar-fill.good { background: var(--success); }
+    .score-bar-fill.pending { background: rgba(255,255,255,0.2); }
+
+    .score-pct {
+      font-weight: 700;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    .score-pct.critical { color: var(--critical); }
+    .score-pct.warning { color: var(--warning); }
+    .score-pct.good { color: var(--success); }
+    .score-pct.pending { color: var(--text-secondary); }
+
+    /* Stat Chips */
+    .stat-chips {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .chip-h { background: rgba(46, 213, 115, 0.15); color: var(--success); }
+    .chip-u { background: rgba(255, 71, 87, 0.15); color: var(--critical); }
+    .chip-na { background: rgba(160, 160, 160, 0.15); color: var(--text-secondary); }
+    .chip-nd { background: rgba(255, 255, 255, 0.08); color: rgba(255,255,255,0.4); }
+
+    /* Resource Graph Stats */
+    .rg-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .rg-card {
+      text-align: center;
+      padding: 1rem;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+    }
+
+    .rg-card .rg-value {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .rg-card .rg-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+
+    .rg-card.healthy .rg-value { color: var(--success); }
+    .rg-card.unhealthy .rg-value { color: var(--critical); }
+    .rg-card.na .rg-value { color: var(--text-secondary); }
+    .rg-card.total .rg-value { color: var(--accent); }
+
+    /* Standard Detail Cards */
+    .std-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1rem;
+    }
+
+    .std-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+
+    .std-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .std-card-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      flex: 1;
+      margin-right: 0.5rem;
+    }
+
+    .std-card-score {
+      font-size: 1.5rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .std-card-bar {
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      margin: 0.75rem 0;
+      overflow: hidden;
+    }
+
+    .std-card-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+    }
+
+    .std-card-stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Notes */
+    .note {
+      background: rgba(255, 165, 2, 0.1);
+      border-left: 3px solid var(--warning);
+      padding: 0.75rem 1rem;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .note-info {
+      background: rgba(0, 212, 255, 0.08);
+      border-left-color: var(--accent);
+    }
+
+    /* Methodology */
+    .method-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .method-table th {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      background: rgba(255,255,255,0.05);
+      color: var(--accent);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .method-table td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    code {
+      background: rgba(0, 212, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Cascadia Code', 'Consolas', monospace;
+      font-size: 0.8rem;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media print {
+      body { background: #fff; color: #333; padding: 1rem; }
+      .section { border: 1px solid #ddd; }
+      .header { background: #f5f5f5; border-left-color: #0078d4; }
+      .header h1 { color: #0078d4; }
+      .section h2 { color: #0078d4; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <h1>🛡️ Security Standards Compliance Report</h1>
+      <p class="subtitle">Microsoft Defender for Cloud — All Standards &amp; Compliance Scores</p>
+      <div class="meta-grid">
+        <div class="meta-item">
+          <label>Report Date</label>
+          <span>April 13, 2026</span>
+        </div>
+        <div class="meta-item">
+          <label>Subscription</label>
+          <span>Visual Studio Enterprise</span>
+        </div>
+        <div class="meta-item">
+          <label>Subscription ID</label>
+          <span><code>d2e150ed-3cb8-4933-9203-c11d84d31285</code></span>
+        </div>
+        <div class="meta-item">
+          <label>Tenant ID</label>
+          <span><code>eb73b2ef-487c-44ff-a8e1-2a2efe53d301</code></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overall Secure Score -->
+    <div class="section">
+      <h2>📊 Overall Secure Score</h2>
+      <div class="score-hero">
+        <div class="score-ring">
+          <svg viewBox="0 0 160 160">
+            <circle class="bg" cx="80" cy="80" r="70" fill="none" stroke-width="12" />
+            <circle class="fg" cx="80" cy="80" r="70" fill="none" stroke-width="12"
+              stroke-dasharray="440" stroke-dashoffset="340" />
+          </svg>
+          <div class="score-label">
+            <div class="score-value">22.8%</div>
+            <div class="score-max">5.69 / 25</div>
+          </div>
+        </div>
+        <div class="score-details">
+          <div class="score-detail">
+            <span class="dot dot-healthy"></span>
+            <span><strong>129</strong> Healthy resource assessments</span>
+          </div>
+          <div class="score-detail">
+            <span class="dot dot-unhealthy"></span>
+            <span><strong>384</strong> Unhealthy resource assessments</span>
+          </div>
+          <div class="score-detail">
+            <span class="dot dot-na"></span>
+            <span><strong>44</strong> Not Applicable</span>
+          </div>
+          <div class="score-detail">
+            <span class="dot dot-nodata"></span>
+            <span><strong>310</strong> distinct assessment keys evaluated</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resource Assessment Summary -->
+    <div class="section">
+      <h2>📈 Resource Assessment Summary (Azure Resource Graph)</h2>
+      <div class="rg-stats">
+        <div class="rg-card total">
+          <div class="rg-value">557</div>
+          <div class="rg-label">Total Assessments</div>
+        </div>
+        <div class="rg-card healthy">
+          <div class="rg-value">129</div>
+          <div class="rg-label">Healthy</div>
+        </div>
+        <div class="rg-card unhealthy">
+          <div class="rg-value">384</div>
+          <div class="rg-label">Unhealthy</div>
+        </div>
+        <div class="rg-card na">
+          <div class="rg-value">44</div>
+          <div class="rg-label">Not Applicable</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Standards Comparison Table -->
+    <div class="section">
+      <h2>📋 Standards Overview</h2>
+      <table class="standards-table">
+        <thead>
+          <tr>
+            <th>Standard</th>
+            <th>Type</th>
+            <th>Assessments</th>
+            <th>Compliance Score</th>
+            <th>Breakdown</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="standard-name">Unified AI Security Standard<br><small style="color:var(--text-secondary)">(MCSB + AI-SPM + ATLAS + OWASP LLM)</small></td>
+            <td><span class="standard-type type-custom">Custom</span></td>
+            <td>195</td>
+            <td>
+              <div class="score-bar-container">
+                <div class="score-bar"><div class="score-bar-fill critical" style="width: 7.7%"></div></div>
+                <span class="score-pct critical">7.7%</span>
+              </div>
+            </td>
+            <td>
+              <div class="stat-chips">
+                <span class="chip chip-h">✓ 1</span>
+                <span class="chip chip-u">✗ 12</span>
+                <span class="chip chip-nd">— 182</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="standard-name">Azure CSPM</td>
+            <td><span class="standard-type type-compliance">Compliance</span></td>
+            <td>167</td>
+            <td>
+              <div class="score-bar-container">
+                <div class="score-bar"><div class="score-bar-fill warning" style="width: 25%"></div></div>
+                <span class="score-pct warning">25.0%</span>
+              </div>
+            </td>
+            <td>
+              <div class="stat-chips">
+                <span class="chip chip-h">✓ 1</span>
+                <span class="chip chip-u">✗ 3</span>
+                <span class="chip chip-nd">— 163</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="standard-name">MITRE ATLAS — AI/ML Security Posture</td>
+            <td><span class="standard-type type-custom">Custom</span></td>
+            <td>10</td>
+            <td>
+              <div class="score-bar-container">
+                <div class="score-bar"><div class="score-bar-fill critical" style="width: 0%"></div></div>
+                <span class="score-pct critical">0.0%</span>
+              </div>
+            </td>
+            <td>
+              <div class="stat-chips">
+                <span class="chip chip-h">✓ 0</span>
+                <span class="chip chip-u">✗ 5</span>
+                <span class="chip chip-nd">— 5</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="standard-name">CIS Azure Kubernetes Service (AKS) Benchmark v1.5.0</td>
+            <td><span class="standard-type type-compliance">Compliance</span></td>
+            <td>18</td>
+            <td>
+              <div class="score-bar-container">
+                <div class="score-bar"><div class="score-bar-fill pending" style="width: 0%"></div></div>
+                <span class="score-pct pending">Pending</span>
+              </div>
+            </td>
+            <td>
+              <div class="stat-chips">
+                <span class="chip chip-nd">No AKS resources</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="standard-name">CIS Azure Kubernetes Service (AKS) Benchmark v1.4.0</td>
+            <td><span class="standard-type type-compliance">Compliance</span></td>
+            <td>7</td>
+            <td>
+              <div class="score-bar-container">
+                <div class="score-bar"><div class="score-bar-fill pending" style="width: 0%"></div></div>
+                <span class="score-pct pending">Pending</span>
+              </div>
+            </td>
+            <td>
+              <div class="stat-chips">
+                <span class="chip chip-nd">No AKS resources</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="standard-name">OWASP Top 10 for LLM Applications — AI Risk Posture</td>
+            <td><span class="standard-type type-custom">Custom</span></td>
+            <td>4</td>
+            <td>
+              <div class="score-bar-container">
+                <div class="score-bar"><div class="score-bar-fill pending" style="width: 0%"></div></div>
+                <span class="score-pct pending">Pending</span>
+              </div>
+            </td>
+            <td>
+              <div class="stat-chips">
+                <span class="chip chip-nd">Pending evaluation</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="standard-name">CNAPP Shift-Left — Custom Recommendations</td>
+            <td><span class="standard-type type-custom">Custom</span></td>
+            <td>1</td>
+            <td>
+              <div class="score-bar-container">
+                <div class="score-bar"><div class="score-bar-fill pending" style="width: 0%"></div></div>
+                <span class="score-pct pending">Pending</span>
+              </div>
+            </td>
+            <td>
+              <div class="stat-chips">
+                <span class="chip chip-nd">Pending evaluation</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        ⚠️ <strong>Note:</strong> "Pending" scores indicate the assessment engine has not yet evaluated resources for these keys. Custom recommendations may take up to 12 hours for initial evaluation. "NoData" counts reflect assessment keys with no matching resources on this subscription (e.g., no AKS clusters, no AI Foundry workspaces).
+      </div>
+    </div>
+
+    <!-- Standard Detail Cards -->
+    <div class="section">
+      <h2>🔎 Standard Detail Cards</h2>
+      <div class="std-detail-grid">
+
+        <!-- Unified -->
+        <div class="std-card">
+          <div class="std-card-header">
+            <span class="std-card-name">Unified AI Security Standard</span>
+            <span class="std-card-score" style="color: var(--critical)">7.7%</span>
+          </div>
+          <div class="std-card-bar"><div class="std-card-bar-fill" style="width: 7.7%; background: var(--critical)"></div></div>
+          <div class="std-card-stats">
+            <span>195 checks</span>
+            <span style="color:var(--success)">1 pass</span>
+            <span style="color:var(--critical)">12 fail</span>
+            <span>182 pending</span>
+          </div>
+          <div style="margin-top:0.5rem; font-size:0.8rem; color:var(--text-secondary)">
+            Combines: MCSB/NIST (167) + AI-SPM (30) + ATLAS/OWASP (14)<br>
+            ID: <code>fb4215a0-d7d6-5ddf-915b-7ccc75a8717d</code>
+          </div>
+        </div>
+
+        <!-- Azure CSPM -->
+        <div class="std-card">
+          <div class="std-card-header">
+            <span class="std-card-name">Azure CSPM (MCSB / NIST-aligned)</span>
+            <span class="std-card-score" style="color: var(--warning)">25.0%</span>
+          </div>
+          <div class="std-card-bar"><div class="std-card-bar-fill" style="width: 25%; background: var(--warning)"></div></div>
+          <div class="std-card-stats">
+            <span>167 checks</span>
+            <span style="color:var(--success)">1 pass</span>
+            <span style="color:var(--critical)">3 fail</span>
+            <span>163 pending</span>
+          </div>
+          <div style="margin-top:0.5rem; font-size:0.8rem; color:var(--text-secondary)">
+            Microsoft Cloud Security Benchmark mapped to NIST 800-53 Rev 5
+          </div>
+        </div>
+
+        <!-- MITRE ATLAS -->
+        <div class="std-card">
+          <div class="std-card-header">
+            <span class="std-card-name">MITRE ATLAS — AI/ML Security</span>
+            <span class="std-card-score" style="color: var(--critical)">0.0%</span>
+          </div>
+          <div class="std-card-bar"><div class="std-card-bar-fill" style="width: 0%; background: var(--critical)"></div></div>
+          <div class="std-card-stats">
+            <span>10 checks</span>
+            <span style="color:var(--success)">0 pass</span>
+            <span style="color:var(--critical)">5 fail</span>
+            <span>5 pending</span>
+          </div>
+          <div style="margin-top:0.5rem; font-size:0.8rem; color:var(--text-secondary)">
+            Custom recommendations mapped to MITRE ATLAS AML.T0024–T0053<br>
+            ID: <code>5da7bd0d-63ba-5aa7-8b3c-b99e6c63bfe3</code>
+          </div>
+        </div>
+
+        <!-- OWASP LLM -->
+        <div class="std-card">
+          <div class="std-card-header">
+            <span class="std-card-name">OWASP Top 10 for LLM Applications</span>
+            <span class="std-card-score" style="color: var(--text-secondary)">Pending</span>
+          </div>
+          <div class="std-card-bar"><div class="std-card-bar-fill" style="width: 0%; background: rgba(255,255,255,0.2)"></div></div>
+          <div class="std-card-stats">
+            <span>4 checks</span>
+            <span>Awaiting evaluation</span>
+          </div>
+          <div style="margin-top:0.5rem; font-size:0.8rem; color:var(--text-secondary)">
+            Custom recommendations for OWASP LLM Top 10 (2025)<br>
+            ID: <code>5c2ae0ee-ed80-53ab-b142-3f86ba3c761c</code>
+          </div>
+        </div>
+
+        <!-- CIS AKS v1.5 -->
+        <div class="std-card">
+          <div class="std-card-header">
+            <span class="std-card-name">CIS AKS Benchmark v1.5.0</span>
+            <span class="std-card-score" style="color: var(--text-secondary)">Pending</span>
+          </div>
+          <div class="std-card-bar"><div class="std-card-bar-fill" style="width: 0%; background: rgba(255,255,255,0.2)"></div></div>
+          <div class="std-card-stats">
+            <span>18 checks</span>
+            <span>No AKS resources on subscription</span>
+          </div>
+        </div>
+
+        <!-- CIS AKS v1.4 -->
+        <div class="std-card">
+          <div class="std-card-header">
+            <span class="std-card-name">CIS AKS Benchmark v1.4.0</span>
+            <span class="std-card-score" style="color: var(--text-secondary)">Pending</span>
+          </div>
+          <div class="std-card-bar"><div class="std-card-bar-fill" style="width: 0%; background: rgba(255,255,255,0.2)"></div></div>
+          <div class="std-card-stats">
+            <span>7 checks</span>
+            <span>No AKS resources on subscription</span>
+          </div>
+        </div>
+
+        <!-- CNAPP -->
+        <div class="std-card">
+          <div class="std-card-header">
+            <span class="std-card-name">CNAPP Shift-Left</span>
+            <span class="std-card-score" style="color: var(--text-secondary)">Pending</span>
+          </div>
+          <div class="std-card-bar"><div class="std-card-bar-fill" style="width: 0%; background: rgba(255,255,255,0.2)"></div></div>
+          <div class="std-card-stats">
+            <span>1 check</span>
+            <span>Awaiting evaluation</span>
+          </div>
+          <div style="margin-top:0.5rem; font-size:0.8rem; color:var(--text-secondary)">
+            ID: <code>968b993b-049a-5e46-b42b-85ec030aec56</code>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Key Findings -->
+    <div class="section">
+      <h2>🔍 Key Findings</h2>
+      <ul style="list-style: none; padding: 0;">
+        <li style="margin-bottom: 0.75rem;">
+          🔴 <strong>MITRE ATLAS at 0% compliance</strong> — All 5 evaluated custom recommendations show unhealthy resources. AI Services resources on this subscription lack local auth disablement, private network access, CMK encryption, managed identity authentication, and network isolation.
+        </li>
+        <li style="margin-bottom: 0.75rem;">
+          🟠 <strong>Overall Secure Score at 22.8%</strong> — Significant room for improvement. 384 unhealthy resource assessments across the subscription vs. 129 healthy.
+        </li>
+        <li style="margin-bottom: 0.75rem;">
+          🟠 <strong>Azure CSPM at 25%</strong> — Only 4 of 167 assessment keys have evaluated resources (1 healthy, 3 unhealthy). Most keys are pending due to absence of matching resource types.
+        </li>
+        <li style="margin-bottom: 0.75rem;">
+          🟡 <strong>OWASP LLM pending evaluation</strong> — Recently deployed custom recommendations (4) have not yet been evaluated by the assessment engine. Check back in 12 hours.
+        </li>
+        <li style="margin-bottom: 0.75rem;">
+          🔵 <strong>CIS AKS benchmarks not applicable</strong> — No AKS clusters exist on this subscription, so all 25 CIS AKS checks (v1.4 + v1.5) show no data.
+        </li>
+        <li style="margin-bottom: 0.75rem;">
+          ✅ <strong>Unified standard deployed</strong> — 195 unique assessments from 3 sources (MCSB + AI-SPM + ATLAS/OWASP) consolidated into a single compliance view.
+        </li>
+      </ul>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="section">
+      <h2>⚠️ Recommendations</h2>
+      <ol style="padding-left: 1.5rem;">
+        <li style="margin-bottom: 0.5rem;"><strong>Priority 1:</strong> Address MITRE ATLAS failures — disable local auth on AI Services, restrict public network access, and enforce managed identity authentication.</li>
+        <li style="margin-bottom: 0.5rem;"><strong>Priority 2:</strong> Review the 3 unhealthy Azure CSPM assessments and remediate to improve NIST baseline posture.</li>
+        <li style="margin-bottom: 0.5rem;"><strong>Priority 3:</strong> Re-run this report in 24 hours to capture OWASP LLM and remaining custom recommendation evaluations.</li>
+        <li style="margin-bottom: 0.5rem;"><strong>Priority 4:</strong> Consider deploying AI Foundry / Azure ML resources to this subscription to fully exercise the AI-SPM built-in assessments (currently no matching resources for most keys).</li>
+      </ol>
+    </div>
+
+    <!-- Methodology -->
+    <div class="section">
+      <h2>📐 Methodology</h2>
+
+      <h3 style="font-size: 0.95rem; color: var(--text-primary); margin: 1rem 0 0.5rem;">Tool Stack</h3>
+      <table class="method-table">
+        <thead>
+          <tr>
+            <th>Tool / API</th>
+            <th>Purpose</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Security Standards API</code><br><small>2024-08-01</small></td>
+            <td>Enumerate all standards and their assessment key lists</td>
+            <td>✅ Used</td>
+          </tr>
+          <tr>
+            <td><code>Secure Scores API</code><br><small>2020-01-01</small></td>
+            <td>Retrieve overall subscription secure score</td>
+            <td>✅ Used</td>
+          </tr>
+          <tr>
+            <td><code>Azure Resource Graph</code><br><small>securityresources</small></td>
+            <td>Aggregate per-key assessment status (Healthy/Unhealthy/NA) across all resources</td>
+            <td>✅ Used</td>
+          </tr>
+          <tr>
+            <td><code>Assessment Metadata API</code><br><small>2021-06-01</small></td>
+            <td>Resolve assessment key GUIDs to display names and severity</td>
+            <td>✅ Used</td>
+          </tr>
+          <tr>
+            <td><code>Custom Recommendations API</code><br><small>2024-08-01</small></td>
+            <td>Verify deployed custom recommendations (ATLAS + OWASP)</td>
+            <td>✅ Used</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size: 0.95rem; color: var(--text-primary); margin: 1rem 0 0.5rem;">Data Extraction Queries</h3>
+      <table class="method-table">
+        <thead>
+          <tr>
+            <th>Query</th>
+            <th>Target</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>az rest GET .../securityStandards</code></td>
+            <td>All standards on subscription</td>
+            <td>7 standards (5 custom, 2 compliance)</td>
+          </tr>
+          <tr>
+            <td><code>az rest GET .../secureScores/ascScore</code></td>
+            <td>Overall secure score</td>
+            <td>5.69 / 25 (22.8%)</td>
+          </tr>
+          <tr>
+            <td>
+              <code style="font-size:0.7rem;">securityresources<br>| where type == 'microsoft.security/assessments'<br>| summarize by status, key</code>
+            </td>
+            <td>Per-key aggregate status</td>
+            <td>310 distinct keys, 557 total assessments</td>
+          </tr>
+          <tr>
+            <td><code>az rest GET .../customRecommendations</code></td>
+            <td>Custom recommendation inventory</td>
+            <td>26 custom recommendations</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size: 0.95rem; color: var(--text-primary); margin: 1rem 0 0.5rem;">Data Sources</h3>
+      <table class="method-table">
+        <tbody>
+          <tr>
+            <td><strong>Subscription</strong></td>
+            <td><code>d2e150ed-3cb8-4933-9203-c11d84d31285</code> (Visual Studio Enterprise)</td>
+          </tr>
+          <tr>
+            <td><strong>Tenant</strong></td>
+            <td><code>eb73b2ef-487c-44ff-a8e1-2a2efe53d301</code></td>
+          </tr>
+          <tr>
+            <td><strong>Time of Data Capture</strong></td>
+            <td>April 13, 2026 — point-in-time snapshot</td>
+          </tr>
+          <tr>
+            <td><strong>Score Methodology</strong></td>
+            <td>Per-standard score = Healthy / (Healthy + Unhealthy) × 100. Keys with no resource-level result are excluded from the score denominator and reported as "NoData".</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note note-info" style="margin-top: 1rem;">
+        🔵 <strong>Score interpretation:</strong> Scores reflect only assessment keys that have at least one resource-level evaluation. "Pending" means zero resources matched any key in that standard. "NoData" counts within scored standards represent keys for resource types not present on the subscription (e.g., no Foundry workspaces, no AKS clusters).
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      Generated by CyberProbe &mdash; April 13, 2026<br>
+      Defender for Cloud API v2024-08-01 &bull; Secure Scores API v2020-01-01 &bull; Azure Resource Graph
+    </div>
+
+  </div>
+</body>
+</html>

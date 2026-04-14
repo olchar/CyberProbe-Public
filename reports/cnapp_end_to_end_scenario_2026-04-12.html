@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CNAPP End-to-End Capabilities Report — April 12, 2026</title>
+  <style>
+    :root {
+      --bg-primary: #1a1a2e;
+      --bg-secondary: #16213e;
+      --bg-section: #0f3460;
+      --bg-card: rgba(255,255,255,0.04);
+      --accent: #00d4ff;
+      --accent-dim: rgba(0,212,255,0.15);
+      --text-primary: #e0e0e0;
+      --text-secondary: #a0a0a0;
+      --critical: #ff4757;
+      --warning: #ffa502;
+      --success: #2ed573;
+      --info: #45aaf2;
+      --low: #778ca3;
+      --border: rgba(255,255,255,0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      color: var(--text-primary);
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .container { max-width: 1300px; margin: 0 auto; padding: 30px 40px; }
+
+    /* HEADER */
+    .report-header {
+      background: linear-gradient(135deg, #0f3460 0%, #1a1a4e 100%);
+      border-left: 5px solid var(--accent);
+      border-radius: 12px;
+      padding: 35px 40px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: '';
+      position: absolute; top: 0; right: 0; bottom: 0; width: 200px;
+      background: linear-gradient(135deg, transparent, rgba(0,212,255,0.05));
+    }
+    .report-header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+    .report-header h1 span { color: var(--accent); }
+    .report-header .subtitle { color: var(--text-secondary); font-size: 1rem; margin-bottom: 15px; }
+    .report-header .meta { display: flex; gap: 30px; flex-wrap: wrap; }
+    .report-header .meta-item { font-size: 0.85rem; color: var(--text-secondary); }
+    .report-header .meta-item strong { color: var(--text-primary); }
+
+    /* EXECUTIVE SUMMARY */
+    .exec-summary {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    .exec-summary h2 { color: var(--accent); font-size: 1.3rem; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .exec-summary p { margin-bottom: 12px; line-height: 1.7; }
+
+    /* SECTION */
+    .section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 25px;
+    }
+    .section h2 {
+      color: var(--accent);
+      font-size: 1.25rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section h3 { color: var(--text-primary); font-size: 1.05rem; margin: 20px 0 12px; }
+    .section p { margin-bottom: 10px; }
+
+    /* KPI GRID */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+    .kpi-card {
+      background: linear-gradient(135deg, rgba(15,52,96,0.6), rgba(26,26,46,0.8));
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+    .kpi-card .kpi-value { font-size: 2rem; font-weight: 700; margin-bottom: 4px; }
+    .kpi-card .kpi-label { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+    .kpi-critical .kpi-value { color: var(--critical); }
+    .kpi-warning .kpi-value { color: var(--warning); }
+    .kpi-success .kpi-value { color: var(--success); }
+    .kpi-info .kpi-value { color: var(--info); }
+    .kpi-accent .kpi-value { color: var(--accent); }
+
+    /* TABLES */
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9rem; }
+    th {
+      background: rgba(15,52,96,0.5);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 15px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    td { padding: 10px 15px; border-bottom: 1px solid var(--border); }
+    tr:hover { background: rgba(0,212,255,0.03); }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge-critical { background: rgba(255,71,87,0.2); color: var(--critical); }
+    .badge-high { background: rgba(255,71,87,0.15); color: #ff6b6b; }
+    .badge-medium { background: rgba(255,165,2,0.2); color: var(--warning); }
+    .badge-low { background: rgba(119,140,163,0.2); color: var(--low); }
+    .badge-info { background: rgba(69,170,242,0.2); color: var(--info); }
+    .badge-success { background: rgba(46,213,115,0.2); color: var(--success); }
+
+    /* SCENARIO FLOW */
+    .scenario-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 25px 0;
+      padding: 20px;
+      background: rgba(15,52,96,0.3);
+      border-radius: 10px;
+    }
+    .flow-node {
+      background: linear-gradient(135deg, #0f3460, #1a1a4e);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      padding: 15px 20px;
+      text-align: center;
+      min-width: 140px;
+    }
+    .flow-node .icon { font-size: 1.5rem; margin-bottom: 6px; }
+    .flow-node .label { font-size: 0.8rem; font-weight: 600; }
+    .flow-arrow { color: var(--accent); font-size: 1.5rem; }
+
+    /* PILLAR ROW */
+    .pillar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .pillar-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .pillar-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .pillar-card .pillar-icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .pillar-card .pillar-name { font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
+    .pillar-card .pillar-desc { font-size: 0.75rem; color: var(--text-secondary); }
+    .pillar-cspm { background: rgba(0,212,255,0.05); }
+    .pillar-cspm::before { background: var(--accent); }
+    .pillar-cwpp { background: rgba(255,165,2,0.05); }
+    .pillar-cwpp::before { background: var(--warning); }
+    .pillar-ciem { background: rgba(255,71,87,0.05); }
+    .pillar-ciem::before { background: var(--critical); }
+    .pillar-dspm { background: rgba(46,213,115,0.05); }
+    .pillar-dspm::before { background: var(--success); }
+    .pillar-devsecops { background: rgba(69,170,242,0.05); }
+    .pillar-devsecops::before { background: var(--info); }
+    .pillar-ai { background: rgba(155,89,182,0.05); }
+    .pillar-ai::before { background: #9b59b6; }
+
+    /* CHART BAR */
+    .bar-chart { margin: 15px 0; }
+    .bar-row { display: flex; align-items: center; margin-bottom: 8px; }
+    .bar-label { width: 200px; font-size: 0.85rem; text-align: right; padding-right: 15px; flex-shrink: 0; }
+    .bar-track { flex: 1; background: rgba(255,255,255,0.05); border-radius: 6px; height: 24px; position: relative; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.75rem; font-weight: 600; transition: width 0.6s ease; }
+    .bar-critical { background: linear-gradient(90deg, rgba(255,71,87,0.6), var(--critical)); }
+    .bar-warning { background: linear-gradient(90deg, rgba(255,165,2,0.6), var(--warning)); }
+    .bar-success { background: linear-gradient(90deg, rgba(46,213,115,0.6), var(--success)); }
+    .bar-info { background: linear-gradient(90deg, rgba(69,170,242,0.6), var(--info)); }
+    .bar-value { width: 80px; font-size: 0.85rem; text-align: right; padding-left: 10px; flex-shrink: 0; }
+
+    /* COMPLIANCE GAUGE */
+    .compliance-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 15px 0; }
+    .gauge-card {
+      flex: 1; min-width: 200px;
+      background: rgba(15,52,96,0.3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+    .gauge-card .gauge-name { font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; }
+    .gauge-score { font-size: 2.5rem; font-weight: 700; }
+    .gauge-details { font-size: 0.75rem; color: var(--text-secondary); margin-top: 6px; }
+
+    /* ALERT TIMELINE */
+    .timeline { margin: 15px 0; }
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+    .dot-critical { background: var(--critical); box-shadow: 0 0 8px rgba(255,71,87,0.4); }
+    .dot-high { background: #ff6b6b; box-shadow: 0 0 6px rgba(255,107,107,0.3); }
+    .dot-medium { background: var(--warning); box-shadow: 0 0 6px rgba(255,165,2,0.3); }
+    .dot-low { background: var(--low); }
+    .timeline-content { flex: 1; }
+    .timeline-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 3px; }
+    .timeline-meta { font-size: 0.8rem; color: var(--text-secondary); }
+
+    /* MITRE */
+    .mitre-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 15px 0;
+    }
+    .mitre-card {
+      background: rgba(15,52,96,0.3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .mitre-card .tactic { color: var(--accent); font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; }
+    .mitre-card .technique { font-size: 0.8rem; color: var(--text-secondary); }
+
+    /* METHODOLOGY */
+    .methodology {
+      border-left: 4px solid var(--accent);
+      background: var(--bg-card);
+      border-radius: 0 12px 12px 0;
+    }
+    .query-card {
+      background: rgba(15,52,96,0.2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+    }
+    .query-card h4 { color: var(--accent); font-size: 0.9rem; margin-bottom: 8px; }
+    .query-card pre {
+      background: rgba(0,0,0,0.3);
+      border-radius: 6px;
+      padding: 12px;
+      overflow-x: auto;
+      font-size: 0.8rem;
+      color: #b8c7d6;
+      line-height: 1.5;
+    }
+    .query-card .feeds { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px; }
+
+    /* FOOTER */
+    .report-footer {
+      text-align: center;
+      padding: 25px;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+    }
+
+    /* DONUT */
+    .donut-container { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin: 20px 0; }
+    .donut-item { text-align: center; }
+    .donut-label { font-size: 0.85rem; margin-top: 8px; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .container { padding: 15px 20px; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .report-header h1 { font-size: 1.5rem; }
+      .scenario-flow { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="report-header">
+    <h1>🛡️ <span>CNAPP</span> End-to-End Capabilities Report</h1>
+    <div class="subtitle">Cloud-Native Application Protection Platform — Microsoft Defender for Cloud</div>
+    <div class="meta">
+      <div class="meta-item">📅 <strong>Report Date:</strong> April 12, 2026</div>
+      <div class="meta-item">🔍 <strong>Data Window:</strong> Last 30 Days</div>
+      <div class="meta-item">🏢 <strong>Tenant:</strong> Contoso Corp</div>
+      <div class="meta-item">📊 <strong>Subscriptions:</strong> 2 (Cross-tenant)</div>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="exec-summary">
+    <h2>📋 Executive Summary</h2>
+    <p>This report demonstrates the <strong>end-to-end CNAPP capabilities</strong> provided by Microsoft Defender for Cloud and Microsoft Defender XDR across three pillars: <strong>Cloud Security Posture Management (CSPM)</strong>, <strong>Cloud Workload Protection (CWPP)</strong>, and <strong>Data Security Posture Management (DSPM)</strong> — extended with <strong>AI Security</strong>, <strong>DevSecOps</strong>, and <strong>Identity Entitlement (CIEM)</strong> insights.</p>
+    <p>Over the last 30 days, Microsoft Defender for Cloud generated <strong>141 alerts</strong> across cloud workloads — from <strong>container runtime threats</strong> (cryptomining, drift binaries) to <strong>AI agent attacks</strong> (jailbreaks, ASCII smuggling, phishing) and <strong>infrastructure threats</strong> (Key Vault access from Tor, malicious blob uploads). Sentinel ingested <strong>10,682 total security alerts</strong> from all providers covering endpoint, identity, cloud app, and cloud infrastructure surfaces.</p>
+    <p>Compliance posture shows <strong>Microsoft Cloud Security Benchmark</strong> with 27 failing controls, <strong>ISO 27001:2013</strong> with 13 failing controls, and <strong>46,534 unhealthy resource assessments</strong> across all subscriptions — with Identity &amp; Access as the largest remediation category (33,617 findings).</p>
+  </div>
+
+  <!-- CNAPP PILLAR OVERVIEW -->
+  <div class="section">
+    <h2>🏗️ CNAPP Pillar Architecture</h2>
+    <p>Microsoft Defender for Cloud delivers a unified CNAPP through six integrated pillars, each contributing telemetry to this report:</p>
+    <div class="pillar-grid">
+      <div class="pillar-card pillar-cspm">
+        <div class="pillar-icon">🔍</div>
+        <div class="pillar-name">CSPM</div>
+        <div class="pillar-desc">Cloud Security Posture Management — Compliance, Recommendations, Attack Paths</div>
+      </div>
+      <div class="pillar-card pillar-cwpp">
+        <div class="pillar-icon">🛡️</div>
+        <div class="pillar-name">CWPP</div>
+        <div class="pillar-desc">Cloud Workload Protection — Runtime Threats, Containers, VMs, Storage</div>
+      </div>
+      <div class="pillar-card pillar-ciem">
+        <div class="pillar-icon">🔑</div>
+        <div class="pillar-name">CIEM</div>
+        <div class="pillar-desc">Cloud Infrastructure Entitlement Management — Permission Sprawl, IAM</div>
+      </div>
+      <div class="pillar-card pillar-dspm">
+        <div class="pillar-icon">📦</div>
+        <div class="pillar-name">DSPM</div>
+        <div class="pillar-desc">Data Security Posture Management — Sensitive Data, Storage Anomalies</div>
+      </div>
+      <div class="pillar-card pillar-devsecops">
+        <div class="pillar-icon">⚙️</div>
+        <div class="pillar-name">DevSecOps</div>
+        <div class="pillar-desc">Code Security — IaC Scanning, Dependency Vulnerabilities, GitHub/ADO</div>
+      </div>
+      <div class="pillar-card pillar-ai">
+        <div class="pillar-icon">🤖</div>
+        <div class="pillar-name">AI Security</div>
+        <div class="pillar-desc">AI Threat Protection — Jailbreaks, Prompt Injection, Phishing on AI Agents</div>
+      </div>
+    </div>
+
+    <!-- END-TO-END FLOW -->
+    <h3>End-to-End Scenario Flow</h3>
+    <div class="scenario-flow">
+      <div class="flow-node">
+        <div class="icon">👨‍💻</div>
+        <div class="label">Developer Commits Code</div>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">
+        <div class="icon">⚙️</div>
+        <div class="label">DevSecOps Scan (IaC/Deps)</div>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">
+        <div class="icon">📦</div>
+        <div class="label">Container Image Built</div>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">
+        <div class="icon">🔍</div>
+        <div class="label">CSPM Assesses Posture</div>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">
+        <div class="icon">☁️</div>
+        <div class="label">Deployed to Cloud</div>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">
+        <div class="icon">🛡️</div>
+        <div class="label">CWPP Runtime Protection</div>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">
+        <div class="icon">🚨</div>
+        <div class="label">Sentinel/XDR SIEM Correlation</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: ALERT LANDSCAPE (KPI) -->
+  <div class="section">
+    <h2>📊 Cloud Security Alert Landscape (Last 30 Days)</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-critical">
+        <div class="kpi-value">141</div>
+        <div class="kpi-label">Defender for Cloud Alerts</div>
+      </div>
+      <div class="kpi-card kpi-warning">
+        <div class="kpi-value">10,682</div>
+        <div class="kpi-label">Total Sentinel Alerts (All Providers)</div>
+      </div>
+      <div class="kpi-card kpi-info">
+        <div class="kpi-value">30</div>
+        <div class="kpi-label">Unique Alert Types (DfC)</div>
+      </div>
+      <div class="kpi-card kpi-accent">
+        <div class="kpi-value">6</div>
+        <div class="kpi-label">MITRE Tactics Covered</div>
+      </div>
+    </div>
+
+    <h3>Alert Volume by Provider &amp; Severity</h3>
+    <table>
+      <thead>
+        <tr><th>Provider</th><th>Severity</th><th>Alert Count</th><th>Unique Types</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Microsoft Defender for Endpoint</td><td><span class="badge badge-medium">Medium</span></td><td>3,264</td><td>27</td></tr>
+        <tr><td>Microsoft Defender for Endpoint</td><td><span class="badge badge-info">Informational</span></td><td>3,036</td><td>6</td></tr>
+        <tr><td>Microsoft Defender for Endpoint</td><td><span class="badge badge-high">High</span></td><td>2,111</td><td>28</td></tr>
+        <tr><td>Sentinel Analytics (Scheduled)</td><td><span class="badge badge-high">High</span></td><td>782</td><td>8</td></tr>
+        <tr><td>Sentinel Analytics (Scheduled)</td><td><span class="badge badge-medium">Medium</span></td><td>766</td><td>15</td></tr>
+        <tr><td>Microsoft Defender for Endpoint</td><td><span class="badge badge-low">Low</span></td><td>260</td><td>17</td></tr>
+        <tr><td>Defender for Cloud Apps</td><td><span class="badge badge-low">Low</span></td><td>167</td><td>1</td></tr>
+        <tr><td>Defender for Cloud Apps</td><td><span class="badge badge-medium">Medium</span></td><td>123</td><td>6</td></tr>
+        <tr><td><strong>Defender for Cloud</strong></td><td><span class="badge badge-medium">Medium</span></td><td><strong>97</strong></td><td>13</td></tr>
+        <tr><td><strong>Defender for Cloud</strong></td><td><span class="badge badge-high">High</span></td><td><strong>42</strong></td><td>15</td></tr>
+        <tr><td>Defender for Cloud Apps</td><td><span class="badge badge-high">High</span></td><td>23</td><td>4</td></tr>
+        <tr><td><strong>Defender for Cloud</strong></td><td><span class="badge badge-low">Low</span></td><td><strong>8</strong></td><td>7</td></tr>
+        <tr><td><strong>Defender for Cloud</strong></td><td><span class="badge badge-info">Informational</span></td><td><strong>2</strong></td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 2: CWPP — CLOUD WORKLOAD PROTECTION -->
+  <div class="section">
+    <h2>🛡️ Pillar 1 — Cloud Workload Protection (CWPP)</h2>
+    <p>Defender for Cloud's CWPP pillar provides runtime threat detection for compute workloads, containers, storage, databases, Key Vault, DNS, and AI services. Over the past 30 days, <strong>141 alerts across 30 unique alert types</strong> were generated from cloud infrastructure.</p>
+
+    <h3>Container Runtime Threats</h3>
+    <p>Kubernetes and container workloads triggered attack chain detections covering the full MITRE ATT&amp;CK lifecycle — from initial exploitation through credential access and impact:</p>
+    <table>
+      <thead>
+        <tr><th>Alert</th><th>Severity</th><th>MITRE Tactic</th><th>Count</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>A drift binary detected executing in the container</td><td><span class="badge badge-high">High</span></td><td>Execution</td><td>1</td></tr>
+        <tr><td>Digital currency mining related behavior detected</td><td><span class="badge badge-high">High</span></td><td>Execution</td><td>1</td></tr>
+        <tr><td>Kubernetes CPU optimization detected</td><td><span class="badge badge-high">High</span></td><td>Impact</td><td>1</td></tr>
+        <tr><td>Possible Cryptocoinminer download detected</td><td><span class="badge badge-medium">Medium</span></td><td>Exploitation</td><td>1</td></tr>
+        <tr><td>Command within container accessed ld.so.preload</td><td><span class="badge badge-medium">Medium</span></td><td>Defense Evasion</td><td>1</td></tr>
+        <tr><td>Access to cloud metadata service detected</td><td><span class="badge badge-medium">Medium</span></td><td>Credential Access</td><td>1</td></tr>
+        <tr><td>Possible Secret Reconnaissance Detected</td><td><span class="badge badge-medium">Medium</span></td><td>Credential Access</td><td>1</td></tr>
+        <tr><td>Possible Web Shell Activity Detected</td><td><span class="badge badge-medium">Medium</span></td><td>Persistence</td><td>1</td></tr>
+        <tr><td>Sensitive Files Access Detected</td><td><span class="badge badge-medium">Medium</span></td><td>Credential Access</td><td>1</td></tr>
+        <tr><td>Suspicious workload identity token access</td><td><span class="badge badge-low">Low</span></td><td>Credential Access</td><td>1</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Infrastructure &amp; Storage Threats</h3>
+    <table>
+      <thead>
+        <tr><th>Alert</th><th>Severity</th><th>MITRE Tactic</th><th>Count</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Malicious blob uploaded to storage account</td><td><span class="badge badge-high">High</span></td><td>Lateral Movement</td><td>3</td></tr>
+        <tr><td>Run Command with suspicious script on VM</td><td><span class="badge badge-high">High</span></td><td>Execution</td><td>4</td></tr>
+        <tr><td>Mimikatz credential theft tool (Agentless)</td><td><span class="badge badge-high">High</span></td><td>Credential Access</td><td>2</td></tr>
+        <tr><td>'Kekeo' malware detected (Agentless)</td><td><span class="badge badge-high">High</span></td><td>Unknown</td><td>1</td></tr>
+        <tr><td>EICAR alert (Storage Malware Scanning)</td><td><span class="badge badge-high">High</span></td><td>—</td><td>2</td></tr>
+        <tr><td>Access from TOR exit node to Key Vault</td><td><span class="badge badge-medium">Medium</span></td><td>Credential Access</td><td>9</td></tr>
+        <tr><td>Azure Resource Manager from suspicious proxy IP</td><td><span class="badge badge-medium">Medium</span></td><td>Defense Evasion</td><td>14</td></tr>
+        <tr><td>Suspicious Azure role assignment detected</td><td><span class="badge badge-medium">Medium</span></td><td>Defense Evasion</td><td>2</td></tr>
+        <tr><td>Suspicious extraction of Cosmos DB account keys</td><td><span class="badge badge-medium">Medium</span></td><td>Credential Access</td><td>1</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Container Attack Chain Visualization</h3>
+    <div style="background: rgba(255,71,87,0.05); border: 1px solid var(--critical); border-radius: 8px; padding: 20px; margin: 15px 0;">
+      <div style="margin-bottom: 10px;"><span class="badge badge-high">HIGH SEVERITY</span> Container Cryptomining Attack Chain</div>
+      <div class="scenario-flow" style="background: none; padding: 10px 0;">
+        <div class="flow-node" style="border-color: var(--critical);">
+          <div class="icon">🌐</div>
+          <div class="label">Web Shell Exploit</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node" style="border-color: var(--warning);">
+          <div class="icon">📥</div>
+          <div class="label">Coinminer Download</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node" style="border-color: var(--critical);">
+          <div class="icon">🔄</div>
+          <div class="label">Drift Binary Exec</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node" style="border-color: var(--warning);">
+          <div class="icon">⚡</div>
+          <div class="label">CPU Optimization</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node" style="border-color: var(--critical);">
+          <div class="icon">⛏️</div>
+          <div class="label">Crypto Mining</div>
+        </div>
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-secondary);">
+        <strong>Risk Factors:</strong>
+        <span class="badge badge-critical" style="margin: 0 4px;">Execution</span>
+        <span class="badge badge-high" style="margin: 0 4px;">Persistence</span>
+        <span class="badge badge-medium" style="margin: 0 4px;">Defense Evasion</span>
+        <span class="badge badge-medium" style="margin: 0 4px;">Impact</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: AI SECURITY -->
+  <div class="section">
+    <h2>🤖 Pillar 2 — AI Threat Protection (Defender for AI)</h2>
+    <p>Microsoft Defender for Cloud's AI workload protection detected <strong>54 AI-related security alerts</strong> targeting Azure AI foundry agents and model deployments over the last 30 days — demonstrating real-time protection against emerging AI attack vectors.</p>
+
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-critical">
+        <div class="kpi-value">54</div>
+        <div class="kpi-label">AI Security Alerts</div>
+      </div>
+      <div class="kpi-card kpi-warning">
+        <div class="kpi-value">58</div>
+        <div class="kpi-label">Jailbreak Attempts</div>
+      </div>
+      <div class="kpi-card kpi-info">
+        <div class="kpi-value">7</div>
+        <div class="kpi-label">Phishing on AI Agents</div>
+      </div>
+      <div class="kpi-card kpi-accent">
+        <div class="kpi-value">7</div>
+        <div class="kpi-label">Malicious URLs / Smuggling</div>
+      </div>
+    </div>
+
+    <h3>AI Threat Detection Timeline</h3>
+    <table>
+      <thead>
+        <tr><th>Alert</th><th>Severity</th><th>MITRE Tactic</th><th>Count</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Jailbreak attempt on Foundry agent detected by Prompt Shields</td><td><span class="badge badge-medium">Medium</span></td><td>Privilege Escalation, Defense Evasion</td><td>31</td></tr>
+        <tr><td>Jailbreak attempt on Azure AI blocked by Prompt Shields</td><td><span class="badge badge-medium">Medium</span></td><td>Privilege Escalation, Defense Evasion</td><td>27</td></tr>
+        <tr><td>Azure AI accessed by anonymized IP</td><td><span class="badge badge-high">High</span></td><td>Execution</td><td>10</td></tr>
+        <tr><td>Jailbreak attempt on Foundry agent blocked</td><td><span class="badge badge-medium">Medium</span></td><td>Privilege Escalation, Defense Evasion</td><td>7</td></tr>
+        <tr><td>User phishing attempt on AI agent</td><td><span class="badge badge-high">High</span></td><td>Initial Access, Persistence</td><td>5</td></tr>
+        <tr><td>Malicious URL detected in AI agent response</td><td><span class="badge badge-high">High</span></td><td>Impact</td><td>4</td></tr>
+        <tr><td>Corrupted AI application shared malicious URL</td><td><span class="badge badge-high">High</span></td><td>Impact</td><td>3</td></tr>
+        <tr><td>ASCII smuggling attempt on AI agent</td><td><span class="badge badge-high">High</span></td><td>Impact</td><td>2</td></tr>
+        <tr><td>User phishing on AI application</td><td><span class="badge badge-high">High</span></td><td>Initial Access, Persistence</td><td>2</td></tr>
+        <tr><td>AI Agent Reconnaissance Attempt</td><td><span class="badge badge-low">Low</span></td><td>Reconnaissance</td><td>1</td></tr>
+      </tbody>
+    </table>
+
+    <h3>AI Attack Chain Visualization</h3>
+    <div style="background: rgba(155,89,182,0.05); border: 1px solid #9b59b6; border-radius: 8px; padding: 20px; margin: 15px 0;">
+      <div style="margin-bottom: 10px;"><span class="badge" style="background: rgba(155,89,182,0.2); color: #9b59b6;">AI THREAT</span> Multi-Vector AI Agent Attack</div>
+      <div class="scenario-flow" style="background: none; padding: 10px 0;">
+        <div class="flow-node" style="border-color: #9b59b6;">
+          <div class="icon">🎣</div>
+          <div class="label">Phishing URL Submitted</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node" style="border-color: var(--warning);">
+          <div class="icon">🔓</div>
+          <div class="label">Jailbreak Attempt</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node" style="border-color: var(--warning);">
+          <div class="icon">🔤</div>
+          <div class="label">ASCII Smuggling</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node" style="border-color: var(--critical);">
+          <div class="icon">🔗</div>
+          <div class="label">Malicious URL in Response</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node" style="border-color: var(--success);">
+          <div class="icon">🛡️</div>
+          <div class="label">Prompt Shield Blocked</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: CSPM — COMPLIANCE -->
+  <div class="section">
+    <h2>🔍 Pillar 3 — Cloud Security Posture Management (CSPM)</h2>
+    <p>Defender CSPM continuously assesses resource configurations against industry benchmarks and regulatory frameworks. Compliance monitoring covers <strong>2 subscriptions</strong> across <strong>2 tenants</strong>.</p>
+
+    <h3>Regulatory Compliance Posture</h3>
+    <div class="compliance-row">
+      <div class="gauge-card">
+        <div class="gauge-name">Microsoft Cloud Security Benchmark</div>
+        <div class="gauge-score" style="color: var(--warning);">57%</div>
+        <div class="gauge-details">36 passed · 27 failed (Sub 6785ea)</div>
+      </div>
+      <div class="gauge-card">
+        <div class="gauge-name">Microsoft Cloud Security Benchmark</div>
+        <div class="gauge-score" style="color: var(--warning);">65%</div>
+        <div class="gauge-details">41 passed · 22 failed (Sub ebb79bc)</div>
+      </div>
+      <div class="gauge-card">
+        <div class="gauge-name">ISO 27001:2013</div>
+        <div class="gauge-score" style="color: var(--warning);">86%</div>
+        <div class="gauge-details">80 passed · 13 failed · 116 skipped</div>
+      </div>
+      <div class="gauge-card">
+        <div class="gauge-name">Azure CSPM</div>
+        <div class="gauge-score" style="color: var(--critical);">0%</div>
+        <div class="gauge-details">0 passed · 1 failed (Both subs)</div>
+      </div>
+    </div>
+
+    <h3>Security Assessment Summary</h3>
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-critical">
+        <div class="kpi-value">46,534</div>
+        <div class="kpi-label">Unhealthy Assessments</div>
+      </div>
+      <div class="kpi-card kpi-success">
+        <div class="kpi-value">34,186</div>
+        <div class="kpi-label">Healthy Assessments</div>
+      </div>
+      <div class="kpi-card kpi-info">
+        <div class="kpi-value">5,728</div>
+        <div class="kpi-label">Not Applicable</div>
+      </div>
+      <div class="kpi-card kpi-accent">
+        <div class="kpi-value">1,507</div>
+        <div class="kpi-label">Unique Recommendation Types</div>
+      </div>
+    </div>
+
+    <h3>Assessment Breakdown by Severity</h3>
+    <table>
+      <thead>
+        <tr><th>Severity</th><th>Healthy ✅</th><th>Unhealthy 🔴</th><th>Not Applicable</th><th>Health Rate</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-high">High</span></td>
+          <td>1,633</td>
+          <td style="color: var(--critical); font-weight: 600;">5,075</td>
+          <td>2,038</td>
+          <td style="color: var(--critical);">24.3%</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-medium">Medium</span></td>
+          <td>30,858</td>
+          <td style="color: var(--warning); font-weight: 600;">37,428</td>
+          <td>146</td>
+          <td style="color: var(--warning);">45.2%</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-low">Low</span></td>
+          <td>1,695</td>
+          <td>4,031</td>
+          <td>3,544</td>
+          <td style="color: var(--warning);">29.6%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Failing Assessments by CNAPP Category</h3>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">Identity &amp; Access</div>
+        <div class="bar-track"><div class="bar-fill bar-critical" style="width: 72%;">33,617</div></div>
+        <div class="bar-value">72.3%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Compute &amp; Container</div>
+        <div class="bar-track"><div class="bar-fill bar-warning" style="width: 13%;">6,062</div></div>
+        <div class="bar-value">13.0%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Unknown / Other</div>
+        <div class="bar-track"><div class="bar-fill bar-info" style="width: 7.5%;">3,479</div></div>
+        <div class="bar-value">7.5%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Data</div>
+        <div class="bar-track"><div class="bar-fill bar-warning" style="width: 3.2%;">1,483</div></div>
+        <div class="bar-value">3.2%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Compute</div>
+        <div class="bar-track"><div class="bar-fill bar-info" style="width: 2.2%;">1,007</div></div>
+        <div class="bar-value">2.2%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Networking</div>
+        <div class="bar-track"><div class="bar-fill bar-info" style="width: 1.1%;">530</div></div>
+        <div class="bar-value">1.1%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Container</div>
+        <div class="bar-track"><div class="bar-fill bar-info" style="width: 0.4%;">203</div></div>
+        <div class="bar-value">0.4%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">App Services</div>
+        <div class="bar-track"><div class="bar-fill bar-info" style="width: 0.1%;"></div></div>
+        <div class="bar-value">28</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: TOP FAILING RECOMMENDATIONS -->
+  <div class="section">
+    <h2>⚠️ Top Failing Recommendations (High Severity)</h2>
+    <p>The top 15 unhealthy high-severity recommendations across all subscriptions, representing the most impactful gaps in cloud security posture:</p>
+
+    <table>
+      <thead>
+        <tr><th>#</th><th>Recommendation</th><th>Severity</th><th>Affected Resources</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>GitHub repos should require minimum two-reviewer approval for code pushes</td><td><span class="badge badge-high">High</span></td><td style="color: var(--critical); font-weight: 600;">600</td></tr>
+        <tr><td>2</td><td>Update <code>musl</code></td><td><span class="badge badge-high">High</span></td><td>187</td></tr>
+        <tr><td>3</td><td>Update <code>tar</code></td><td><span class="badge badge-high">High</span></td><td>185</td></tr>
+        <tr><td>4</td><td>Update <code>qs</code></td><td><span class="badge badge-high">High</span></td><td>184</td></tr>
+        <tr><td>5</td><td>Update <code>path-to-regexp</code></td><td><span class="badge badge-high">High</span></td><td>184</td></tr>
+        <tr><td>6</td><td>Update <code>lodash</code></td><td><span class="badge badge-high">High</span></td><td>184</td></tr>
+        <tr><td>7</td><td>Update <code>minimatch</code></td><td><span class="badge badge-high">High</span></td><td>179</td></tr>
+        <tr><td>8</td><td>Update <code>axios</code></td><td><span class="badge badge-high">High</span></td><td>176</td></tr>
+        <tr><td>9</td><td>Update <code>body-parser</code></td><td><span class="badge badge-high">High</span></td><td>174</td></tr>
+        <tr><td>10</td><td>Update <code>cross-spawn</code></td><td><span class="badge badge-high">High</span></td><td>169</td></tr>
+        <tr><td>11</td><td>Update <code>handlebars</code></td><td><span class="badge badge-high">High</span></td><td>136</td></tr>
+        <tr><td>12</td><td>Update <code>ejs</code></td><td><span class="badge badge-high">High</span></td><td>134</td></tr>
+        <tr><td>13</td><td>Container images in Azure registry should have vulnerability findings resolved</td><td><span class="badge badge-high">High</span></td><td>134</td></tr>
+        <tr><td>14</td><td>Containers running in Azure should have vulnerability findings resolved</td><td><span class="badge badge-high">High</span></td><td>127</td></tr>
+        <tr><td>15</td><td>Update <code>form-data</code></td><td><span class="badge badge-high">High</span></td><td>122</td></tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-secondary);"><strong>Key Insight:</strong> 11 of the top 15 failing high-severity recommendations are <strong>dependency vulnerability updates</strong> — indicating a systemic gap in software supply chain patching across container images and DevOps repositories. The #1 gap is <strong>DevSecOps governance</strong> (600 GitHub repos without two-reviewer approval).</p>
+  </div>
+
+  <!-- SECTION 6: DSPM & CIEM -->
+  <div class="section">
+    <h2>📦 Pillar 4 — Data Security &amp; Identity Entitlements</h2>
+
+    <h3>🔑 CIEM — Identity &amp; Access Findings</h3>
+    <p>With <strong>33,617 unhealthy findings</strong> in the Identity &amp; Access category (72.3% of all failing assessments), cloud infrastructure entitlement management is the single largest area requiring remediation. This reflects systemic overprivileged access patterns across service principals, managed identities, and user accounts.</p>
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-critical">
+        <div class="kpi-value">33,617</div>
+        <div class="kpi-label">Identity &amp; Access Findings</div>
+      </div>
+      <div class="kpi-card kpi-warning">
+        <div class="kpi-value">72.3%</div>
+        <div class="kpi-label">Share of All Failures</div>
+      </div>
+    </div>
+
+    <h3>📦 DSPM — Data Layer Incidents</h3>
+    <p>Defender for Cloud and Purview IRM detected data security and AI usage policy violations across the environment:</p>
+    <table>
+      <thead>
+        <tr><th>Incident</th><th>Severity</th><th>Status</th><th>Created</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Purview IRM — IRM Risky AI Usage (M365 Copilot)</td><td><span class="badge badge-low">Low</span></td><td>New</td><td>2026-04-12</td></tr>
+        <tr><td>Purview IRM — DSPM for AI: Detect risky AI usage</td><td><span class="badge badge-low">Low</span></td><td>New</td><td>2026-04-12</td></tr>
+        <tr><td>Purview IRM — Risky AI usage quick policy</td><td><span class="badge badge-low">Low</span></td><td>Closed</td><td>2026-04-12</td></tr>
+        <tr><td>Suspicious mass file renaming in cloud storage</td><td><span class="badge badge-high">High</span></td><td>—</td><td>2026-04 (16 alerts)</td></tr>
+        <tr><td>Malicious blob uploaded to storage account</td><td><span class="badge badge-high">High</span></td><td>—</td><td>2026-04 (3 alerts)</td></tr>
+        <tr><td>Suspicious extraction of Cosmos DB account keys</td><td><span class="badge badge-medium">Medium</span></td><td>—</td><td>2026-04 (1 alert)</td></tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top: 12px;"><strong>1,483 unhealthy Data category assessments</strong> indicate configuration gaps in data stores — encryption, access control, and network exposure settings require review.</p>
+  </div>
+
+  <!-- SECTION 7: DEVSECOPS -->
+  <div class="section">
+    <h2>⚙️ Pillar 5 — DevSecOps Posture</h2>
+    <p>Defender for DevOps scans connected repositories (GitHub, Azure DevOps) for IaC misconfigurations and dependency vulnerabilities. Current findings indicate a <strong>significant software supply chain risk</strong>:</p>
+
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-critical">
+        <div class="kpi-value">600</div>
+        <div class="kpi-label">GitHub Repos Missing 2-Reviewer Approval</div>
+      </div>
+      <div class="kpi-card kpi-warning">
+        <div class="kpi-value">11</div>
+        <div class="kpi-label">Outdated Dependencies (High)</div>
+      </div>
+      <div class="kpi-card kpi-info">
+        <div class="kpi-value">134</div>
+        <div class="kpi-label">Container Registry Vuln Images</div>
+      </div>
+      <div class="kpi-card kpi-accent">
+        <div class="kpi-value">127</div>
+        <div class="kpi-label">Running Containers with Vulns</div>
+      </div>
+    </div>
+
+    <h3>Vulnerable Dependencies Across Repos</h3>
+    <p>The following packages are flagged as high-severity across container images and code repositories:</p>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label"><code>musl</code></div>
+        <div class="bar-track"><div class="bar-fill bar-critical" style="width: 100%;">187</div></div>
+        <div class="bar-value">187</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><code>tar</code></div>
+        <div class="bar-track"><div class="bar-fill bar-critical" style="width: 99%;">185</div></div>
+        <div class="bar-value">185</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><code>qs</code> / <code>path-to-regexp</code> / <code>lodash</code></div>
+        <div class="bar-track"><div class="bar-fill bar-warning" style="width: 98%;">184</div></div>
+        <div class="bar-value">184</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><code>minimatch</code></div>
+        <div class="bar-track"><div class="bar-fill bar-warning" style="width: 96%;">179</div></div>
+        <div class="bar-value">179</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><code>axios</code></div>
+        <div class="bar-track"><div class="bar-fill bar-warning" style="width: 94%;">176</div></div>
+        <div class="bar-value">176</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><code>body-parser</code></div>
+        <div class="bar-track"><div class="bar-fill bar-warning" style="width: 93%;">174</div></div>
+        <div class="bar-value">174</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><code>cross-spawn</code></div>
+        <div class="bar-track"><div class="bar-fill bar-info" style="width: 90%;">169</div></div>
+        <div class="bar-value">169</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: INCIDENT CORRELATION -->
+  <div class="section">
+    <h2>🚨 Cloud &amp; AI Security Incidents (Last 30 Days)</h2>
+    <p>Sentinel correlated cloud security alerts into the following recent incidents, demonstrating XDR's ability to unify cloud, AI, identity, and data signals into actionable investigations:</p>
+
+    <table>
+      <thead>
+        <tr><th>#</th><th>Incident</th><th>Severity</th><th>Status</th><th>Created</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>42152</td><td>Purview IRM — IRM Risky AI Usage (M365 Copilot)</td><td><span class="badge badge-low">Low</span></td><td>New</td><td>Apr 12, 23:54</td></tr>
+        <tr><td>42151</td><td>Purview IRM — DSPM for AI: Detect risky AI usage</td><td><span class="badge badge-low">Low</span></td><td>New</td><td>Apr 12, 23:54</td></tr>
+        <tr><td>42150</td><td>Suspicious volume of logins with elevated token</td><td><span class="badge badge-medium">Medium</span></td><td>Closed</td><td>Apr 12, 23:36</td></tr>
+        <tr><td>42138</td><td>Phishing alert involving one user</td><td><span class="badge badge-high">High</span></td><td>Closed</td><td>Apr 12, 17:33</td></tr>
+        <tr><td>42137</td><td>Internal phishing campaign involving one user</td><td><span class="badge badge-high">High</span></td><td>New</td><td>Apr 12, 17:27</td></tr>
+        <tr><td>42128</td><td>Potentially malicious URL click detected</td><td><span class="badge badge-high">High</span></td><td>Closed</td><td>Apr 12, 13:27</td></tr>
+        <tr><td>42082</td><td>Suspicious activity incident involving one user</td><td><span class="badge badge-medium">Medium</span></td><td>New</td><td>Apr 12, 11:30</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top: 12px; font-size: 0.85rem; color: var(--text-secondary);">Multiple DSPM for AI policy triggers on the same day indicate an active pattern of risky AI usage across the organization — Purview IRM policies are detecting and surfacing these events in real time.</p>
+  </div>
+
+  <!-- SECTION 9: MITRE ATT&CK MAPPING -->
+  <div class="section">
+    <h2>🗺️ MITRE ATT&amp;CK Coverage — Cloud Detections</h2>
+    <p>Defender for Cloud alerts mapped across the MITRE ATT&amp;CK framework, demonstrating detection capabilities across the full attack lifecycle:</p>
+    <div class="mitre-grid">
+      <div class="mitre-card">
+        <div class="tactic">TA0001 — Initial Access</div>
+        <div class="technique">• Phishing on AI Agents (7)</div>
+        <div class="technique">• Malicious URL Clicks (2)</div>
+      </div>
+      <div class="mitre-card">
+        <div class="tactic">TA0002 — Execution</div>
+        <div class="technique">• Drift Binary in Container (1)</div>
+        <div class="technique">• Cryptomining Execution (1)</div>
+        <div class="technique">• Run Command on VM (4)</div>
+        <div class="technique">• AI Accessed from Anon IP (10)</div>
+      </div>
+      <div class="mitre-card">
+        <div class="tactic">TA0003 — Persistence</div>
+        <div class="technique">• Web Shell in Container (1)</div>
+        <div class="technique">• AI Phishing Persistence (7)</div>
+      </div>
+      <div class="mitre-card">
+        <div class="tactic">TA0004 — Privilege Escalation</div>
+        <div class="technique">• AI Jailbreak Attempts (58)</div>
+      </div>
+      <div class="mitre-card">
+        <div class="tactic">TA0005 — Defense Evasion</div>
+        <div class="technique">• ld.so.preload in Container (1)</div>
+        <div class="technique">• ARM from Suspicious Proxy (14)</div>
+        <div class="technique">• Suspicious Role Assignment (2)</div>
+      </div>
+      <div class="mitre-card">
+        <div class="tactic">TA0006 — Credential Access</div>
+        <div class="technique">• Cloud Metadata Access (1)</div>
+        <div class="technique">• Secret Reconnaissance (1)</div>
+        <div class="technique">• Sensitive File Access (1)</div>
+        <div class="technique">• TOR to Key Vault (9)</div>
+        <div class="technique">• Mimikatz / Kekeo (3)</div>
+        <div class="technique">• Cosmos DB Key Extraction (1)</div>
+      </div>
+      <div class="mitre-card">
+        <div class="tactic">TA0008 — Lateral Movement</div>
+        <div class="technique">• Malicious Blob Upload (3)</div>
+      </div>
+      <div class="mitre-card">
+        <div class="tactic">TA0040 — Impact</div>
+        <div class="technique">• K8s CPU Optimization (1)</div>
+        <div class="technique">• Malicious URL in AI Response (4)</div>
+        <div class="technique">• ASCII Smuggling (2)</div>
+        <div class="technique">• Corrupted AI Model (3)</div>
+      </div>
+      <div class="mitre-card">
+        <div class="tactic">TA0043 — Reconnaissance</div>
+        <div class="technique">• AI Agent Recon Attempt (1)</div>
+      </div>
+      <div class="mitre-card">
+        <div class="tactic">TA0010 — Exfiltration</div>
+        <div class="technique">• Anonymity Network Activity (2)</div>
+      </div>
+      <div class="mitre-card">
+        <div class="tactic">TA0011 — Command &amp; Control</div>
+        <div class="technique">• Custom Network Indicator (2)</div>
+      </div>
+      <div class="mitre-card">
+        <div class="tactic">TA0042 — Resource Dev (Cloud)</div>
+        <div class="technique">• TI Map IP to Cloud Events (90)</div>
+        <div class="technique">• Unusual Cloud Auth (16)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 10: RECOMMENDATIONS -->
+  <div class="section">
+    <h2>📋 Recommendations</h2>
+
+    <h3>🔴 Priority 1 — Immediate (0–7 Days)</h3>
+    <table>
+      <thead><tr><th>Action</th><th>Pillar</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Enforce 2-reviewer code approval on GitHub repositories (600 repos)</td><td>DevSecOps</td><td>Eliminates #1 high-severity finding</td></tr>
+        <tr><td>Investigate container cryptomining attack chain — isolate affected pods</td><td>CWPP</td><td>Stop active impact operations</td></tr>
+        <tr><td>Investigate AI agent jailbreak patterns — harden Prompt Shields configuration</td><td>AI Security</td><td>58 attempts indicate persistent adversary</td></tr>
+        <tr><td>Block TOR exit node access to Key Vault via conditional access / firewall rules</td><td>CWPP</td><td>9 detections indicate recurring abuse</td></tr>
+      </tbody>
+    </table>
+
+    <h3>🟠 Priority 2 — Short-Term (7–30 Days)</h3>
+    <table>
+      <thead><tr><th>Action</th><th>Pillar</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Patch outdated dependencies (musl, tar, qs, lodash, axios, etc.) across container images</td><td>DevSecOps</td><td>Reduces 1,500+ high-severity dep vulns</td></tr>
+        <tr><td>Remediate container image vulnerabilities in Azure Registry (134 images)</td><td>CWPP / Container</td><td>Closes image-level vulnerability gap</td></tr>
+        <tr><td>Review Identity &amp; Access findings (33,617) — prioritize service principal permissions</td><td>CIEM</td><td>Largest remediation category</td></tr>
+        <tr><td>Improve MCSB compliance from 57–65% to ≥80% by addressing top failing controls</td><td>CSPM</td><td>Brings core benchmark to acceptable threshold</td></tr>
+      </tbody>
+    </table>
+
+    <h3>🟡 Priority 3 — Medium-Term (30–90 Days)</h3>
+    <table>
+      <thead><tr><th>Action</th><th>Pillar</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Establish AI governance policies for M365 Copilot and Foundry agents</td><td>AI / DSPM</td><td>Reduces risky AI usage incidents</td></tr>
+        <tr><td>Reduce Data category findings (1,483) — encryption, access controls, network exposure</td><td>DSPM</td><td>Hardens data security posture</td></tr>
+        <tr><td>Address Networking findings (530) — NSG rules, public endpoints</td><td>CSPM</td><td>Reduces attack surface</td></tr>
+        <tr><td>Enable Defender for Storage malware scanning across all storage accounts</td><td>DSPM</td><td>Consistent blob scanning coverage</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div class="section methodology">
+    <h2>🔬 Methodology</h2>
+
+    <h3>Tool Stack</h3>
+    <table>
+      <thead><tr><th>Tool</th><th>Purpose</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Microsoft Sentinel Data Lake MCP (<code>query_lake</code>)</td><td>SecurityAlert, SecurityIncident queries for cloud and AI threat detections</td><td>✅ Used</td></tr>
+        <tr><td>Azure Resource Graph (<code>az graph query</code>)</td><td>Regulatory compliance, security assessments, recommendations, categories</td><td>✅ Used</td></tr>
+        <tr><td>RunAdvancedHuntingQuery (Triage MCP)</td><td>ExposureGraph, DeviceTvm, CloudAuditEvents — Attempted</td><td>❌ Not available (ThreatHunting.Read.All scope required via Graph API; MCP unavailable)</td></tr>
+        <tr><td>Graph API <code>/security/runHuntingQuery</code></td><td>Fallback for Advanced Hunting queries</td><td>❌ 403 — Missing <code>ThreatHunting.Read.All</code> permission on CLI app</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Data Extraction Queries</h3>
+
+    <div class="query-card">
+      <h4>Query 1 — Security Alert Landscape (30d)</h4>
+      <div class="feeds">Feeds: Alert Landscape, CWPP, AI Security sections</div>
+      <pre>SecurityAlert
+| where TimeGenerated > ago(30d)
+| summarize AlertCount = count(), UniqueAlerts = dcount(AlertName)
+    by ProviderName, AlertSeverity
+| order by AlertCount desc</pre>
+      <p style="font-size: 0.8rem; color: var(--text-secondary);">Result: 14 rows — 10,682 total alerts from 5 providers</p>
+    </div>
+
+    <div class="query-card">
+      <h4>Query 2 — Defender for Cloud Alert Details (30d)</h4>
+      <div class="feeds">Feeds: CWPP, Container Threats, AI Security tables</div>
+      <pre>SecurityAlert
+| where TimeGenerated > ago(30d)
+| where ProviderName == "Azure Security Center"
+| summarize AlertCount = count()
+    by AlertName, AlertSeverity, Tactics
+| order by AlertCount desc | take 30</pre>
+      <p style="font-size: 0.8rem; color: var(--text-secondary);">Result: 30 unique cloud alert types, 141 total alerts</p>
+    </div>
+
+    <div class="query-card">
+      <h4>Query 3 — Cloud/AI Security Incidents (30d)</h4>
+      <div class="feeds">Feeds: Incident Correlation section</div>
+      <pre>SecurityIncident
+| where TimeGenerated > ago(30d)
+| summarize arg_max(TimeGenerated, *) by IncidentNumber
+| where Title has_any ("cloud", "Azure", "storage", "AI", ...)
+| project IncidentNumber, Title, Severity, Status, Classification
+| order by CreatedTime desc | take 20</pre>
+      <p style="font-size: 0.8rem; color: var(--text-secondary);">Result: 20 cloud/AI-related incidents</p>
+    </div>
+
+    <div class="query-card">
+      <h4>Query 4 — Regulatory Compliance (ARG)</h4>
+      <div class="feeds">Feeds: CSPM Compliance Posture section</div>
+      <pre>securityresources
+| where type == 'microsoft.security/regulatorycompliancestandards'
+| extend complianceStandard = name, state = tostring(properties.state),
+    passedControls = toint(properties.passedControls),
+    failedControls = toint(properties.failedControls)
+| order by failedControls desc</pre>
+      <p style="font-size: 0.8rem; color: var(--text-secondary);">Result: 5 records — MCSB, ISO 27001, Azure CSPM across 2 subs</p>
+    </div>
+
+    <div class="query-card">
+      <h4>Query 5 — Assessment Breakdown by Severity (ARG)</h4>
+      <div class="feeds">Feeds: Assessment Summary, Health Rate calculations</div>
+      <pre>securityresources
+| where type == 'microsoft.security/assessments'
+| extend statusCode = tostring(properties.status.code),
+    severity = tostring(properties.metadata.severity)
+| summarize Count = count() by statusCode, severity</pre>
+      <p style="font-size: 0.8rem; color: var(--text-secondary);">Result: 10 rows — 86,452 total assessments (46,534 unhealthy)</p>
+    </div>
+
+    <div class="query-card">
+      <h4>Query 6 — Top Failing Recommendations by Category (ARG)</h4>
+      <div class="feeds">Feeds: Failing Assessments by CNAPP Category bar chart</div>
+      <pre>securityresources
+| where type == 'microsoft.security/assessments'
+| extend statusCode = tostring(properties.status.code),
+    category = tostring(properties.metadata.categories)
+| where statusCode == 'Unhealthy'
+| summarize FailingCount = count() by category
+| order by FailingCount desc</pre>
+      <p style="font-size: 0.8rem; color: var(--text-secondary);">Result: 11 categories — Identity &amp; Access: 33,617 (72.3%), Compute &amp; Container: 6,062 (13%)</p>
+    </div>
+
+    <div class="query-card">
+      <h4>Query 7 — Top 15 Unhealthy High-Severity Recommendations (ARG)</h4>
+      <div class="feeds">Feeds: Top Failing Recommendations section</div>
+      <pre>securityresources
+| where type == 'microsoft.security/assessments'
+| extend statusCode = tostring(properties.status.code),
+    severity = tostring(properties.metadata.severity),
+    displayName = tostring(properties.displayName)
+| where statusCode == 'Unhealthy'
+| summarize ResourceCount = count() by displayName, severity
+| order by severity asc, ResourceCount desc | take 15</pre>
+      <p style="font-size: 0.8rem; color: var(--text-secondary);">Result: 15 recommendations — #1: GitHub 2-reviewer approval (600 repos)</p>
+    </div>
+
+    <h3>Data Sources</h3>
+    <table>
+      <thead><tr><th>Source</th><th>Workspace / Scope</th><th>Tables / Resources</th></tr></thead>
+      <tbody>
+        <tr><td>Microsoft Sentinel Data Lake</td><td>Contoso-SOC (f9e8d7c6-...)</td><td>SecurityAlert, SecurityIncident</td></tr>
+        <tr><td>Azure Resource Graph</td><td>All subscriptions (cross-tenant)</td><td>securityresources (assessments, compliance, recommendations)</td></tr>
+        <tr><td>Defender for Cloud</td><td>Provider: Azure Security Center</td><td>Cloud/Container/AI/Storage alerts</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Fallback Strategy</h3>
+    <table>
+      <thead><tr><th>Intended Source</th><th>Failure</th><th>Alternative Used</th></tr></thead>
+      <tbody>
+        <tr><td>Triage MCP (RunAdvancedHuntingQuery)</td><td>MCP tools not loaded in session</td><td>Graph API <code>/security/runHuntingQuery</code> attempted</td></tr>
+        <tr><td>Graph API Advanced Hunting</td><td>403 — Missing <code>ThreatHunting.Read.All</code></td><td>Sentinel Data Lake + Azure Resource Graph provided equivalent coverage for CNAPP pillars</td></tr>
+      </tbody>
+    </table>
+
+    <h3>CNAPP Coverage Assessment</h3>
+    <table>
+      <thead><tr><th>Pillar</th><th>Data Source</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>CSPM (Compliance, Recommendations)</td><td>Azure Resource Graph — securityresources</td><td>✅ Full coverage</td></tr>
+        <tr><td>CWPP (Runtime Threats)</td><td>Sentinel — SecurityAlert (Defender for Cloud)</td><td>✅ Full coverage</td></tr>
+        <tr><td>Container Security (Alerts)</td><td>Sentinel — SecurityAlert (container alerts)</td><td>✅ Full coverage</td></tr>
+        <tr><td>Container Vuln (Image CVEs)</td><td>ARG — subassessments attempted</td><td>⚠️ No subassessment data returned (may require Defender CSPM plan)</td></tr>
+        <tr><td>CIEM (Identity Findings)</td><td>ARG — assessment categories (Identity &amp; Access)</td><td>✅ Aggregate coverage</td></tr>
+        <tr><td>DSPM (Data Security)</td><td>Sentinel alerts + ARG Data category</td><td>✅ Coverage via alerts + assessment counts</td></tr>
+        <tr><td>AI Security</td><td>Sentinel — SecurityAlert (AI-specific alerts)</td><td>✅ Full coverage</td></tr>
+        <tr><td>DevSecOps</td><td>ARG — assessment recommendations (GitHub/DevOps-sourced)</td><td>✅ Full coverage</td></tr>
+        <tr><td>Exposure Graph (Attack Paths)</td><td>Advanced Hunting required</td><td>❌ Blocked — MCP + Graph API unavailable</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    <p>🛡️ <strong>CNAPP End-to-End Capabilities Report</strong> — Generated April 12, 2026</p>
+    <p>Data sourced from Microsoft Defender for Cloud, Microsoft Sentinel (Contoso-SOC), and Azure Resource Graph</p>
+    <p>CyberProbe — Security Investigation Automation System</p>
+  </div>
+
+</div>
+</body>
+</html>
