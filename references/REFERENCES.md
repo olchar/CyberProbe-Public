@@ -21,10 +21,11 @@ A curated collection of official documentation, industry frameworks, research re
 11. [Threat Intelligence Services](#11-threat-intelligence-services)
 12. [KQL & Query Language](#12-kql--query-language)
 13. [AI Agents, MCP & Copilot](#13-ai-agents-mcp--copilot)
-14. [Industry Frameworks & Benchmarks](#14-industry-frameworks--benchmarks)
-15. [Security Research & Blogs](#15-security-research--blogs)
-16. [Open-Source Projects & Community](#16-open-source-projects--community)
-17. [Training & Certification](#17-training--certification)
+14. [AI Governance & Agent 365](#14-ai-governance--agent-365)
+15. [Industry Frameworks & Benchmarks](#15-industry-frameworks--benchmarks)
+16. [Security Research & Blogs](#16-security-research--blogs)
+17. [Open-Source Projects & Community](#17-open-source-projects--community)
+18. [Training & Certification](#18-training--certification)
 
 ---
 
@@ -395,7 +396,66 @@ Model Context Protocol, GitHub Copilot extensibility, and AI agent standards.
 
 ---
 
-## 14. Industry Frameworks & Benchmarks
+## 14. AI Governance & Agent 365
+
+Governance frameworks, controls, and platforms for managing AI agents at enterprise scale — including Microsoft's Agent 365 platform for deploying and governing MCP-based agents across Microsoft 365.
+
+### Microsoft Agent 365 Platform
+
+| Resource | URL | Description |
+|----------|-----|-------------|
+| **Agent 365 MCP Platform (GitHub)** | https://github.com/bap-microsoft/MCP-Platform | Official repository — MCP server implementations for M365 services (Calendar, Mail, Teams, Word, SharePoint, Admin Center, Copilot Chat, User) |
+| Agent 365 Service Endpoint | `https://agent365.svc.cloud.microsoft/agents/tenants/{tenant_id}/servers/` | Remote MCP server base URL — tenant-scoped agent deployment |
+| Microsoft 365 Agents Toolkit | https://github.com/OfficeDev/microsoft-365-agents-toolkit/ | Build, test, and deploy agents for Teams and M365 Copilot |
+| Microsoft 365 Agents SDK | https://learn.microsoft.com/microsoft-365-copilot/extensibility/agents-sdk-overview | SDK for building custom agents on M365 |
+| Microsoft 365 Copilot Extensibility | https://learn.microsoft.com/microsoft-365-copilot/extensibility/ | Extending Copilot with declarative agents, plugins, connectors |
+| Copilot Studio | https://learn.microsoft.com/microsoft-copilot-studio/ | Low-code agent builder with enterprise governance controls |
+
+### Agent 365 MCP Servers (Available)
+
+| MCP Server | Repository Path | Endpoint Suffix | Description |
+|------------|----------------|-----------------|-------------|
+| Calendar Tools | `mcp_CalendarTools` | `/servers/mcp_CalendarTools` | Create, update, delete events; manage invites; check availability |
+| Mail Tools | `mcp_MailTools` | `/servers/mcp_MailTools` | Create, send, reply, search emails via Graph Mail APIs |
+| Teams Server | `mcp_TeamsServer` | `/servers/mcp_TeamsServer` | Manage chats, channels, users, messages |
+| Word Server | `mcp_WordServer` | `/servers/mcp_WordServer` | Read, create, and collaborate on Word documents |
+| M365 Copilot | `mcp_M365Copilot` | `/servers/mcp_M365Copilot` | Search across M365 content (docs, emails, sites, chats) |
+| User / Me Server | `mcp_MeServer` | `/servers/mcp_MeServer` | User details, manager, team, org chart via Graph |
+| Admin Tools | `mcp_AdminTools` | `/servers/mcp_AdminTools` | Microsoft Admin Center operations |
+| OneDrive & SharePoint | `mcp_ODSPRemoteServer` | `/servers/mcp_ODSPRemoteServer` | File management across OneDrive and SharePoint |
+| SharePoint Lists | `mcp_SharePointListsTools` | `/servers/mcp_SharePointListsTools` | Site management, document libraries, lists |
+
+### AI Governance Principles & Frameworks
+
+| Resource | URL | Description |
+|----------|-----|-------------|
+| **Microsoft Responsible AI Standard v2** | https://www.microsoft.com/ai/principles-and-approach | Fairness, reliability, safety, privacy, inclusiveness, transparency, accountability |
+| Microsoft Responsible AI Impact Assessment | https://learn.microsoft.com/azure/machine-learning/concept-responsible-ai | Assessment guide for AI deployments |
+| EU AI Act | https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai | European regulatory framework — risk-based AI classification |
+| NIST AI RMF (AI 100-1) | https://www.nist.gov/artificial-intelligence/ai-risk-management-framework | US framework for AI risk management |
+| ISO/IEC 42001:2023 | https://www.iso.org/standard/81230.html | AI management system standard — first international AI governance ISO |
+| OECD AI Principles | https://oecd.ai/en/ai-principles | International principles for trustworthy AI |
+| IEEE 7000 Series | https://ethicsinaction.ieee.org/ | Ethical design standards for autonomous and intelligent systems |
+| Singapore AI Governance Framework | https://www.pdpc.gov.sg/help-and-resources/2020/01/model-ai-governance-framework | Model framework for responsible AI deployment |
+
+### AI Agent Governance Controls
+
+Key governance considerations when deploying AI agents in enterprise security operations:
+
+| Control Area | Description | Implementation Guidance |
+|-------------|-------------|------------------------|
+| **Identity & Access** | Agents must authenticate with managed identities; enforce least-privilege RBAC | Entra ID managed identity, scoped Graph API permissions, tenant-bound Agent 365 endpoints |
+| **Data Residency** | Agent-processed data must comply with organizational data sovereignty | Agent 365 tenant-scoped endpoints, Sentinel workspace region alignment |
+| **Audit & Logging** | All agent actions must be logged for compliance and forensics | Investigation JSON files, MCP tool call logging, Azure Monitor integration |
+| **Human-in-the-Loop** | Destructive or high-impact actions require analyst confirmation | CyberProbe confirmation prompts for device isolation, user blocking, incident updates |
+| **Content Safety** | Agent outputs must be screened for harmful, biased, or fabricated content | Evidence-based analysis rule, prompt injection detection, output validation |
+| **Supply Chain** | MCP servers, skills, and dependencies must be verified and version-controlled | MCP health checks, skill file integrity via Git, dependency pinning |
+| **Model Transparency** | Organizations must document which models power their agents and their limitations | Methodology section in reports, model version tracking |
+| **Continuous Monitoring** | Agent accuracy and behavior must be evaluated regularly | CTI-REALM benchmarks, red-team exercises, drift detection |
+
+---
+
+## 15. Industry Frameworks & Benchmarks
 
 Standards and benchmarks used for security posture assessment and compliance.
 
@@ -421,7 +481,7 @@ Standards and benchmarks used for security posture assessment and compliance.
 
 ---
 
-## 15. Security Research & Blogs
+## 16. Security Research & Blogs
 
 Research, blog posts, and community resources relevant to CyberProbe investigations.
 
@@ -458,7 +518,7 @@ Research, blog posts, and community resources relevant to CyberProbe investigati
 
 ---
 
-## 16. Open-Source Projects & Community
+## 17. Open-Source Projects & Community
 
 GitHub repositories and open-source tools referenced or recommended.
 
@@ -474,7 +534,7 @@ GitHub repositories and open-source tools referenced or recommended.
 
 ---
 
-## 17. Training & Certification
+## 18. Training & Certification
 
 Learning paths and certifications relevant to CyberProbe's technology stack.
 
