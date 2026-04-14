@@ -120,7 +120,7 @@ Copilot needs: Sample KQL queries
 
 ## CyberProbe Skills Architecture
 
-CyberProbe provides **11 specialized skills** that cover the complete investigation lifecycle:
+CyberProbe provides **12 specialized skills** that cover the complete investigation lifecycle:
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────┐
@@ -211,6 +211,12 @@ Skills build on each other in a logical sequence:
     - Uses: incident-management tools, device-response tools, AD account management tools
     - References: microsoft-learn-docs (for remediation guidance)
     - Feeds into: report-generation (action log for final report)
+
+11. **detection-engineering** (detection-as-code layer) ⭐ NEW
+    - Converts community detections (Sigma YAML, Splunk SPL) to Sentinel analytics rules and Defender XDR custom detections
+    - Uses: kql-query-builder (KQL validation, schema checking), kql-sentinel-queries (test execution)
+    - References: microsoft-learn-docs (analytic rule authoring docs), SigmaHQ ecosystem
+    - Independent or called manually for detection lifecycle workflows
 
 ---
 
@@ -1314,6 +1320,100 @@ See [mcp-apps/README.md](../mcp-apps/README.md) for build and architecture detai
 
 ---
 
+### 12. detection-engineering ⭐ NEW
+
+**Purpose**: Convert community detection rules (Sigma YAML, Splunk SPL) to Microsoft Sentinel analytics rules and Defender XDR custom detections
+
+**Location**: `.github/skills/detection-engineering/SKILL.md`
+
+**Triggers**: Copilot activates when you say:
+- "Convert this Sigma rule to Sentinel"
+- "Import community detections for T1078"
+- "Convert these YAML detection rules to analytic rules"
+- "Create a detection rule from this Sigma file"
+- "Set up detection-as-code for our repo"
+
+**Workflow (7 phases)**:
+
+```
+Phase 1: Ingest Rule (~1-2 sec)
+├─ Accept Sigma YAML from file, URL, SigmaHQ path, or pasted content
+└─ Support Splunk SPL via intermediate parsing
+
+Phase 2: Parse Sigma YAML (~1 sec)
+├─ Extract logsource (product, category, service)
+├─ Extract detection logic (selections, conditions, timeframe)
+├─ Extract MITRE tags, severity, metadata
+└─ Extract projected fields and false positive notes
+
+Phase 3: Map Logsource → Sentinel Table (~2 sec)
+├─ Translate Sigma logsource to Sentinel table name
+├─ Map Sigma field names to Sentinel column names
+├─ Verify schema with get_table_schema()
+└─ Determine Data Lake vs Advanced Hunting target
+
+Phase 4: Convert Detection Logic → KQL (~3-5 sec)
+├─ Translate selections → where clauses
+├─ Translate conditions → boolean logic
+├─ Map Sigma modifiers → KQL operators
+├─ Handle aggregation and temporal correlation
+└─ Apply ASIM normalization if applicable
+
+Phase 5: Validate KQL (~5-10 sec)
+├─ Schema validation via validate_kql_query()
+├─ Test-execute with | take 0 (dry run)
+└─ Test with | take 10 for shape verification
+
+Phase 6: Package as Analytic Rule (~2-3 sec)
+├─ Map Sigma level → Sentinel severity
+├─ Map Sigma tags → MITRE tactics/techniques
+├─ Apply entity mapping templates
+├─ Generate YAML rule or ARM template
+└─ Set query frequency, period, threshold
+
+Phase 7: Deploy or Export (~1-5 sec)
+├─ Save to queries/ library
+├─ Export as ARM JSON template
+├─ Deploy via Sentinel REST API
+└─ Or push to Git for CI/CD pipeline
+
+Total Time: ~15-25 seconds (single rule)
+          ~2-5 minutes (batch of 10-20 rules)
+```
+
+**Key Features**:
+- Comprehensive Sigma logsource → Sentinel table mapping (Windows, Azure/Entra, M365, Linux, Network)
+- Full Sigma modifier → KQL operator mapping (contains, startswith, re, cidr, all, windash, base64)
+- 9 detection logic translation patterns (simple, list, filter, aggregation, near temporal, 1/all of)
+- Entity mapping templates for SigninLogs, SecurityEvent, DeviceProcessEvents, OfficeActivity
+- pySigma/sigma-cli integration for automated batch conversion
+- SigmAIQ (LLM-enhanced) support
+- ARM template and YAML analytic rule output formats
+- Sentinel REST API deployment
+
+**Supported Input Formats**:
+
+| Format | Conversion Path |
+|--------|-----------------|
+| Sigma YAML | Direct — parse → map → convert → KQL |
+| Splunk SPL | Parse SPL → extract logic → map to Sigma structure → convert |
+| SigmaHQ rule URL | Fetch raw YAML → proceed as Sigma YAML |
+| Pasted YAML content | Parse directly → proceed as Sigma YAML |
+
+**Dependencies**:
+- Uses: kql-query-builder (schema validation, KQL generation)
+- Uses: kql-sentinel-queries (test execution against Sentinel)
+- References: microsoft-learn-docs (analytic rule authoring, ASIM docs)
+- Optional: pySigma + pySigma-backend-kusto for automated conversion
+
+**References**:
+- [references/REFERENCES.md Section 13](../references/REFERENCES.md) — Detection Engineering references
+- [SigmaHQ Repository](https://github.com/SigmaHQ/sigma) — 3,000+ community rules
+- [pySigma Kusto Backend](https://pypi.org/project/pySigma-backend-kusto/) — Automated conversion
+- .github/skills/detection-engineering/SKILL.md
+
+---
+
 ## Using Skills with Copilot
 
 ### Prerequisites
@@ -2028,6 +2128,7 @@ Use these keywords to activate specific skills:
 | ioc-management | IOC, indicators of compromise, watchlist, threat intel feed |
 | defender-response | isolate device, block user, containment, response action |
 | exposure-management | exposure posture, CTEM metrics, attack surface, choke points, CNAPP, compliance |
+| detection-engineering | convert sigma, sigma rule, sigma to sentinel, detection rule, community detection, import detection, analytic rule from YAML, detection-as-code |
 
 ### Naming Conventions
 

@@ -474,7 +474,7 @@ After every investigation section, confirm what was checked even if nothing was 
 
 This system uses [VS Code Agent Skills](https://code.visualstudio.com/docs/copilot/customization/agent-skills) to provide modular, domain-specific investigation workflows. Skills are automatically detected based on keywords in your prompts.
 
-### Skills (11)
+### Skills (12)
 
 | Category | Skill | Description | Trigger Keywords |
 |----------|-------|-------------|------------------|
@@ -488,7 +488,8 @@ This system uses [VS Code Agent Skills](https://code.visualstudio.com/docs/copil
 | 📊 Reporting | `report-generation` | HTML/JSON reports with dark theme, MITRE ATT&CK mapping, executive briefings | "generate report", "create report", "executive summary" |
 | 🔧 Tooling | `kql-sentinel-queries` | Execute KQL against Sentinel data lake with pre-built queries for sign-ins, alerts, audit logs | "run KQL", "query Sentinel", "search logs" |
 | 🔧 Tooling | `kql-query-builder` | AI-assisted KQL generation, validation, ASIM normalization, Sentinel Analytic Rule generation | "write KQL", "create KQL query", "help with KQL", "build query" |
-| 📖 Reference | `microsoft-learn-docs` | Official Microsoft Learn documentation lookup for remediation guidance, code samples, KQL examples | "Microsoft docs", "how to remediate", "official guidance" |
+| �️ Detection Engineering | `detection-engineering` | Convert community detections (Sigma YAML, Splunk SPL) to Sentinel analytics rules and Defender XDR custom detections. Parse, map logsource, convert to KQL, validate schema, package as analytic rule, deploy via ARM/API/CI-CD | "convert sigma", "sigma rule", "sigma to sentinel", "detection rule", "community detection", "import detection", "convert detection", "analytic rule from YAML", "detection-as-code" |
+| �📖 Reference | `microsoft-learn-docs` | Official Microsoft Learn documentation lookup for remediation guidance, code samples, KQL examples | "Microsoft docs", "how to remediate", "official guidance" |
 
 ### Skill Detection Workflow
 
@@ -518,6 +519,9 @@ You don't need to mention the skill name — keywords are detected automatically
 | "Show me permission sprawl / CIEM" | `exposure-management` |
 | "Data security posture" | `exposure-management` |
 | "DevSecOps findings" | `exposure-management` |
+| "Convert this Sigma rule to Sentinel" | `detection-engineering` |
+| "Import community detections for T1078" | `detection-engineering` |
+| "Convert these YAML rules to analytic rules" | `detection-engineering` |
 
 ### Follow-ups and Chaining
 
