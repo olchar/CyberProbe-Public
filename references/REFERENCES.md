@@ -13,17 +13,18 @@ A curated collection of official documentation, industry frameworks, research re
 3. [Microsoft Defender XDR](#3-microsoft-defender-xdr)
 4. [Microsoft Entra ID (Identity)](#4-microsoft-entra-id-identity)
 5. [Microsoft Security APIs](#5-microsoft-security-apis)
-6. [AI & LLM Security Frameworks](#6-ai--llm-security-frameworks)
-7. [MITRE Frameworks](#7-mitre-frameworks)
-8. [OWASP Standards](#8-owasp-standards)
-9. [NIST Cybersecurity](#9-nist-cybersecurity)
-10. [Threat Intelligence Services](#10-threat-intelligence-services)
-11. [KQL & Query Language](#11-kql--query-language)
-12. [AI Agents, MCP & Copilot](#12-ai-agents-mcp--copilot)
-13. [Industry Frameworks & Benchmarks](#13-industry-frameworks--benchmarks)
-14. [Security Research & Blogs](#14-security-research--blogs)
-15. [Open-Source Projects & Community](#15-open-source-projects--community)
-16. [Training & Certification](#16-training--certification)
+6. [AI Attacks, Threats & Adversarial Techniques](#6-ai-attacks-threats--adversarial-techniques)
+7. [AI & LLM Security Frameworks](#7-ai--llm-security-frameworks)
+8. [MITRE Frameworks](#8-mitre-frameworks)
+9. [OWASP Standards](#9-owasp-standards)
+10. [NIST Cybersecurity](#10-nist-cybersecurity)
+11. [Threat Intelligence Services](#11-threat-intelligence-services)
+12. [KQL & Query Language](#12-kql--query-language)
+13. [AI Agents, MCP & Copilot](#13-ai-agents-mcp--copilot)
+14. [Industry Frameworks & Benchmarks](#14-industry-frameworks--benchmarks)
+15. [Security Research & Blogs](#15-security-research--blogs)
+16. [Open-Source Projects & Community](#16-open-source-projects--community)
+17. [Training & Certification](#17-training--certification)
 
 ---
 
@@ -121,7 +122,89 @@ REST API endpoints used for programmatic access and MCP fallback scenarios.
 
 ---
 
-## 6. AI & LLM Security Frameworks
+## 6. AI Attacks, Threats & Adversarial Techniques
+
+A primer on how adversaries target AI/ML systems, LLM-powered applications, and AI-assisted security tools — and the taxonomies used to classify these threats.
+
+### OWASP Top 10 for LLM Applications (2025) — Full Breakdown
+
+The [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) is the industry-standard risk catalog for systems that integrate large language models. Every risk below is relevant to AI-assisted security tools like CyberProbe.
+
+| Rank | Risk | Description | Attack Example | Reference |
+|------|------|-------------|----------------|----------|
+| **LLM01** | Prompt Injection | Attacker manipulates LLM behavior through crafted input — either directly (user prompt) or indirectly (poisoned tool output) | Malicious KQL result containing instructions that trick the agent into exfiltrating data | https://owasp.org/www-project-top-10-for-large-language-model-applications/ |
+| **LLM02** | Insecure Output Handling | LLM output used in downstream systems without validation (SQL injection, XSS via generated content) | Generated HTML report containing unescaped script tags from alert descriptions | https://owasp.org/www-project-top-10-for-large-language-model-applications/ |
+| **LLM03** | Training Data Poisoning | Compromised training data causes model to produce biased, incorrect, or malicious outputs | Poisoned threat intel feed causing false negatives on known-bad IPs | https://owasp.org/www-project-top-10-for-large-language-model-applications/ |
+| **LLM04** | Model Denial of Service | Crafted inputs designed to exhaust model resources or cause degraded performance | Recursive prompt patterns that consume all available tokens without useful output | https://owasp.org/www-project-top-10-for-large-language-model-applications/ |
+| **LLM05** | Supply Chain Vulnerabilities | Compromised model weights, plugins, datasets, or dependencies | Malicious MCP server or poisoned skill file injecting unauthorized tool calls | https://owasp.org/www-project-top-10-for-large-language-model-applications/ |
+| **LLM06** | Sensitive Information Disclosure | Model reveals PII, secrets, API keys, or internal system details in outputs | Agent leaking tenant IDs, UPNs, or API keys in generated investigation reports | https://owasp.org/www-project-top-10-for-large-language-model-applications/ |
+| **LLM07** | Insecure Plugin Design | Plugins/tools accept unsafe input without validation, enabling injection or privilege escalation | MCP tool executing unvalidated KQL from user input without parameterization | https://owasp.org/www-project-top-10-for-large-language-model-applications/ |
+| **LLM08** | Excessive Agency | LLM granted too many capabilities or permissions, enabling unintended destructive actions | Agent autonomously isolating devices or blocking users without analyst confirmation | https://owasp.org/www-project-top-10-for-large-language-model-applications/ |
+| **LLM09** | Overreliance | Humans blindly trusting LLM output without verification, leading to missed threats or false confidence | SOC analyst closing an incident based solely on AI summary without reviewing raw evidence | https://owasp.org/www-project-top-10-for-large-language-model-applications/ |
+| **LLM10** | Model Theft | Unauthorized access to proprietary model weights, fine-tuned data, or system prompts | Exfiltration of custom investigation skill definitions or copilot-instructions.md | https://owasp.org/www-project-top-10-for-large-language-model-applications/ |
+
+### MITRE ATLAS — AI Attack Taxonomy
+
+[MITRE ATLAS](https://atlas.mitre.org/) (Adversarial Threat Landscape for Artificial Intelligence Systems) extends ATT&CK into the AI/ML domain. Key tactics and techniques:
+
+| ATLAS Tactic | Description | Techniques (Examples) |
+|-------------|-------------|----------------------|
+| **Reconnaissance** | Gathering information about AI systems | AML.T0000 — Discover ML model capabilities; AML.T0016 — Discover ML training data |
+| **Resource Development** | Preparing tools/resources to attack AI | AML.T0017 — Acquire infrastructure for adversarial ML |
+| **Initial Access** | Gaining access to AI systems | AML.T0019 — Exploit public-facing ML API; AML.T0045 — Compromise ML supply chain |
+| **ML Attack Staging** | Preparing adversarial inputs | AML.T0043 — Craft adversarial data; AML.T0040 — ML model inference API access |
+| **Execution** | Running adversarial techniques | AML.T0044 — Full ML model access; AML.T0025 — Prompt injection |
+| **Persistence** | Maintaining access to AI systems | AML.T0020 — Poison training data; AML.T0018 — Backdoor ML model |
+| **Evasion** | Avoiding AI detection | AML.T0015 — Evade ML model; AML.T0046 — Input manipulation |
+| **Exfiltration** | Extracting data from AI systems | AML.T0024 — Extract ML model; AML.T0035 — Extract training data |
+| **Impact** | Degrading AI system performance | AML.T0029 — Denial of ML service; AML.T0034 — Trigger model failure |
+
+> **ATLAS Case Studies:** https://atlas.mitre.org/studies — Real-world examples of AI attacks including ChatGPT prompt injection, adversarial perturbation of malware classifiers, and model extraction via API.
+
+### AI Attack Patterns Relevant to Security Operations
+
+Attack patterns that specifically target AI-assisted security investigation workflows:
+
+| Attack Pattern | Description | SOC Impact | Mitigation |
+|---------------|-------------|------------|------------|
+| **Indirect Prompt Injection** | Adversary plants instructions in data sources (alert descriptions, email subjects, hostname fields) that are ingested by the AI agent | Agent may skip investigating an entity, generate misleading report, or execute unintended actions | Input sanitization, prompt injection detection in tool outputs, evidence-based analysis rules |
+| **Tool Poisoning** | Compromised MCP server returns manipulated data designed to alter agent behavior | False investigation conclusions, missed threats, fabricated evidence | Tool output validation, cross-referencing multiple sources, human-in-the-loop for critical decisions |
+| **Adversarial Evasion** | Attacker crafts activity patterns designed to fall below AI detection thresholds | SOC AI tools fail to flag genuinely malicious behavior | Ensemble detection (combine AI + rule-based), threshold tuning, continuous model evaluation |
+| **Data Poisoning via Feedback Loops** | Attacker contaminates training/fine-tuning data through manipulated incident classifications | Model learns incorrect patterns, future investigations degrade in quality | Audit classification decisions, protected validation sets, anomaly detection on feedback data |
+| **Model Extraction** | Attacker queries the AI system systematically to reverse-engineer its detection logic | Adversary learns to evade specific detection rules or investigation patterns | Rate limiting, query pattern monitoring, model watermarking |
+| **Copilot Prompt Exfiltration** | Attacker attempts to extract system instructions, skill definitions, or custom rules | Reveals investigation methodology, tool access patterns, and defensive blind spots | Instruction-level guardrails, output filtering, prompt leak detection |
+| **Hallucination Exploitation** | Attacker relies on known AI tendency to fabricate plausible-sounding data | Analyst acts on non-existent evidence, false IOCs contaminate threat intel feeds | Evidence-based analysis (CyberProbe's global rule), mandatory source citation, human verification |
+
+### Real-World AI Security Incidents & Research
+
+| Incident / Research | Year | Description | Reference |
+|-------------------|------|-------------|----------|
+| ChatGPT Indirect Prompt Injection | 2023 | Researchers demonstrated data exfiltration via invisible instructions in web content | https://arxiv.org/abs/2302.12173 |
+| Microsoft Tay Bot Manipulation | 2016 | Twitter chatbot poisoned via coordinated adversarial input | https://blogs.microsoft.com/blog/2016/03/25/learning-tays-introduction/ |
+| Adversarial Patches in Object Detection | 2018 | Physical-world adversarial examples fooling ML classifiers | https://arxiv.org/abs/1712.09665 |
+| GPT-4 System Prompt Extraction | 2023 | Techniques to extract hidden system instructions from deployed models | https://arxiv.org/abs/2311.16119 |
+| Sleeper Agents in LLMs | 2024 | Anthropic research on backdoor behaviors surviving safety training | https://arxiv.org/abs/2401.05566 |
+| AI-Generated Phishing at Scale | 2023 | Research showing LLMs can generate highly effective spear-phishing emails | https://arxiv.org/abs/2305.06972 |
+| VirusTotal AI-Crafted Malware Analysis | 2024 | AI-generated polymorphic malware evading traditional signature detection | https://blog.virustotal.com/ |
+| NIST AI Red-Teaming Guidelines | 2025 | Guidance for adversarial testing of AI systems | https://csrc.nist.gov/pubs/ai/600/1/final |
+
+### Defensive Strategies for AI-Powered Security Tools
+
+| Strategy | Description | CyberProbe Implementation |
+|----------|-------------|---------------------------|
+| **Evidence-Based Analysis** | Never fabricate findings — base all conclusions on retrieved data | Global rule: mandatory source citation, explicit absence confirmation |
+| **Human-in-the-Loop** | Require analyst confirmation for destructive or high-impact actions | Confirmation prompts for device isolation, user blocking, incident updates |
+| **Input Validation** | Sanitize and validate all inputs to AI tools | MCP tool safety filters, Copilot instruction guardrails |
+| **Output Verification** | Cross-reference AI outputs against multiple data sources | Multi-source enrichment (AbuseIPDB + IPInfo + Shodan + VPNapi) |
+| **Least Privilege** | Limit AI agent permissions to minimum required | Read-only default queries, scoped MCP tool permissions |
+| **Audit Trail** | Log all AI actions and decisions for accountability | Investigation JSON files with full methodology, query-level evidence |
+| **Supply Chain Security** | Verify integrity of models, plugins, and MCP servers | MCP health checks, skill file version control, dependency pinning |
+| **Prompt Injection Detection** | Monitor for injection attempts in tool outputs | Security requirements in Copilot instructions, alert on anomalous patterns |
+| **Continuous Evaluation** | Regularly test AI tool accuracy and detection coverage | CTI-REALM benchmarks, periodic red-team exercises |
+
+---
+
+## 7. AI & LLM Security Frameworks
 
 Frameworks for securing AI systems and evaluating AI-driven security tools.
 
@@ -141,7 +224,7 @@ Frameworks for securing AI systems and evaluating AI-driven security tools.
 
 ---
 
-## 7. MITRE Frameworks
+## 8. MITRE Frameworks
 
 The MITRE ecosystem of threat modeling, defense, and adversary frameworks.
 
@@ -174,7 +257,7 @@ The MITRE ecosystem of threat modeling, defense, and adversary frameworks.
 
 ---
 
-## 8. OWASP Standards
+## 9. OWASP Standards
 
 Web application and AI security best practices.
 
@@ -197,7 +280,7 @@ Web application and AI security best practices.
 
 ---
 
-## 9. NIST Cybersecurity
+## 10. NIST Cybersecurity
 
 US National Institute of Standards and Technology cybersecurity frameworks.
 
@@ -214,7 +297,7 @@ US National Institute of Standards and Technology cybersecurity frameworks.
 
 ---
 
-## 10. Threat Intelligence Services
+## 11. Threat Intelligence Services
 
 External enrichment APIs and threat intelligence platforms integrated or referenced.
 
@@ -257,7 +340,7 @@ External enrichment APIs and threat intelligence platforms integrated or referen
 
 ---
 
-## 11. KQL & Query Language
+## 12. KQL & Query Language
 
 Kusto Query Language references for Sentinel and Advanced Hunting.
 
@@ -282,7 +365,7 @@ Kusto Query Language references for Sentinel and Advanced Hunting.
 
 ---
 
-## 12. AI Agents, MCP & Copilot
+## 13. AI Agents, MCP & Copilot
 
 Model Context Protocol, GitHub Copilot extensibility, and AI agent standards.
 
@@ -311,7 +394,7 @@ Model Context Protocol, GitHub Copilot extensibility, and AI agent standards.
 
 ---
 
-## 13. Industry Frameworks & Benchmarks
+## 14. Industry Frameworks & Benchmarks
 
 Standards and benchmarks used for security posture assessment and compliance.
 
@@ -337,7 +420,7 @@ Standards and benchmarks used for security posture assessment and compliance.
 
 ---
 
-## 14. Security Research & Blogs
+## 15. Security Research & Blogs
 
 Research, blog posts, and community resources relevant to CyberProbe investigations.
 
@@ -374,7 +457,7 @@ Research, blog posts, and community resources relevant to CyberProbe investigati
 
 ---
 
-## 15. Open-Source Projects & Community
+## 16. Open-Source Projects & Community
 
 GitHub repositories and open-source tools referenced or recommended.
 
@@ -390,7 +473,7 @@ GitHub repositories and open-source tools referenced or recommended.
 
 ---
 
-## 16. Training & Certification
+## 17. Training & Certification
 
 Learning paths and certifications relevant to CyberProbe's technology stack.
 
