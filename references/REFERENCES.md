@@ -44,7 +44,7 @@ Core platform documentation for the security stack CyberProbe integrates with.
 | Microsoft Defender for Identity | https://learn.microsoft.com/defender-for-identity/ | On-premises AD threat detection |
 | Microsoft Security Exposure Management | https://learn.microsoft.com/security-exposure-management/ | Attack surface, choke points, exposure scoring |
 | Microsoft Security Copilot | https://learn.microsoft.com/security-copilot/ | AI-powered security assistant |
-| Security Copilot Agent Guide | https://learn.microsoft.com/security-copilot/agents | Building custom Security Copilot agents |
+| Security Copilot Agent Guide | https://learn.microsoft.com/copilot/security/agents-overview | Building custom Security Copilot agents |
 | Defender Portal | https://security.microsoft.com | Unified security portal |
 
 ---
@@ -62,7 +62,7 @@ Data ingestion, querying, and the new programmatic KQL API for the Sentinel data
 | Data Lake Onboarding | https://learn.microsoft.com/azure/sentinel/datalake/sentinel-lake-onboarding | Workspace setup and configuration |
 | Connect Sentinel to Defender XDR | https://learn.microsoft.com/azure/sentinel/microsoft-sentinel-defender-portal | Portal integration, region support |
 | Sentinel Region Support | https://learn.microsoft.com/azure/sentinel/microsoft-sentinel-defender-portal#region-support | Supported regions for unified experience |
-| Custom Graphs in Sentinel | https://learn.microsoft.com/azure/sentinel/datalake/custom-graphs | Graph-based entity exploration |
+| Entity Investigation (UEBA) | https://learn.microsoft.com/azure/sentinel/investigate-with-ueba | Entity behavior analytics and graph investigation |
 | **Blog**: Running KQL on Data Lake using API | https://techcommunity.microsoft.com/blog/MicrosoftSentinelBlog/running-kql-queries-on-microsoft-sentinel-data-lake-using-api/4503128 | Walkthrough with Python and Logic Apps examples |
 
 ---
@@ -94,7 +94,7 @@ Identity protection, authentication, conditional access, and risk detection.
 | Identity Protection Overview | https://learn.microsoft.com/entra/id-protection/overview-identity-protection | Risk-based identity protection |
 | Temporary Access Pass (TAP) | https://learn.microsoft.com/entra/identity/authentication/howto-authentication-temporary-access-pass | Passwordless onboarding |
 | Manage OAuth Consent Requests | https://learn.microsoft.com/entra/identity/enterprise-apps/manage-consent-requests | App consent governance |
-| Token Theft Playbook | https://learn.microsoft.com/entra/identity/conditional-access/plan-token-theft-response | AiTM/token theft investigation |
+| Token Protection (Conditional Access) | https://learn.microsoft.com/entra/identity/conditional-access/concept-token-protection | Token binding and AiTM/token theft defense |
 | Create Service Principal | https://learn.microsoft.com/entra/identity-platform/howto-create-service-principal-portal | Service principal for API automation |
 | MSAL Overview | https://learn.microsoft.com/entra/identity-platform/msal-overview | Microsoft Authentication Library |
 | Phishing-Resistant MFA | https://learn.microsoft.com/entra/identity/authentication/concept-authentication-strengths | FIDO2, certificate-based auth |
@@ -187,7 +187,7 @@ Attack patterns that specifically target AI-assisted security investigation work
 | Sleeper Agents in LLMs | 2024 | Anthropic research on backdoor behaviors surviving safety training | https://arxiv.org/abs/2401.05566 |
 | AI-Generated Phishing at Scale | 2023 | Research showing LLMs can generate highly effective spear-phishing emails | https://arxiv.org/abs/2305.06972 |
 | VirusTotal AI-Crafted Malware Analysis | 2024 | AI-generated polymorphic malware evading traditional signature detection | https://blog.virustotal.com/ |
-| NIST AI Red-Teaming Guidelines | 2025 | Guidance for adversarial testing of AI systems | https://csrc.nist.gov/pubs/ai/600/1/final |
+| NIST AI Red-Teaming Guidelines | 2025 | Guidance for adversarial testing of AI systems | https://doi.org/10.6028/NIST.AI.600-1 |
 
 ### Defensive Strategies for AI-Powered Security Tools
 
@@ -213,11 +213,11 @@ Frameworks for securing AI systems and evaluating AI-driven security tools.
 |----------|-----|-------------|
 | MITRE ATLAS (Adversarial Threat Landscape for AI Systems) | https://atlas.mitre.org/ | Tactics and techniques targeting AI/ML systems |
 | OWASP Top 10 for LLM Applications (2025) | https://owasp.org/www-project-top-10-for-large-language-model-applications/ | Top risks for LLM-powered applications |
-| NIST AI Risk Management Framework (AI RMF) | https://www.nist.gov/artificial-intelligence/ai-risk-management-framework | AI risk management guidance |
-| NIST AI 600-1: Generative AI Profile | https://csrc.nist.gov/pubs/ai/600/1/final | Companion to AI RMF for generative AI |
+| NIST AI Risk Management Framework (AI RMF) | https://www.nist.gov/itl/ai-risk-management-framework | AI risk management guidance |
+| NIST AI 600-1: Generative AI Profile | https://doi.org/10.6028/NIST.AI.600-1 | Companion to AI RMF for generative AI |
 | Microsoft Responsible AI Principles | https://www.microsoft.com/ai/principles-and-approach | Fairness, reliability, safety, privacy, inclusiveness, transparency, accountability |
 | EU AI Act | https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai | European regulatory framework for AI |
-| CTI-REALM (Microsoft) | https://www.microsoft.com/security/blog/2025/04/09/new-open-source-tool-from-microsoft-helps-evaluate-ai-generated-detection-rules/ | Open-source benchmark for AI-driven detection rule generation |
+| CTI-REALM (Microsoft) | https://www.microsoft.com/en-us/security/blog/ | Open-source benchmark for AI-driven detection rule generation (Microsoft Security Blog) |
 | Project Glasswing (Anthropic) | https://www.anthropic.com/glasswing | Hardware-level security for AI systems (12-company coalition) |
 | AI-SPM (AI Security Posture Management) | https://learn.microsoft.com/azure/defender-for-cloud/ai-security-posture | Defender for Cloud AI security posture |
 | Google SAIF (Secure AI Framework) | https://safety.google/cybersecurity-advancements/saif/ | Google's framework for securing AI |
@@ -264,7 +264,7 @@ Web application and AI security best practices.
 
 | Resource | URL | Description |
 |----------|-----|-------------|
-| OWASP Top 10 (2021) | https://owasp.org/www-project-top-10/ | Web application security risks |
+| OWASP Top 10 (2025) | https://owasp.org/www-project-top-ten/ | Web application security risks |
 | OWASP Top 10 for LLM Applications (2025) | https://owasp.org/www-project-top-10-for-large-language-model-applications/ | AI/LLM-specific risks (prompt injection, data leakage, etc.) |
 | OWASP API Security Top 10 | https://owasp.org/API-Security/ | REST/GraphQL API security risks |
 | OWASP Testing Guide | https://owasp.org/www-project-web-security-testing-guide/ | Security testing methodology |
@@ -290,10 +290,10 @@ US National Institute of Standards and Technology cybersecurity frameworks.
 | NIST Cybersecurity Framework (CSF) 2.0 | https://www.nist.gov/cyberframework | Identify, Protect, Detect, Respond, Recover, Govern |
 | NIST SP 800-53 Rev. 5 | https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final | Security and privacy controls catalog |
 | NIST SP 800-61 Rev. 3 | https://csrc.nist.gov/pubs/sp/800/61/r3/final | Incident handling guide |
-| NIST SP 800-86 | https://csrc.nist.gov/publications/detail/sp/800-86/final | Guide to integrating forensic techniques |
+| NIST SP 800-86 | https://csrc.nist.gov/pubs/sp/800/86/final | Guide to integrating forensic techniques |
 | NIST SP 800-150 | https://csrc.nist.gov/publications/detail/sp/800-150/final | Guide to cyber threat information sharing |
-| NIST AI RMF (AI 100-1) | https://www.nist.gov/artificial-intelligence/ai-risk-management-framework | AI risk management framework |
-| NIST AI 600-1 | https://csrc.nist.gov/pubs/ai/600/1/final | Generative AI profile |
+| NIST AI RMF (AI 100-1) | https://www.nist.gov/itl/ai-risk-management-framework | AI risk management framework |
+| NIST AI 600-1 | https://doi.org/10.6028/NIST.AI.600-1 | Generative AI profile |
 | NIST SP 800-207 | https://csrc.nist.gov/publications/detail/sp/800-207/final | Zero Trust Architecture |
 
 ---
@@ -336,7 +336,7 @@ External enrichment APIs and threat intelligence platforms integrated or referen
 
 | Service | URL | Description |
 |---------|-----|-------------|
-| Defender Threat Intelligence (MDTI) | https://learn.microsoft.com/defender/threat-intelligence/ | IP/domain reputation, threat articles, CVE intel |
+| Defender Threat Intelligence (MDTI) | https://learn.microsoft.com/defender/threat-intelligence/what-is-microsoft-defender-threat-intelligence-defender-ti | IP/domain reputation, threat articles, CVE intel |
 | Microsoft Threat Intelligence Blog | https://www.microsoft.com/security/blog/topic/threat-intelligence/ | Threat actor tracking, campaign analysis |
 
 ---
@@ -376,10 +376,10 @@ Model Context Protocol, GitHub Copilot extensibility, and AI agent standards.
 | MCP GitHub Repository | https://github.com/modelcontextprotocol | Protocol source, SDKs, examples |
 | **Microsoft MCP Servers Catalog** | https://github.com/microsoft/mcp | Official Microsoft MCP servers — Azure, Sentinel, Foundry, M365, Fabric, Playwright, and more |
 | VS Code Agent Skills | https://code.visualstudio.com/docs/copilot/customization/agent-skills | Agent skill definition standard |
-| VS Code Copilot Customization | https://code.visualstudio.com/docs/copilot/customization | Custom instructions, prompt files |
+| VS Code Copilot Customization | https://code.visualstudio.com/docs/copilot/copilot-customization | Custom instructions, prompt files |
 | Agent Skills Standard | https://agentskills.io | Cross-platform agent skill interchange format |
 | GitHub Copilot Documentation | https://docs.github.com/copilot | GitHub Copilot features and APIs |
-| Azure MCP Server | https://azure.microsoft.com/mcp | Azure resource management via MCP |
+| Azure MCP Server | https://github.com/microsoft/mcp#azure | Azure resource management via MCP |
 
 ### CyberProbe MCP Servers (Configured)
 
@@ -407,7 +407,7 @@ Governance frameworks, controls, and platforms for managing AI agents at enterpr
 | **Agent 365 MCP Platform (GitHub)** | https://github.com/bap-microsoft/MCP-Platform | Official repository — MCP server implementations for M365 services (Calendar, Mail, Teams, Word, SharePoint, Admin Center, Copilot Chat, User) |
 | Agent 365 Service Endpoint | `https://agent365.svc.cloud.microsoft/agents/tenants/{tenant_id}/servers/` | Remote MCP server base URL — tenant-scoped agent deployment |
 | Microsoft 365 Agents Toolkit | https://github.com/OfficeDev/microsoft-365-agents-toolkit/ | Build, test, and deploy agents for Teams and M365 Copilot |
-| Microsoft 365 Agents SDK | https://learn.microsoft.com/microsoft-365-copilot/extensibility/agents-sdk-overview | SDK for building custom agents on M365 |
+| Microsoft 365 Agents SDK | https://learn.microsoft.com/microsoft-365-copilot/extensibility/ | SDK and extensibility for building custom agents on M365 |
 | Microsoft 365 Copilot Extensibility | https://learn.microsoft.com/microsoft-365-copilot/extensibility/ | Extending Copilot with declarative agents, plugins, connectors |
 | Copilot Studio | https://learn.microsoft.com/microsoft-copilot-studio/ | Low-code agent builder with enterprise governance controls |
 
@@ -432,7 +432,7 @@ Governance frameworks, controls, and platforms for managing AI agents at enterpr
 | **Microsoft Responsible AI Standard v2** | https://www.microsoft.com/ai/principles-and-approach | Fairness, reliability, safety, privacy, inclusiveness, transparency, accountability |
 | Microsoft Responsible AI Impact Assessment | https://learn.microsoft.com/azure/machine-learning/concept-responsible-ai | Assessment guide for AI deployments |
 | EU AI Act | https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai | European regulatory framework — risk-based AI classification |
-| NIST AI RMF (AI 100-1) | https://www.nist.gov/artificial-intelligence/ai-risk-management-framework | US framework for AI risk management |
+| NIST AI RMF (AI 100-1) | https://www.nist.gov/itl/ai-risk-management-framework | US framework for AI risk management |
 | ISO/IEC 42001:2023 | https://www.iso.org/standard/81230.html | AI management system standard — first international AI governance ISO |
 | OECD AI Principles | https://oecd.ai/en/ai-principles | International principles for trustworthy AI |
 | IEEE 7000 Series | https://ethicsinaction.ieee.org/ | Ethical design standards for autonomous and intelligent systems |
@@ -465,7 +465,7 @@ Standards and benchmarks used for security posture assessment and compliance.
 | CIS Controls v8 | https://www.cisecurity.org/controls | Prioritized security safeguards |
 | ISO/IEC 27001:2022 | https://www.iso.org/standard/27001 | Information security management system |
 | ISO/IEC 27035 | https://www.iso.org/standard/78973.html | Incident management standard |
-| SOC 2 (AICPA) | https://www.aicpa.org/soc2 | Service organization controls for security |
+| SOC 2 (AICPA) | https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2 | Service organization controls for security |
 | CISA Known Exploited Vulnerabilities | https://www.cisa.gov/known-exploited-vulnerabilities-catalog | KEV catalog — actively exploited CVEs |
 | CISA Cybersecurity Advisories | https://www.cisa.gov/news-events/cybersecurity-advisories | Threat advisories and bulletins |
 | CVSS (Common Vulnerability Scoring System) | https://www.first.org/cvss/ | Vulnerability severity scoring |
@@ -492,7 +492,7 @@ Research, blog posts, and community resources relevant to CyberProbe investigati
 | **Microsoft Security Blog (Official)** | https://www.microsoft.com/en-us/security/blog/ | Official Microsoft security blog — threat intelligence, product updates, research, advisories |
 | Microsoft Threat Intelligence Blog | https://www.microsoft.com/security/blog/topic/threat-intelligence/ | Threat actor tracking (Midnight Blizzard, Volt Typhoon, etc.) |
 | Microsoft Incident Response Blog | https://www.microsoft.com/security/blog/topic/incident-response/ | IR case studies and methodologies |
-| CTI-REALM (Detection Rule Benchmark) | https://www.microsoft.com/security/blog/2025/04/09/new-open-source-tool-from-microsoft-helps-evaluate-ai-generated-detection-rules/ | Open-source benchmark for AI-generated detection rules |
+| CTI-REALM (Detection Rule Benchmark) | https://www.microsoft.com/en-us/security/blog/ | Open-source benchmark for AI-generated detection rules (Microsoft Security Blog) |
 
 ### Industry Research
 
@@ -514,7 +514,7 @@ Research, blog posts, and community resources relevant to CyberProbe investigati
 | Project Glasswing | https://www.anthropic.com/glasswing | Hardware-level confidential computing for AI |
 | OpenAI Security | https://openai.com/security | AI model security and red-teaming |
 | Google Project Zero | https://googleprojectzero.blogspot.com/ | Zero-day vulnerability research |
-| Microsoft AI Red Team | https://www.microsoft.com/security/blog/topic/ai-security/ | AI security testing methodologies |
+| Microsoft AI Red Team | https://www.microsoft.com/en-us/security/blog/topic/ai-and-machine-learning/ | AI security testing methodologies |
 
 ---
 
