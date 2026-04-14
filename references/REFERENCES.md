@@ -27,6 +27,7 @@ A curated collection of official documentation, industry frameworks, research re
 17. [Security Research & Blogs](#17-security-research--blogs)
 18. [Open-Source Projects & Community](#18-open-source-projects--community)
 19. [Training & Certification](#19-training--certification)
+20. [Anthropic Cybersecurity — Claude Mythos Preview & Project Glasswing](#20-anthropic-cybersecurity--claude-mythos-preview--project-glasswing)
 
 ---
 
@@ -318,7 +319,7 @@ Frameworks for securing AI systems and evaluating AI-driven security tools.
 | Microsoft Responsible AI Principles | https://www.microsoft.com/ai/principles-and-approach | Fairness, reliability, safety, privacy, inclusiveness, transparency, accountability |
 | EU AI Act | https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai | European regulatory framework for AI |
 | CTI-REALM (Microsoft) | https://www.microsoft.com/en-us/security/blog/ | Open-source benchmark for AI-driven detection rule generation (Microsoft Security Blog) |
-| Project Glasswing (Anthropic) | https://www.anthropic.com/glasswing | Hardware-level security for AI systems (12-company coalition) |
+| Project Glasswing (Anthropic) | https://www.anthropic.com/glasswing | 12-company coalition to secure critical software using Claude Mythos Preview (Apr 2026) |
 | AI-SPM (AI Security Posture Management) | https://learn.microsoft.com/azure/defender-for-cloud/ai-security-posture | Defender for Cloud AI security posture |
 | Google SAIF (Secure AI Framework) | https://safety.google/cybersecurity-advancements/saif/ | Google's framework for securing AI |
 | CISA AI Security Guidelines | https://www.cisa.gov/ai | US government AI security guidance |
@@ -626,7 +627,7 @@ Research, blog posts, and community resources relevant to CyberProbe investigati
 | Resource | URL | Description |
 |----------|-----|-------------|
 | Anthropic Research | https://www.anthropic.com/research | AI safety and alignment research |
-| Project Glasswing | https://www.anthropic.com/glasswing | Hardware-level confidential computing for AI |
+| Project Glasswing | https://www.anthropic.com/glasswing | 12-company coalition to secure critical software using AI (Anthropic, Microsoft, AWS, Google, CrowdStrike, et al.) |
 | OpenAI Security | https://openai.com/security | AI model security and red-teaming |
 | Google Project Zero | https://googleprojectzero.blogspot.com/ | Zero-day vulnerability research |
 | Microsoft AI Red Team | https://www.microsoft.com/en-us/security/blog/topic/ai-and-machine-learning/ | AI security testing methodologies |
@@ -681,6 +682,75 @@ Learning paths and certifications relevant to CyberProbe's technology stack.
 | Certified SOC Analyst (CSA) | EC-Council | SOC Level 1-2 operations |
 | CompTIA CySA+ | CompTIA | Cybersecurity analyst fundamentals |
 | OSCP | OffSec | Penetration testing (offensive context for defenders) |
+
+---
+
+## 20. Anthropic Cybersecurity — Claude Mythos Preview & Project Glasswing
+
+Anthropic's frontier cybersecurity research, the Claude Mythos Preview model, and the multi-company Project Glasswing initiative to secure critical software infrastructure.
+
+### Core Announcements
+
+| Resource | URL | Date | Description |
+|----------|-----|------|-------------|
+| **Project Glasswing** | https://www.anthropic.com/glasswing | Apr 7, 2026 | 12-company coalition (AWS, Anthropic, Apple, Broadcom, Cisco, CrowdStrike, Google, JPMorganChase, Linux Foundation, Microsoft, NVIDIA, Palo Alto Networks) to secure critical software using Claude Mythos Preview. Named after the glasswing butterfly (*Greta oto*). |
+| **Claude Mythos Preview System Card** | https://anthropic.com/claude-mythos-preview-system-card | Apr 7, 2026 | Detailed capability, safety, and evaluation documentation for Mythos Preview |
+| Claude Opus 4.6 Announcement | https://www.anthropic.com/news/claude-opus-4-6 | Feb 5, 2026 | Frontier model with enhanced cybersecurity capabilities; context for Mythos emergence |
+| Claude Opus 4.6 System Card | https://www.anthropic.com/claude-opus-4-6-system-card | Feb 5, 2026 | Comprehensive safety evaluations including new cybersecurity probes |
+| Claude Sonnet 4.6 Announcement | https://www.anthropic.com/news/claude-sonnet-4-6 | Feb 17, 2026 | Frontier performance across coding, agents, and professional work |
+| Claude Models Overview | https://platform.claude.com/docs/en/docs/about-claude/models | Ongoing | Model comparison including Mythos Preview availability note (invitation-only) |
+
+### Frontier Red Team Research
+
+| Resource | URL | Date | Description |
+|----------|-----|------|-------------|
+| **Assessing Claude Mythos Preview's Cybersecurity Capabilities** | https://red.anthropic.com/2026/mythos-preview | Apr 7, 2026 | Technical deep-dive: zero-day discovery in every major OS and browser, autonomous exploit development, kernel privilege escalation, JIT heap sprays, reverse engineering. Includes SHA-3 commitments for undisclosed vulnerabilities. |
+| **Evaluating and Mitigating the Growing Risk of LLM-Discovered 0-Days** | https://red.anthropic.com/2026/zero-days/ | Feb 5, 2026 | Opus 4.6 zero-day vulnerability findings (500+ high-severity), methodology, and new cyber-specific detection probes |
+| Building AI for Cyber Defenders | https://www.anthropic.com/research/building-ai-cyber-defenders | Oct 3, 2025 | Sonnet 4.5 cybersecurity improvements, Cybench and CyberGym benchmarks, defensive AI research |
+| Partnering with Mozilla to Improve Firefox's Security | https://www.anthropic.com/news/mozilla-firefox-security | Mar 6, 2026 | Collaboration to find and fix vulnerabilities in Firefox using Claude |
+| Frontier Red Team Blog | https://red.anthropic.com/ | Ongoing | Anthropic's offensive security research blog |
+| Anthropic Coordinated Vulnerability Disclosure | https://www.anthropic.com/coordinated-vulnerability-disclosure | Ongoing | Responsible disclosure operating principles for AI-discovered vulnerabilities |
+
+### Key Findings — Claude Mythos Preview
+
+| Finding | Detail |
+|---------|--------|
+| Zero-day vulnerabilities | Thousands of high-severity zero-days found in every major OS (Linux, OpenBSD, FreeBSD) and every major web browser |
+| Oldest bug found | 27-year-old TCP SACK vulnerability in OpenBSD (now patched) |
+| FFmpeg vulnerability | 16-year-old H.264 codec bug in code fuzzed 5 million times without detection |
+| FreeBSD RCE | Autonomous discovery and exploitation of CVE-2026-4747 (17-year-old NFS vulnerability granting unauthenticated root) |
+| Linux kernel | Multiple local privilege escalation exploit chains (KASLR bypass + heap spray + write primitive) |
+| Browser exploits | JIT heap spray chains escaping renderer and OS sandboxes |
+| Cryptography | Vulnerabilities in TLS, AES-GCM, and SSH implementations of major crypto libraries |
+| CyberGym score | 83.1% (vs. Opus 4.6 at 66.6%) |
+| Reverse engineering | Closed-source binary analysis yielding firmware vulnerabilities, remote DoS, and privilege escalation |
+| Autonomous operation | Most findings required zero human intervention after initial prompt |
+| Pricing | $25/$125 per million input/output tokens (for Project Glasswing participants) |
+| Availability | Invitation-only research preview via Claude API, Amazon Bedrock, Vertex AI, Microsoft Foundry |
+
+### Industry Partner Announcements
+
+| Organization | Announcement URL | Key Quote / Focus |
+|-------------|-----------------|-------------------|
+| **Microsoft (MSRC)** | https://www.microsoft.com/en-us/msrc/blog/2026/04/strengthening-secure-software-global-scale-how-msrc-is-evolving-with-ai | "Claude Mythos Preview showed substantial improvements compared to previous models" on CTI-REALM benchmark |
+| **Amazon Web Services** | https://aws.amazon.com/blogs/security/building-ai-defenses-at-scale-before-the-threats-emerge | Applied Mythos Preview to critical codebases in AWS security operations |
+| **CrowdStrike** | https://www.crowdstrike.com/en-us/blog/crowdstrike-founding-member-anthropic-mythos-frontier-model-to-secure-ai/ | "AI capabilities have crossed a threshold" — founding member focusing on endpoint and cloud defense |
+| **Linux Foundation** | https://www.linuxfoundation.org/blog/project-glasswing-gives-maintainers-advanced-ai-to-secure-open-source | $2.5M to Alpha-Omega/OpenSSF + $1.5M to Apache Foundation for open-source maintainers |
+| **Google Cloud** | https://cloud.google.com/blog/products/ai-machine-learning/claude-mythos-preview-on-vertex-ai | Mythos Preview available to participants via Vertex AI |
+| **Palo Alto Networks** | https://www.paloaltonetworks.com/perspectives/weaponized-intelligence/ | "Clear signal that the old ways of hardening systems are no longer sufficient" |
+| **Cisco** | https://blogs.cisco.com/news/rising-to-the-era-of-ai-powered-cyber-defense | "Providers of technology must aggressively adopt new approaches now" |
+
+### Anthropic Safety & Alignment (Supporting Context)
+
+| Resource | URL | Description |
+|----------|-----|-------------|
+| Claude's Character | https://www.anthropic.com/research/claude-character | Character training methodology — curiosity, open-mindedness, honesty |
+| Claude's Constitution | https://www.anthropic.com/constitution | Constitutional AI principles governing Claude's behavior |
+| Responsible Scaling Policy | https://www.anthropic.com/news/announcing-our-updated-responsible-scaling-policy | AI safety commitment levels (ASL) framework |
+| Trustworthy Agents in Practice | https://www.anthropic.com/research/trustworthy-agents | How Anthropic ensures agentic AI systems are trustworthy |
+| Sleeper Agents Research | https://arxiv.org/abs/2401.05566 | Backdoor behaviors surviving safety training (referenced in §7) |
+| Security and Compliance | https://trust.anthropic.com/ | Anthropic trust center — SOC 2, data handling, security posture |
+| Anthropic Transparency Hub | https://www.anthropic.com/transparency | Model training data cutoffs, knowledge reliability dates |
 
 ---
 
