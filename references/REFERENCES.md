@@ -469,6 +469,50 @@ Kusto Query Language references for Sentinel and Advanced Hunting.
 | Must Learn KQL | https://github.com/rod-trent/MustLearnKQL | Rod Trent's KQL learning series |
 | KQL Search | https://www.kqlsearch.com/ | Search engine for KQL examples |
 
+### Detection Engineering — Sigma Rules to Sentinel
+
+Converting community detection rules (Sigma YAML, YARA-L, Splunk SPL) to Microsoft Sentinel analytics rules and Defender XDR custom detections. Leverage GitHub Copilot, Security Copilot, and VS Code to accelerate detection-as-code workflows.
+
+#### Sigma Rule Ecosystem
+
+| Resource | URL | Description |
+|----------|-----|-------------|
+| **SigmaHQ Rule Repository** | https://github.com/SigmaHQ/sigma | 3,000+ community-reviewed detection rules — generic, threat hunting, emerging threats, compliance |
+| Sigma Specification | https://github.com/SigmaHQ/sigma-specification | Formal Sigma YAML rule format specification |
+| **pySigma** | https://github.com/SigmaHQ/pySigma | Core Python library for Sigma rule parsing, processing, and backend conversion |
+| pySigma Kusto Backend | https://pypi.org/project/pySigma-backend-kusto/ | pySigma backend converting Sigma rules to KQL for Sentinel, Defender XDR, and Azure Monitor |
+| Sigma CLI | https://github.com/SigmaHQ/sigma-cli | Command-line Sigma rule converter (`sigma convert -t kusto -p sentinel_asim rule.yml`) |
+| **sigconverter.io** | https://sigconverter.io/ | Web GUI for Sigma-to-SIEM conversion — supports Microsoft Sentinel ASIM, XDR, Azure Monitor targets |
+| SigmAIQ (AttackIQ) | https://github.com/AttackIQ/SigmAIQ | pySigma wrapper with LLM support — includes `microsoft_xdr`, `microsoft_sentinel_asim`, `microsoft_azure_monitor` backends |
+| Sigma Rule Packages | https://github.com/SigmaHQ/sigma/releases | Pre-built rule package downloads (updated monthly) |
+
+#### Microsoft Sentinel Detection Authoring
+
+| Resource | URL | Description |
+|----------|-----|-------------|
+| **Create Scheduled Analytics Rule** | https://learn.microsoft.com/azure/sentinel/create-analytics-rules | Step-by-step: build custom KQL detection rules in Sentinel |
+| Built-in Analytics Rule Templates | https://learn.microsoft.com/azure/sentinel/detect-threats-built-in | Out-of-the-box detections from Content Hub |
+| Import/Export Analytics Rules (ARM) | https://learn.microsoft.com/azure/sentinel/import-export-analytics-rules | Export rules to JSON ARM templates, import across workspaces and tenants |
+| **Custom Detections (Unified)** | https://learn.microsoft.com/defender-xdr/custom-detections-overview | Unified detection experience across Sentinel SIEM and Defender XDR — real-time, auto entity mapping |
+| ASIM (Normalization) Overview | https://learn.microsoft.com/azure/sentinel/normalization | Advanced Security Information Model for vendor-agnostic detections |
+| Content Hub & Solutions | https://learn.microsoft.com/azure/sentinel/sentinel-solutions | Discover and deploy packaged analytics rules, workbooks, playbooks |
+| Deploy Custom Content from Repo | https://learn.microsoft.com/azure/sentinel/ci-cd | CI/CD pipeline for detection-as-code from Git repositories |
+| Sentinel Analytics REST API | https://learn.microsoft.com/rest/api/securityinsights/alert-rules | Programmatic analytics rule management (create, update, delete) |
+| Azure Sentinel Community (GitHub) | https://github.com/Azure/Azure-Sentinel | Community detections, hunting queries, workbooks, playbooks |
+
+#### AI-Assisted Detection Conversion Workflow
+
+Use these tools together to convert Sigma/community detections to Sentinel:
+
+| Step | Tool | How |
+|------|------|-----|
+| 1. Browse rules | SigmaHQ, Azure-Sentinel | Find community rules matching MITRE technique or log source |
+| 2. Convert to KQL | pySigma / Sigma CLI / sigconverter.io | `sigma convert -t kusto -p sentinel_asim rule.yml` or use SigmAIQ programmatically |
+| 3. Refine with Copilot | GitHub Copilot (VS Code) | Paste KQL in `.kql` file — Copilot suggests ASIM field mappings, entity projections, threshold tuning |
+| 4. Validate & optimize | Security Copilot (KQL Query Builder skill) | Ask Security Copilot to validate KQL syntax, apply ASIM normalization, suggest entity mappings |
+| 5. Deploy as rule | Sentinel Analytics API / ARM / CI/CD | Import via ARM template, push via `az sentinel analytics-rule create`, or Git CI/CD pipeline |
+| 6. Test with Copilot Agent | Security Copilot custom agent | Build a detection validation agent (YAML manifest) that runs converted rules and reports match counts |
+
 ---
 
 ## 14. AI Agents, MCP & Copilot
