@@ -108,6 +108,9 @@ Choose your investigation path:
         │   ✅ Automate with AI       │
         │   ✅ Generate reports       │
         │   ✅ Make recommendations   │
+        │   ✅ Assess exposure posture│
+        │   ✅ Execute response actions│
+        │   ✅ Manage IOC lifecycle   │
         └─────────────────────────────┘
 
 ```
@@ -163,18 +166,18 @@ Choose your investigation path:
 
 ## 🎯 Lab Objectives Matrix
 
-| Lab | KQL | MCP | SessionId | Enrichment | Reporting | Automation |
-|-----|-----|-----|-----------|------------|-----------|------------|
-| 101 | ⭐   | ⭐⭐⭐ | -         | -          | ⭐        | -          |
-| 102 | ⭐⭐  | ⭐⭐⭐ | -         | ⭐         | ⭐⭐       | ⭐         |
-| 103 | ⭐⭐⭐ | ⭐⭐  | ⭐⭐⭐      | ⭐⭐⭐       | ⭐⭐       | ⭐         |
-| 104 | ⭐⭐⭐ | ⭐⭐  | ⭐        | ⭐⭐        | ⭐        | -          |
-| 105 | ⭐⭐  | ⭐⭐⭐ | ⭐        | ⭐         | ⭐⭐⭐      | ⭐         |
-| 106 | ⭐   | ⭐⭐⭐ | ⭐        | ⭐⭐        | ⭐⭐⭐      | ⭐⭐⭐       |
-| 201 | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐      | ⭐⭐⭐       | ⭐⭐⭐      | ⭐⭐        |
-| 202 | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐      | ⭐⭐⭐       | ⭐⭐⭐      | ⭐⭐        |
-| 203 | ⭐⭐⭐ | ⭐⭐  | ⭐⭐       | ⭐⭐        | ⭐⭐⭐      | ⭐         |
-| 204 | ⭐⭐⭐ | ⭐⭐⭐ | ⭐        | ⭐         | ⭐⭐⭐      | ⭐         |
+| Lab | KQL | MCP | SessionId | Enrichment | Reporting | Automation | Exposure/CTEM | Response |
+|-----|-----|-----|-----------|------------|-----------|------------|---------------|----------|
+| 101 | ⭐   | ⭐⭐⭐ | -         | -          | ⭐        | -          | -             | -        |
+| 102 | ⭐⭐  | ⭐⭐⭐ | -         | ⭐         | ⭐⭐       | ⭐         | -             | -        |
+| 103 | ⭐⭐⭐ | ⭐⭐  | ⭐⭐⭐      | ⭐⭐⭐       | ⭐⭐       | ⭐         | -             | -        |
+| 104 | ⭐⭐⭐ | ⭐⭐  | ⭐        | ⭐⭐        | ⭐        | -          | -             | -        |
+| 105 | ⭐⭐  | ⭐⭐⭐ | ⭐        | ⭐         | ⭐⭐⭐      | ⭐         | -             | ⭐⭐      |
+| 106 | ⭐   | ⭐⭐⭐ | ⭐        | ⭐⭐        | ⭐⭐⭐      | ⭐⭐⭐       | ⭐             | ⭐       |
+| 201 | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐      | ⭐⭐⭐       | ⭐⭐⭐      | ⭐⭐        | -             | ⭐       |
+| 202 | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐      | ⭐⭐⭐       | ⭐⭐⭐      | ⭐⭐        | -             | ⭐⭐      |
+| 203 | ⭐⭐⭐ | ⭐⭐  | ⭐⭐       | ⭐⭐        | ⭐⭐⭐      | ⭐         | -             | ⭐       |
+| 204 | ⭐⭐⭐ | ⭐⭐⭐ | ⭐        | ⭐         | ⭐⭐⭐      | ⭐         | -             | -        |
 
 ⭐ = Basic Coverage | ⭐⭐ = Intermediate | ⭐⭐⭐ = Advanced
 
@@ -240,4 +243,43 @@ Each lab includes:
 
 ---
 
-**Ready to start learning?** → [Begin with Lab 101: Getting Started](../101-getting-started/)
+## 🆕 New Skills & Data Sources (2026)
+
+Since the original labs were created, CyberProbe has expanded significantly. These capabilities enhance the lab exercises:
+
+### New Agent Skills (11 total)
+
+| Skill | What It Adds to Labs | Relevant Labs |
+|-------|---------------------|---------------|
+| `exposure-management` | CTEM metrics, ExposureGraph visualization, CNAPP posture, choke point analysis | Lab 104, 106 |
+| `defender-response` | Active containment (isolate devices, disable accounts, AV scans, forensic packages) | Lab 105, 201, 202 |
+| `endpoint-device-investigation` | Device forensics: process trees, network connections, file ops, CVEs, lateral movement | Lab 104, 105 |
+| `incident-correlation-analytics` | Campaign detection, MTTD/MTTA/MTTR, heatmaps, top impacted users/devices | Lab 106 |
+| `ioc-management` | IOC extraction, bulk enrichment, watchlists, STIX export, lifecycle management | Lab 201, 203, 204 |
+| `kql-query-builder` | Natural language to validated KQL, 331+ table schemas, Sentinel Analytic Rules, ASIM | All labs |
+
+### New Data Sources
+
+| Data Source | Table(s) | Where Used |
+|-------------|----------|------------|
+| Exposure Graph | `ExposureGraphNodes`, `ExposureGraphEdges` | Attack surface topology, choke points |
+| Device TVM | `DeviceTvmSoftwareVulnerabilities` | Vulnerability posture, CVE rankings |
+| Defender for Cloud | `securityresources` (ARG) | Compliance posture, attack paths |
+| VirusTotal | Via `enrich_iocs.py` | Domain & file hash reputation |
+| Shodan | Via `enrich_ips.py` | Open ports, CVEs, service scanning |
+
+### MCP Apps (Inline Visualizations)
+
+The `sentinel-exposure-server` MCP App renders interactive visualizations inline in Copilot Chat:
+
+| Tool | Visualization |
+|------|---------------|
+| `show-exposure-graph` | Force-directed SVG graph with color-coded nodes, choke points, internet-facing assets |
+| `show-vulnerability-dashboard` | Severity distribution, device rankings, OS platforms, top CVEs |
+| `show-compliance-posture` | Gauge charts per standard, attack path cards, recommendation table |
+
+See [mcp-apps/README.md](../mcp-apps/README.md) for architecture and build details.
+
+---
+
+**Ready to start learning?** → [Begin with Lab 101: Getting Started](./101-getting-started/)

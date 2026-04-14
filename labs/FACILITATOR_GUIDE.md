@@ -110,7 +110,11 @@
 10:45-11:00  Break
 11:00-12:30  Lab 202: Compromised Identity (Group Exercise)
 12:30-13:30  Lunch
-13:30-15:00  Lab 203 OR 204: Choose Your Scenario
+13:30-14:15  Lab 203 OR 204: Choose Your Scenario
+14:15-15:00  Exposure Management & Response Actions Workshop
+             - Live CTEM posture assessment (exposure-management skill)
+             - MCP App inline visualizations demo
+             - Active response walkthrough (defender-response skill)
 15:00-15:15  Break
 15:15-16:30  Bring Your Own Incident (BYOI) Session
 16:30-17:30  Certification Exam (Optional)
@@ -121,6 +125,8 @@
 - Full mastery of all investigation techniques
 - Custom query development skills
 - Apply to real organizational incidents
+- Exposure posture assessment and CTEM reporting
+- Active response and containment workflows
 - Certification-ready (if offered)
 
 ---
@@ -462,9 +468,11 @@ A: "Great question!
 ### Wrap-Up Script
 
 > "Congratulations on completing [X] labs today! Let's recap what you've mastered:
-> - ✅ Environment setup and MCP queries
+> - ✅ Environment setup and MCP queries (8 MCP servers, 56+ tools)
 > - ✅ Automated investigation workflow (5 phases)
 > - ✅ SessionId forensic tracing
+> - ✅ 11 agent skills for automated analysis
+> - ✅ Inline MCP App visualizations (exposure graph, vulnerability dashboard, compliance posture)
 > - ✅ [Other labs completed]
 > 
 > You now have all the skills to investigate real incidents in your environment. Your next steps:

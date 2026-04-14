@@ -1,6 +1,6 @@
 # CyberProbe Labs - Implementation Summary
 
-**Status**: ✅ **ALL LABS COMPLETE** (Updated January 15, 2026)
+**Status**: ✅ **ALL LABS COMPLETE** (Updated April 13, 2026)
 
 ## 📁 Complete Directory Structure
 
@@ -118,6 +118,14 @@ Fundamentals (300 min) + Scenarios (360 min) = 660 minutes total
 | DLP Investigation | 204 |
 | Behavioral Analysis | 203 |
 | Automation | 106 |
+| Exposure Management / CTEM | 104 (extended), 106 (extended) |
+| Active Response / Containment | 105 (extended), 201 (extended), 202 (extended) |
+| Endpoint Device Forensics | 104 (extended), 105 (extended) |
+| IOC Lifecycle Management | 201 (extended), 203 (extended), 204 (extended) |
+| SOC KPI Analytics | 106 (extended) |
+| KQL Query Builder (AI-assisted) | All labs |
+| Microsoft Learn Docs | 106 |
+| MCP App Visualizations | 106 (extended) |
 
 ---
 
@@ -264,8 +272,10 @@ This lab structure provides a **COMPLETE training platform**:
 | **10 Production Labs** | 660 minutes (11 hours) of hands-on training |
 | **60+ Exercises** | With validation checkpoints and solutions |
 | **50+ KQL Queries** | Production-ready, fully documented |
-| **4 Real-World Scenarios** | Based on actual incident patterns |
-| **Full Documentation** | Quick reference, learning path, facilitator guide |
+| **4 Real-World Scenarios** | Based on actual incident patterns || **11 Agent Skills** | All referenceable from lab exercises |
+| **8 MCP Servers** | 56+ tools integrated across labs |
+| **MCP App Visualizations** | Inline exposure graph, vuln dashboard, compliance posture |
+| **New Data Sources** | ExposureGraphNodes/Edges, DeviceTvmSoftwareVulnerabilities, securityresources || **Full Documentation** | Quick reference, learning path, facilitator guide |
 | **Instructor Support** | 3 workshop formats with schedules and scripts |
 
 **This transforms CyberProbe from a tool into a complete training platform!**
@@ -306,10 +316,24 @@ All labs include:
 
 ## ✅ IMPLEMENTATION COMPLETE
 
-**Completed**: January 15, 2026  
+**Originally Completed**: January 15, 2026  
+**Last Updated**: April 13, 2026  
 **Labs Created**: 10 (6 fundamentals + 4 scenarios)  
+**Agent Skills Referenced**: 11  
+**MCP Servers**: 8 (7 remote HTTP + 1 local stdio MCP App)  
 **Total Training Hours**: ~11 hours  
 **Status**: Ready for production use
+
+### April 2026 Update Highlights
+
+- Added **6 new agent skills** to lab documentation (exposure-management, defender-response, endpoint-device-investigation, incident-correlation-analytics, ioc-management, kql-query-builder)
+- Integrated **MCP App inline visualization** tools (show-exposure-graph, show-vulnerability-dashboard, show-compliance-posture)
+- Added **new data source** references (ExposureGraphNodes/Edges, DeviceTvmSoftwareVulnerabilities, securityresources ARG)
+- Updated **QUICK_REFERENCE.md** with new investigation patterns (exposure posture, active response, IOC management)
+- Updated **DEMO_GUIDE.md** with 6 new skill demonstration scripts (Skills 6-11)
+- Updated **FACILITATOR_GUIDE.md** with exposure/response workshop block in 2-day format
+- Updated **LEARNING_PATH.md** with Exposure/CTEM and Response columns in objectives matrix
+- Updated **skill counts** throughout: 5 → 11 skills, MCP tool references expanded
 
 ---
 

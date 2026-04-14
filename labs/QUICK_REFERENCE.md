@@ -90,6 +90,85 @@ Quick investigate <user@domain.com>
 
 ---
 
+### Pattern 5: Exposure & Posture Assessment
+
+**When to use**: Security posture review, CTEM reporting, vulnerability prioritization
+
+**Prompt to Copilot**:
+```
+What's our exposure posture? Show me choke points and critical vulnerabilities
+```
+
+**What happens** (automatically via `exposure-management` skill):
+1. Queries `ExposureGraphNodes` / `ExposureGraphEdges` for attack surface topology
+2. Identifies choke points (nodes with high blast radius)
+3. Queries `DeviceTvmSoftwareVulnerabilities` for CVE inventory
+4. Checks compliance posture via Azure Resource Graph (`securityresources`)
+5. Renders inline visualizations (exposure graph, vuln dashboard, compliance gauges)
+
+**Key Tables** (Advanced Hunting only — no `Timestamp` column):
+```kql
+// Choke point analysis
+ExposureGraphNodes
+| where isnotempty(NodeProperties)
+| extend Props = parse_json(NodeProperties).rawData
+| extend ExposureScore = todouble(Props.exposureScore)
+| where ExposureScore > 50
+| project NodeName, NodeLabel, ExposureScore
+| order by ExposureScore desc
+| take 20
+```
+
+```kql
+// Top unpatched CVEs across devices
+DeviceTvmSoftwareVulnerabilities
+| summarize DeviceCount = dcount(DeviceId) by CveId, VulnerabilitySeverityLevel
+| where VulnerabilitySeverityLevel == "Critical"
+| order by DeviceCount desc
+| take 15
+```
+
+**Expected Time**: ~3-5 minutes (with MCP App visualizations)
+
+---
+
+### Pattern 6: Active Response & Containment
+
+**When to use**: Confirmed compromise, device isolation, account lockdown
+
+**Prompt to Copilot**:
+```
+Isolate device WORKSTATION-01 and disable the compromised user account
+```
+
+**What happens** (via `defender-response` skill):
+1. Confirms action with analyst (never auto-executes destructive actions)
+2. Isolates device via Defender API
+3. Marks user compromised in Entra ID
+4. Revokes all active sessions/tokens
+5. Logs all actions taken with timestamps
+
+**Expected Time**: ~1-2 minutes (after analyst confirmation)
+
+---
+
+### Pattern 7: IOC Management & Bulk Enrichment
+
+**When to use**: Post-investigation IOC tracking, threat intel feeds, watchlist updates
+
+**Prompt to Copilot**:
+```
+Extract all IOCs from investigation_jdoe_2026-01-15.json and enrich them
+```
+
+**What happens** (via `ioc-management` skill):
+1. Parses investigation JSON for IPs, domains, file hashes, URLs
+2. Deduplicates and classifies IOC types
+3. Enriches via AbuseIPDB, IPInfo, VPNapi, Shodan, VirusTotal
+4. Exports to STIX format for SIEM integration
+
+---
+
 ## 🔍 Essential KQL Patterns
 
 ### Get Recent Sign-ins
@@ -172,8 +251,32 @@ mcp_data_explorat_query_lake(query, workspaceId)
 ```
 mcp_triage_ListIncidents(createdAfter, createdBefore, severity, status)
 mcp_triage_GetIncidentById(incidentId, includeAlertsData)
+mcp_triage_RunAdvancedHuntingQuery(query)         # DeviceTvm*, ExposureGraph*, AH-only tables
+mcp_triage_FetchAdvancedHuntingTablesOverview()    # Discover available tables
+mcp_triage_GetDefenderMachine(machineId)           # Machine info, health, risk level
+mcp_triage_GetDefenderMachineVulnerabilities(id)   # CVEs on specific device
 mcp_triage_GetDefenderFileInfo(fileHash)
 mcp_triage_GetDefenderIpStatistics(ipAddress)
+mcp_triage_ListUserRelatedAlerts(userId)           # Alerts involving a user
+mcp_triage_ListUserRelatedMachines(userId)         # Machines a user logged into
+```
+
+### Response Actions (via `defender-response` skill)
+```
+defender_isolate_device(machineId)       # Network-isolate a compromised device
+defender_release_device(machineId)       # Release isolation
+defender_run_antivirus_scan(machineId)   # Trigger AV scan
+defender_collect_investigation_package(machineId)  # Forensic collection
+defender_confirm_user_compromised(userId)          # Mark user compromised in Entra
+defender_disable_ad_account(userId)      # Disable account
+defender_revoke_entra_sessions(userId)   # Revoke all active tokens
+```
+
+### MCP App Visualizations (Exposure Management)
+```
+show-exposure-graph      # Force-directed SVG topology — choke points, internet exposure
+show-vulnerability-dashboard  # Severity bars, device rankings, CVE tables
+show-compliance-posture  # Gauge charts, attack paths, recommendations
 ```
 
 ### Microsoft Graph
@@ -329,12 +432,17 @@ Quick navigation to most-used sections:
 - ✅ Threat hunting
 - ✅ Incident response workflows
 - ✅ IP threat intelligence
+- ✅ Active response / containment actions
 
 ### Advanced (Lab 106, 200-Series)
 - ✅ Full investigation automation
 - ✅ Multi-stage attack analysis
 - ✅ Behavioral analytics
 - ✅ Playbook execution
+- ✅ Exposure posture assessment (CTEM, CNAPP)
+- ✅ IOC lifecycle management
+- ✅ SOC KPI analytics (MTTD/MTTA/MTTR)
+- ✅ Inline MCP App visualizations
 
 ---
 

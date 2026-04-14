@@ -42,8 +42,9 @@
 | **KQL Queries** | Search security logs for suspicious activity | Think: Google search for security events | Advanced threat hunting with custom detection logic |
 | **MCP Tools** | Automate data collection from Microsoft systems | Think: Autopilot for investigations | Programmatic API access for custom integrations |
 | **IP Enrichment** | Check if IP addresses are malicious | Think: "Is this caller safe?" lookup | Multi-source threat intelligence correlation |
-| **Agent Skills** | Teach AI how to investigate for you | Think: Training an assistant | Custom automation workflows with Copilot |
+| **Agent Skills** | Teach AI how to investigate for you | Think: Training an assistant | 11 custom automation workflows with Copilot |
 | **Reports** | Professional summaries of findings | Think: Automated PowerPoint for executives | Standardized incident documentation |
+| **MCP Apps** | Interactive inline visualizations | Think: Charts that appear in chat | Exposure graphs, vuln dashboards, compliance gauges |
 
 ---
 
@@ -919,7 +920,7 @@ Confidence: 90
 
 ## Skills You Can Demonstrate
 
-CyberProbe includes 5 pre-built Agent Skills. Here's how to demonstrate each one.
+CyberProbe includes 11 pre-built Agent Skills. Here's how to demonstrate each one.
 
 ### Skill 1: **incident-investigation**
 
@@ -1129,6 +1130,128 @@ During the investigation workflow, when malicious activity is detected:
 
 ---
 
+### Skill 6: **exposure-management** 🆕
+
+**Location**: `.github/skills/exposure-management/SKILL.md`
+
+**What it does**: CTEM metrics, attack surface inventory, vulnerability posture, choke points, compliance, and inline MCP App visualizations
+
+**How to demonstrate**:
+1. Ask Copilot: `What's our exposure posture? Show me choke points and critical vulnerabilities`
+2. Watch as it:
+   - Queries `ExposureGraphNodes` / `ExposureGraphEdges` via Advanced Hunting
+   - Identifies internet-facing assets and choke points
+   - Queries `DeviceTvmSoftwareVulnerabilities` for unpatched CVEs
+   - Checks compliance posture via Azure Resource Graph
+   - Renders inline visualizations (exposure graph SVG, vulnerability dashboard, compliance gauges)
+
+**Key talking point**:
+> "This gives security leadership a real-time view of organizational exposure — no portal jumping required."
+
+**Show the output**:
+- Force-directed exposure graph with color-coded nodes
+- Vulnerability severity distribution with top 10 CVEs
+- Compliance gauge per standard (CIS, NIST, PCI-DSS)
+
+---
+
+### Skill 7: **defender-response** 🆕
+
+**Location**: `.github/skills/defender-response/SKILL.md`
+
+**What it does**: Active containment and response actions via Defender APIs
+
+**How to demonstrate**:
+1. Ask Copilot: `Isolate device WORKSTATION-01 — it's part of a confirmed compromise`
+2. Watch as it:
+   - Confirms the action (never auto-executes destructive actions)
+   - Calls `defender_isolate_device` API
+   - Logs the action with timestamp
+
+**Key talking point**:
+> "Response actions are just a chat message away — with built-in analyst confirmation. No more switching to the Defender portal."
+
+**Available actions**: Isolate/release device, AV scan, forensic package, disable account, revoke sessions, mark user compromised
+
+---
+
+### Skill 8: **endpoint-device-investigation** 🆕
+
+**Location**: `.github/skills/endpoint-device-investigation/SKILL.md`
+
+**What it does**: Deep device forensics — process execution, network connections, file operations, CVEs, lateral movement detection
+
+**How to demonstrate**:
+1. Ask Copilot: `Investigate device WORKSTATION-01 for threats`
+2. Watch as it queries:
+   - `DeviceProcessEvents` for suspicious process trees
+   - `DeviceNetworkEvents` for C2 connections
+   - `DeviceFileEvents` for suspicious file drops
+   - `DeviceTvmSoftwareVulnerabilities` for unpatched software
+   - `DeviceLogonEvents` for lateral movement indicators
+
+**Key talking point**:
+> "Full endpoint forensics without touching the device. Query everything from your editor."
+
+---
+
+### Skill 9: **incident-correlation-analytics** 🆕
+
+**Location**: `.github/skills/incident-correlation-analytics/SKILL.md`
+
+**What it does**: SOC KPIs, campaign detection, heatmaps, MTTD/MTTA/MTTR, top impacted users/devices, analyst workload
+
+**How to demonstrate**:
+1. Ask Copilot: `Show me incident trends and SOC metrics for the last 30 days`
+2. Watch as it generates:
+   - Incident volume by severity over time
+   - MTTD/MTTA/MTTR with month-over-month comparison
+   - Top 10 most impacted users and devices
+   - Campaign/cluster detection across incidents
+
+**Key talking point**:
+> "Executive dashboards generated on demand — MTTD, MTTA, MTTR with trend comparison. Perfect for SOC reviews."
+
+---
+
+### Skill 10: **ioc-management** 🆕
+
+**Location**: `.github/skills/ioc-management/SKILL.md`
+
+**What it does**: IOC lifecycle — extraction, enrichment, deduplication, watchlists, STIX export
+
+**How to demonstrate**:
+1. Ask Copilot: `Extract all IOCs from the latest investigation and enrich them`
+2. Watch as it:
+   - Parses investigation JSON for IPs, domains, file hashes, URLs
+   - Deduplicates and classifies IOC types
+   - Enriches via AbuseIPDB, IPInfo, VPNapi, Shodan, VirusTotal
+   - Exports to structured format for SIEM/SOAR ingestion
+
+**Key talking point**:
+> "From investigation to threat intel feed in one command. No manual copy-paste between tools."
+
+---
+
+### Skill 11: **kql-query-builder** 🆕
+
+**Location**: `.github/skills/kql-query-builder/SKILL.md`
+
+**What it does**: Natural language to validated KQL, 331+ table schemas, ASIM normalization, Sentinel Analytic Rule generation
+
+**How to demonstrate**:
+1. Ask Copilot: `Write a KQL query to detect password spray attacks across all sign-in logs`
+2. Watch as it:
+   - Identifies the correct tables (SigninLogs, AADNonInteractiveUserSignInLogs)
+   - Generates syntactically valid KQL with proper operators
+   - Validates against known schema pitfalls
+   - Optionally wraps it as a Sentinel Analytic Rule
+
+**Key talking point**:
+> "Junior analysts describe what they want in English; senior-level KQL appears. Schema validation catches before you run."
+
+---
+
 ## Common Demo Pitfalls
 
 **Problem**: Copilot doesn't activate the skills
@@ -1202,7 +1325,7 @@ During the investigation workflow, when malicious activity is detected:
 - [ ] **Test Copilot connection**:
   - Open Copilot Chat (`Ctrl+Shift+I`)
   - Ask: `What skills do you have available?`
-  - Should see: incident-investigation, threat-enrichment, kql-sentinel-queries, report-generation
+  - Should see 11 skills: incident-investigation, threat-enrichment, kql-sentinel-queries, kql-query-builder, microsoft-learn-docs, report-generation, endpoint-device-investigation, incident-correlation-analytics, ioc-management, defender-response, exposure-management
 
 - [ ] **Prepare sample data**:
   - Navigate to `labs/sample-data/`
@@ -1293,8 +1416,11 @@ A: "CyberProbe is a community project, not officially supported by Microsoft. Ho
 **Resources**:
 - [Investigation-Guide.md](../Investigation-Guide.md) - Complete query reference
 - [README.md](./README.md) - Full lab catalog
-- [.github/skills/](../.github/skills/) - Agent Skills documentation
+- [.github/skills/](../.github/skills/) - 11 Agent Skills documentation
 - [enrichment/README.md](../enrichment/README.md) - IP enrichment setup guide
+- [mcp-apps/README.md](../mcp-apps/README.md) - Interactive visualization MCP Apps
+- [docs/EXPOSURE_MANAGEMENT.md](../docs/EXPOSURE_MANAGEMENT.md) - CTEM framework reference
+- [queries/](../queries/) - 40+ verified KQL queries by domain
 
 ---
 

@@ -87,6 +87,15 @@ By completing this lab series, you will be able to:
 - ✅ Detect insider threats through behavioral analysis
 - ✅ Track data exfiltration via DLP policy violations
 
+**New Capabilities (2026)**
+- ✅ Use the `exposure-management` skill for CTEM metrics and CNAPP posture
+- ✅ Visualize exposure graphs, vulnerability dashboards, and compliance posture inline with MCP Apps
+- ✅ Execute active response actions with the `defender-response` skill (isolate devices, disable accounts)
+- ✅ Extract, enrich, and manage IOCs across investigations with `ioc-management`
+- ✅ Analyze incident trends, detect campaigns, and calculate SOC KPIs with `incident-correlation-analytics`
+- ✅ Perform endpoint forensics with `endpoint-device-investigation` (process trees, lateral movement, CVEs)
+- ✅ Generate and validate custom KQL queries with `kql-query-builder` (331+ table schemas)
+
 ---
 
 ## 📁 Lab Structure
@@ -199,9 +208,13 @@ Have an idea for a new lab scenario? Want to improve existing content?
 ## 📚 Additional Resources
 
 - [Investigation Guide](../Investigation-Guide.md) - Complete reference manual
-- [Agent Skills](.github/skills/) - VS Code Copilot automation skills
-- [Enrichment Scripts](../enrichment/) - Threat intelligence integration
+- [Agent Skills](../.github/skills/) - 11 VS Code Copilot automation skills
+- [Enrichment Scripts](../enrichment/) - Threat intelligence integration (AbuseIPDB, IPInfo, VPNapi, Shodan, VirusTotal)
 - [Report Templates](../reports/) - Investigation report examples
+- [MCP Apps](../mcp-apps/) - Interactive inline visualizations (exposure graph, vuln dashboard, compliance posture)
+- [Query Library](../queries/) - 40+ verified KQL queries organized by domain (identity, endpoint, email, network, cloud, SOC metrics)
+- [XDR Tables & APIs](../docs/XDR_TABLES_AND_APIS.md) - Complete table schemas, API endpoints, and fallback patterns
+- [Exposure Management Guide](../docs/EXPOSURE_MANAGEMENT.md) - CTEM framework and scoring methodologies
 
 ---
 
