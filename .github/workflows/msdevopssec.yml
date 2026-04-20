@@ -21,6 +21,11 @@ jobs:
       - name: Run Microsoft Security DevOps
         uses: microsoft/security-devops-action@v1
         id: msdo
+        with:
+          # Skip eslint: the MCP TS project has no eslint config and MSDO's
+          # bundled eslint exits 2 when it can't parse TypeScript, breaking the
+          # whole workflow. Keep the tools that actually cover this repo.
+          tools: bandit,checkov,templateanalyzer,trivy
 
       - name: Upload results to Security tab
         uses: github/codeql-action/upload-sarif@v3
