@@ -606,7 +606,7 @@
     <p style="font-size: 15px; line-height: 1.8; margin-bottom: 16px;">
       On March 31, 2026, between <strong>12:34 and 12:50 UTC</strong>, an AI agent operating via the
       <strong>MCPPlatform-WebApi</strong> Graph API client programmatically uploaded <strong>6 sensitive security documents</strong>
-      to the OneDrive of user <strong>Claudine Irwin (admin.ops@contoso.com)</strong>, a designated <strong>Critical Asset</strong>.
+      to the OneDrive of user <strong>User E (user5@contoso.com)</strong>, a designated <strong>Critical Asset</strong>.
     </p>
     <p style="font-size: 15px; line-height: 1.8; margin-bottom: 16px;">
       The documents contained active Defender alerts, security threat incidents, and incident reports dated to the same day — indicating the AI agent was <strong>extracting live security operations data and writing it to a user's personal cloud storage</strong>. Microsoft DLP immediately flagged all uploads as <strong>Exfiltration</strong> tactic events under the "Block sharing sensitive information in Teams" policy.
@@ -629,8 +629,8 @@
       <div class="entity-card">
         <div class="entity-icon user">&#x1F464;</div>
         <div>
-          <div class="entity-name">Claudine Irwin</div>
-          <div class="entity-detail">admin.ops@contoso.com</div>
+          <div class="entity-name">User E</div>
+          <div class="entity-detail">user5@contoso.com</div>
           <div class="entity-detail" style="margin-top: 4px;">Entra ID: 44556677-8899-0011-2233-ccddeeff0011</div>
           <span class="entity-tag tag-critical">Critical Asset</span>
           <span class="entity-tag tag-suspicious">Verdict: Suspicious</span>
@@ -690,7 +690,7 @@
         <div class="diagram-node action">
           <div class="diagram-label">Authentication</div>
           &#x1F511; Graph API (Delegated)
-          <div class="diagram-sublabel">Acting as admin.ops@contoso.com</div>
+          <div class="diagram-sublabel">Acting as user5@contoso.com</div>
         </div>
         <div class="diagram-arrow">&#x27A1;&#xFE0F;</div>
         <div class="diagram-node target">
@@ -767,7 +767,7 @@
       <div class="flow-step step-initial">
         <div class="flow-time">2026-03-31 09:23:04 UTC</div>
         <div class="flow-title">Purview IRM — Risky AI Usage Detected (Pre-Cursor)</div>
-        <div class="flow-detail">3 High-severity "IRM Risky AI Usage - M365 Copilot" and "IRM Policy for Risky AI usage" alerts fire for admin.ops@contoso.com. Detection: Insider Risk Management. XDR Incident #50893.</div>
+        <div class="flow-detail">3 High-severity "IRM Risky AI Usage - M365 Copilot" and "IRM Policy for Risky AI usage" alerts fire for user5@contoso.com. Detection: Insider Risk Management. XDR Incident #50893.</div>
         <span class="flow-tag" style="background: var(--warning-bg); color: var(--warning);">IRM ALERT</span>
         <span class="flow-tag" style="background: var(--critical-bg); color: var(--critical);">HIGH</span>
       </div>
@@ -933,7 +933,7 @@
     </div>
 
     <div class="correlation-box">
-      <h4>&#x1F50D; Cross-Signal Correlation: admin.ops@contoso.com</h4>
+      <h4>&#x1F50D; Cross-Signal Correlation: user5@contoso.com</h4>
       <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
         This user triggered alerts across <strong>3 distinct detection engines</strong> on the same day, forming a clear multi-phase attack signal:
       </p>
@@ -1180,7 +1180,7 @@
       <li class="action-item">
         <div class="action-priority priority-1">1</div>
         <div>
-          <div class="action-text"><strong>Manually disable admin.ops@contoso.com</strong> in Entra ID or revoke all sessions via Graph API / Entra Portal.</div>
+          <div class="action-text"><strong>Manually disable user5@contoso.com</strong> in Entra ID or revoke all sessions via Graph API / Entra Portal.</div>
           <div class="action-time">Automated playbook failed — requires manual SOC intervention</div>
         </div>
       </li>

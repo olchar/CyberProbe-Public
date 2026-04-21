@@ -452,11 +452,11 @@
     </div>
   </div>
   <h1 class="header-title">Incident #51873 — AI Foundry Agent Jailbreak via Prompt Injection</h1>
-  <p class="header-subtitle">A direct prompt injection attack was detected on Azure AI Foundry agent <strong>chat_agent_vii</strong> deployed on the <strong>ais-contoso-procurementagent</strong> Cognitive Services resource. The attack was blocked by Azure Responsible AI Prompt Shields.</p>
+  <p class="header-subtitle">A direct prompt injection attack was detected on Azure AI Foundry agent <strong><AgentName></strong> deployed on the <strong>ais-contoso-procurementagent</strong> Cognitive Services resource. The attack was blocked by Azure Responsible AI Prompt Shields.</p>
   <div class="header-meta">
     <div class="meta-item"><span class="meta-label">Report Date</span><span class="meta-value">March 18, 2026</span></div>
     <div class="meta-item"><span class="meta-label">Investigation Window</span><span class="meta-value">Mar 3 – Mar 18, 2026 (15 days)</span></div>
-    <div class="meta-item"><span class="meta-label">Primary Entity</span><span class="meta-value">chat_agent_vii (AI Agent)</span></div>
+    <div class="meta-item"><span class="meta-label">Primary Entity</span><span class="meta-value"><AgentName> (AI Agent)</span></div>
     <div class="meta-item"><span class="meta-label">Classification</span><span class="meta-value" style="color: var(--text-muted);">Unknown (Unclassified)</span></div>
     <div class="meta-item"><span class="meta-label">Case Status</span><span class="meta-value" style="color: var(--warning);">Active</span></div>
     <div class="meta-item"><span class="meta-label">Workspace</span><span class="meta-value">SecOps-Workspace</span></div>
@@ -500,7 +500,7 @@
     </div>
   </div>
   <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
-    On <strong>March 17, 2026 at 09:02 UTC</strong>, Microsoft Defender for AI Services detected a <strong>User Prompt Injection Attack (UPIA)</strong> — also known as a jailbreak — targeting the Azure AI Foundry agent <code>chat_agent_vii</code> (Agent ID: <code>asst_nDelHyfVwFQ7Bz3jFvztVnpQ</code>) deployed on the <strong>ais-contoso-procurementagent</strong> Cognitive Service. The attack originated from IP <strong>168.61.150.239</strong> (Des Moines, Iowa, US) and was executed through the <code>AIProjectClient azsdk-python-ai-agents/1.2.0b5</code> SDK running on Linux. This is the <strong style="color: var(--accent2);">first agentic jailbreak</strong> detected in this environment — previous attacks targeted standard Azure OpenAI model deployments. The attack was <strong style="color: var(--success);">detected by Azure Responsible AI Content Filtering (Prompt Shields)</strong>. Across the full 15-day investigation window, <strong>12 jailbreak attacks</strong> were detected across <strong>3 AI resources</strong>, with <strong>4 high-severity anonymized IP access alerts</strong> indicating potential threat actor reconnaissance.
+    On <strong>March 17, 2026 at 09:02 UTC</strong>, Microsoft Defender for AI Services detected a <strong>User Prompt Injection Attack (UPIA)</strong> — also known as a jailbreak — targeting the Azure AI Foundry agent <code><AgentName></code> (Agent ID: <code>asst_nDelHyfVwFQ7Bz3jFvztVnpQ</code>) deployed on the <strong>ais-contoso-procurementagent</strong> Cognitive Service. The attack originated from IP <strong>203.0.113.20</strong> (Des Moines, Iowa, US) and was executed through the <code>AIProjectClient azsdk-python-ai-agents/1.2.0b5</code> SDK running on Linux. This is the <strong style="color: var(--accent2);">first agentic jailbreak</strong> detected in this environment — previous attacks targeted standard Azure OpenAI model deployments. The attack was <strong style="color: var(--success);">detected by Azure Responsible AI Content Filtering (Prompt Shields)</strong>. Across the full 15-day investigation window, <strong>12 jailbreak attacks</strong> were detected across <strong>3 AI resources</strong>, with <strong>4 high-severity anonymized IP access alerts</strong> indicating potential threat actor reconnaissance.
   </p>
 </div>
 
@@ -511,7 +511,7 @@
     <div class="entity-card">
       <div class="entity-icon ai">🤖</div>
       <div>
-        <div class="entity-name">chat_agent_vii</div>
+        <div class="entity-name"><AgentName></div>
         <div class="entity-detail">AI Agent — Azure AI Foundry</div>
         <div class="entity-detail">Agent ID: <code>asst_nDelHyfVwFQ7Bz3jFvztVnpQ</code></div>
         <div class="entity-detail">Platform: Azure AI Foundry (Agentic)</div>
@@ -531,7 +531,7 @@
     <div class="entity-card">
       <div class="entity-icon ip">🌐</div>
       <div>
-        <div class="entity-name">168.61.150.239</div>
+        <div class="entity-name">203.0.113.20</div>
         <div class="entity-detail">Des Moines, Iowa, United States</div>
         <div class="entity-detail">Org Prevalence: 0 (never seen before)</div>
         <span class="entity-tag tag-suspicious">SUSPICIOUS</span>
@@ -601,7 +601,7 @@
       <!-- Node: Attacker IP -->
       <circle cx="120" cy="280" r="40" fill="#1a2744" stroke="#3b82f6" stroke-width="2.5" filter="url(#glow)"/>
       <text x="120" y="274" text-anchor="middle" fill="#3b82f6" font-size="20">🌐</text>
-      <text x="120" y="294" text-anchor="middle" fill="#e6edf3" font-size="9" font-weight="600">168.61.150.239</text>
+      <text x="120" y="294" text-anchor="middle" fill="#e6edf3" font-size="9" font-weight="600">203.0.113.20</text>
       <text x="120" y="334" text-anchor="middle" fill="#8b949e" font-size="9">Iowa, US</text>
 
       <!-- Node: Anonymized IPs -->
@@ -614,7 +614,7 @@
       <!-- Node: AI Agent -->
       <rect x="340" y="140" width="180" height="60" rx="12" fill="#1a0a2e" stroke="#ff4757" stroke-width="2.5" filter="url(#glow)"/>
       <text x="365" y="170" fill="#ff4757" font-size="18">🤖</text>
-      <text x="388" y="166" fill="#e6edf3" font-size="11" font-weight="700">chat_agent_vii</text>
+      <text x="388" y="166" fill="#e6edf3" font-size="11" font-weight="700"><AgentName></text>
       <text x="388" y="182" fill="#8b949e" font-size="9">AI Foundry Agent</text>
 
       <!-- Node: Procurement Resource -->
@@ -693,15 +693,15 @@
 
     <div class="flow-step step-ai">
       <div class="flow-phase" style="color: var(--accent2);">Phase 2 — AI Agent Deployment</div>
-      <div class="flow-title">chat_agent_vii Provisioned on Azure AI Foundry</div>
-      <div class="flow-detail">AI agent <code>chat_agent_vii</code> (ID: <code>asst_nDelHyfVwFQ7Bz3jFvztVnpQ</code>) deployed on Azure AI Foundry's agentic hosting platform. The agent was configured as a procurement assistant with likely access to sensitive data stores and privileged functions via tool calls.</div>
+      <div class="flow-title"><AgentName> Provisioned on Azure AI Foundry</div>
+      <div class="flow-detail">AI agent <code><AgentName></code> (ID: <code>asst_nDelHyfVwFQ7Bz3jFvztVnpQ</code>) deployed on Azure AI Foundry's agentic hosting platform. The agent was configured as a procurement assistant with likely access to sensitive data stores and privileged functions via tool calls.</div>
       <span class="flow-mitre">T1584.006 — Compromise Infrastructure: Serverless</span>
     </div>
 
     <div class="flow-step step-exploit">
       <div class="flow-phase" style="color: var(--warning);">Phase 3 — Jailbreak Attack (User Prompt Injection)</div>
       <div class="flow-title">Direct Prompt Injection via Python SDK</div>
-      <div class="flow-detail">At <strong>09:02:54 UTC on March 17</strong>, a request was sent from IP <code>168.61.150.239</code> (Azure-hosted in Iowa) using the <code>AIProjectClient azsdk-python-ai-agents/1.2.0b5</code> SDK running on Linux. The request contained a direct User Prompt Injection Attack (UPIA) — a prompt manipulation technique designed to bypass the AI agent's system prompt and safeguards to extract sensitive data or interact with privileged functions.</div>
+      <div class="flow-detail">At <strong>09:02:54 UTC on March 17</strong>, a request was sent from IP <code>203.0.113.20</code> (Azure-hosted in Iowa) using the <code>AIProjectClient azsdk-python-ai-agents/1.2.0b5</code> SDK running on Linux. The request contained a direct User Prompt Injection Attack (UPIA) — a prompt manipulation technique designed to bypass the AI agent's system prompt and safeguards to extract sensitive data or interact with privileged functions.</div>
       <span class="flow-mitre">T1059.012 — Command and Scripting: AI Agent Abuse</span>
     </div>
 
@@ -798,8 +798,8 @@
           <td>Jailbreak on <strong>Foundry agent</strong> detected by Prompt Shields <span class="inline-badge badge-info">THIS INCIDENT</span></td>
           <td><span class="inline-badge badge-medium">Medium</span></td>
           <td><code>ais-contoso-procurementagent</code></td>
-          <td>chat_agent_vii (Foundry)</td>
-          <td>168.61.150.239 🇺🇸</td>
+          <td><AgentName> (Foundry)</td>
+          <td>203.0.113.20 🇺🇸</td>
           <td>PrivEsc, DefEvasion</td>
         </tr>
         <tr>
@@ -1001,7 +1001,7 @@
     <div class="mitre-card">
       <div class="mitre-id">T1059.012</div>
       <div class="mitre-name">Command and Scripting Interpreter: AI Agent Abuse</div>
-      <div class="mitre-evidence">Direct prompt injection (UPIA) targeting chat_agent_vii via AIProjectClient SDK to manipulate the AI agent's behavior.</div>
+      <div class="mitre-evidence">Direct prompt injection (UPIA) targeting <AgentName> via AIProjectClient SDK to manipulate the AI agent's behavior.</div>
     </div>
     <div class="mitre-card">
       <div class="mitre-id">T1548</div>
@@ -1021,7 +1021,7 @@
     <div class="mitre-card">
       <div class="mitre-id">T1583.003</div>
       <div class="mitre-name">Acquire Infrastructure: Virtual Private Server</div>
-      <div class="mitre-evidence">Attack originating from Azure-hosted IP 168.61.150.239 (zero org prevalence), suggesting attacker-controlled compute used to interact with the AI agent.</div>
+      <div class="mitre-evidence">Attack originating from Azure-hosted IP 203.0.113.20 (zero org prevalence), suggesting attacker-controlled compute used to interact with the AI agent.</div>
     </div>
   </div>
 </div>
@@ -1035,7 +1035,7 @@
       <ul style="list-style: none; padding: 0;">
         <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">⚠️ <strong>Enable Jailbreak Content Filters:</strong> Verify that Prompt Shields blocking mode (not just detection) is enabled for <code>ais-contoso-procurementagent</code> — current detection is in Preview.</li>
         <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">⚠️ <strong>Investigate User Identity:</strong> Resolve the full identity behind <code>2d7a7c73-...cadc</code> and verify if the managed identity's access to the AI agent is authorized.</li>
-        <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">⚠️ <strong>Review Agent Prompt Logs:</strong> Examine the full prompt history for <code>chat_agent_vii</code> to validate no sensitive data was exfiltrated and no data poisoning occurred.</li>
+        <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">⚠️ <strong>Review Agent Prompt Logs:</strong> Examine the full prompt history for <code><AgentName></code> to validate no sensitive data was exfiltrated and no data poisoning occurred.</li>
       </ul>
     </div>
     <div>
@@ -1082,7 +1082,7 @@
       <p style="margin-bottom: 8px;"><strong>2. SecurityAlert — Incident Entity Search:</strong></p>
       <code style="display: block; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 6px; white-space: pre-wrap; margin-bottom: 16px; font-size: 11px;">SecurityAlert
 | where TimeGenerated > ago(15d)
-| where Entities has "2d7a7c73-..." or Entities has "chat_agent_vii" or Entities has "ais-contoso-procurementagent" or Entities has "168.61.150.239"
+| where Entities has "2d7a7c73-..." or Entities has "<AgentName>" or Entities has "ais-contoso-procurementagent" or Entities has "203.0.113.20"
 | summarize arg_max(TimeGenerated, *) by SystemAlertId
 <strong>Result: 1 alert — the primary jailbreak detection</strong></code>
 
@@ -1126,8 +1126,8 @@
         <li style="padding: 6px 0;">🔹 <code>GetIncidentById(51873, includeAlertsData=true)</code> — Full incident + alert evidence</li>
         <li style="padding: 6px 0;">🔹 <code>ListUserRelatedAlerts(2d7a7c73-...)</code> — 0 results (MSI, not in MDE)</li>
         <li style="padding: 6px 0;">🔹 <code>ListUserRelatedMachines(2d7a7c73-...)</code> — 0 results</li>
-        <li style="padding: 6px 0;">🔹 <code>GetDefenderIpAlerts(168.61.150.239)</code> — 0 results (Azure IP, not seen on endpoints)</li>
-        <li style="padding: 6px 0;">🔹 <code>GetDefenderIpStatistics(168.61.150.239)</code> — orgPrevalence: 0</li>
+        <li style="padding: 6px 0;">🔹 <code>GetDefenderIpAlerts(203.0.113.20)</code> — 0 results (Azure IP, not seen on endpoints)</li>
+        <li style="padding: 6px 0;">🔹 <code>GetDefenderIpStatistics(203.0.113.20)</code> — orgPrevalence: 0</li>
       </ul>
     </div>
   </details>
