@@ -3,7 +3,7 @@
 **Target feature:** [Generate playbooks using AI in Microsoft Sentinel (preview)](https://learn.microsoft.com/azure/sentinel/automation/generate-playbook)
 **Language:** Python (Cline in embedded VS Code)
 **Trigger:** Enhanced Alert Trigger on AI-related alerts
-**Derived from:** `reports/investigation_user1_2026-04-21.json`
+**Derived from:** `reports-private/investigation_u524_2026-04-21.json`
 
 ---
 
@@ -102,7 +102,7 @@ Create these in `Automation → Integration Profiles` **before** running the gen
 
 ## 4. Test harness
 
-When Cline enters **Act mode** and asks for an Alert ID for testing, use one of these alerts from the user1 investigation as a known-good input:
+When Cline enters **Act mode** and asks for an Alert ID for testing, use one of these alerts from the u524 investigation as a known-good input:
 
 | Alert | Expected risk outcome |
 |-------|-----------------------|
@@ -114,20 +114,40 @@ When Cline enters **Act mode** and asks for an Alert ID for testing, use one of 
 
 ## 5. Validation checklist
 
-After generation, manually verify:
+> The generator writes code. It doesn't tell you whether the code is safe.
+> Treat every generated playbook as untrusted until this checklist passes.
+> These 14 items apply to ANY generated playbook, not just this one.
 
-- [ ] No hardcoded tenant IDs, UPNs, or GUIDs (all read from alert/env)
-- [ ] Retry + timeout wrappers on every HTTP call
+**🔒 Security**
+- [ ] No hardcoded tenant IDs, UPNs, GUIDs, resource names (all read from alert/env/integration profile)
 - [ ] Secrets fetched from integration profile, not embedded
-- [ ] Incident comment stays under 30 KB (Markdown), truncate if longer
-- [ ] `risk` decision tree has an explicit default branch (no silent fallthrough)
-- [ ] Unit-test-style assertions in the generated test harness cover: HIGH, MEDIUM, LOW paths
+- [ ] No `print()` / `logging` statements that include API keys, tokens, or full request bodies
+- [ ] PII appears only in the incident comment — never in return values or debug logs
+
+**🧱 Reliability**
+- [ ] Retry + timeout wrappers on every HTTP call (max 3 attempts, 10s per request)
+- [ ] Every external call has a try/except with a typed exception path (no bare `except:`)
+- [ ] `risk` decision tree has an explicit default branch — no silent fallthrough
+
+**💥 Blast-radius**
+- [ ] No `PATCH` / `POST` / `DELETE` calls outside of the gated "HIGH risk" branch
+- [ ] User-disable / device-isolate / key-rotation calls are ABSENT from this triage playbook (belong in a separate one-way-action playbook)
+- [ ] Teams webhook / email / ticketing integrations are idempotent (safe to replay)
+
+**📊 Observability**
+- [ ] Every external HTTP call emits one structured log line: `{step, url, status, latency_ms}`
+- [ ] The final JSON return includes `actions_taken` (list) so downstream automation can reconstruct the decision path
+- [ ] Incident comment stays under 30 KB (Markdown), truncate with `...(truncated)` footer if longer
+
+**🔁 Regression**
+- [ ] Re-run against the 3 test alerts after every edit — all three risk paths (HIGH / MEDIUM / LOW) exercised
+- [ ] Unit-test-style assertions in the generated test harness cover at least the risk tree + the `ai_api_bypass` flag
 
 ---
 
 ## 6. Mapping to the investigation we just performed
 
-| Manual step (user1 investigation) | Playbook equivalent |
+| Manual step (u524 investigation) | Playbook equivalent |
 |----------------------------------|---------------------|
 | `query_lake` SigninLogs 30d baseline | Step 2 — runHuntingQuery SigninLogs |
 | `query_lake` SigninLogs for attacker IP | Step 2 — `ai_api_bypass` check |
