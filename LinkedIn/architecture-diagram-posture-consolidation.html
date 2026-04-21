@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Posture Consolidation Architecture</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            /* Force 2x rendering for crisp screenshots */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        body {
+            background: #0d1117;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 48px 24px;
+        }
+
+        .diagram {
+            width: 820px;
+        }
+
+        .diagram-title {
+            text-align: center;
+            color: #f0f6fc;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .diagram-subtitle {
+            text-align: center;
+            color: #8b949e;
+            font-size: 15px;
+            margin-bottom: 36px;
+        }
+
+        /* === LAYERS === */
+        .layer { margin-bottom: 0; }
+
+        /* === CONNECTOR === */
+        .connector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4px 0;
+        }
+
+        .connector-line {
+            width: 3px;
+            height: 32px;
+            background: linear-gradient(180deg, #30363d, #58a6ff);
+            border-radius: 2px;
+        }
+
+        .connector-line-purple {
+            background: linear-gradient(180deg, #8957e5, #30363d);
+        }
+
+        .arrow-down {
+            width: 0; height: 0;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-top: 11px solid #58a6ff;
+        }
+
+        .arrow-down-purple {
+            border-top-color: #8957e5;
+        }
+
+        .connector-labels {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+
+        .connector-label-item {
+            color: #8b949e;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* === DATA SOURCES === */
+        .sources-box {
+            background: linear-gradient(135deg, #1a1f29, #161b22);
+            border: 1px solid #30363d;
+            border-radius: 14px;
+            padding: 28px 32px;
+            text-align: center;
+        }
+
+        .sources-box h3 {
+            color: #f0f6fc;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+        }
+
+        .source-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .source-tag {
+            padding: 6px 14px;
+            border-radius: 18px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .tag-ms  { background: rgba(88,166,255,0.15); color: #79c0ff; border: 1px solid rgba(88,166,255,0.35); }
+        .tag-3p  { background: rgba(163,113,247,0.15); color: #bc8cff; border: 1px solid rgba(163,113,247,0.35); }
+        .tag-cld { background: rgba(210,153,34,0.15);  color: #e3b341; border: 1px solid rgba(210,153,34,0.35); }
+
+        /* === SENTINEL DATA LAKE === */
+        .datalake-box {
+            background: linear-gradient(135deg, #0c2d6b, #0d1f3c);
+            border: 2px solid #1f6feb;
+            border-radius: 14px;
+            padding: 28px 32px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 40px rgba(31,111,235,0.12);
+        }
+
+        .datalake-badge {
+            position: absolute;
+            top: -12px; left: 50%; transform: translateX(-50%);
+            background: #1f6feb;
+            color: #fff;
+            font-size: 12px; font-weight: 700;
+            padding: 3px 18px;
+            border-radius: 12px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .datalake-box h3 {
+            color: #58a6ff;
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .datalake-box .sub {
+            color: #8b949e;
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+
+        .table-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .t-tag {
+            padding: 4px 12px;
+            background: rgba(88,166,255,0.1);
+            border: 1px solid rgba(88,166,255,0.25);
+            border-radius: 6px;
+            color: #79c0ff;
+            font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        /* === THREE COLUMNS === */
+        .three-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+        }
+
+        .col-card {
+            border-radius: 12px;
+            padding: 22px 16px;
+            text-align: center;
+        }
+
+        .col-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .col-card .desc { font-size: 13px; color: #8b949e; margin-bottom: 10px; }
+        .col-card .det {
+            font-size: 13px;
+            font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+            line-height: 1.6;
+        }
+
+        .c-exp  { background: rgba(63,185,80,0.08);  border: 1px solid rgba(63,185,80,0.35); }
+        .c-exp h4 { color: #3fb950; } .c-exp .det { color: #56d364; }
+
+        .c-hunt { background: rgba(210,153,34,0.08);  border: 1px solid rgba(210,153,34,0.35); }
+        .c-hunt h4 { color: #d29922; } .c-hunt .det { color: #e3b341; }
+
+        .c-arg  { background: rgba(163,113,247,0.08); border: 1px solid rgba(163,113,247,0.35); }
+        .c-arg h4 { color: #a371f7; } .c-arg .det { color: #bc8cff; }
+
+        /* === MCP STRIP === */
+        .mcp-strip {
+            background: linear-gradient(90deg, #161b22, #1c2128, #161b22);
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 14px 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .mcp-strip .lbl {
+            color: #f0f6fc;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .mcp-pill {
+            padding: 5px 14px;
+            background: rgba(88,166,255,0.1);
+            border: 1px solid rgba(88,166,255,0.25);
+            border-radius: 6px;
+            color: #79c0ff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .mcp-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: #58a6ff;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse { 0%,100%{opacity:.35} 50%{opacity:1} }
+
+        /* === AI AGENT === */
+        .agent-box {
+            background: linear-gradient(135deg, #1c1032, #161b22);
+            border: 2px solid #8957e5;
+            border-radius: 14px;
+            padding: 28px 32px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(137,87,229,0.12);
+            position: relative;
+        }
+
+        .agent-badge {
+            position: absolute;
+            top: -12px; left: 50%; transform: translateX(-50%);
+            background: #8957e5;
+            color: #fff;
+            font-size: 12px; font-weight: 700;
+            padding: 3px 18px;
+            border-radius: 12px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .agent-box h3 {
+            color: #a371f7;
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .agent-box .sub {
+            color: #8b949e;
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+
+        .agent-tags {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .a-tag {
+            padding: 5px 16px;
+            background: rgba(137,87,229,0.15);
+            border: 1px solid rgba(137,87,229,0.35);
+            border-radius: 18px;
+            color: #bc8cff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* === OUTPUT CARDS === */
+        .output-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .out-card {
+            border-radius: 12px;
+            padding: 20px 14px;
+            text-align: center;
+        }
+
+        .out-card .ico { font-size: 32px; margin-bottom: 10px; }
+        .out-card h5  { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+        .out-card .who { font-size: 12px; margin-bottom: 8px; }
+        .out-card .what { font-size: 12px; color: #8b949e; line-height: 1.6; }
+
+        .o-ciso { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.35); }
+        .o-ciso h5 { color: #f85149; } .o-ciso .who { color: #ff7b72; }
+
+        .o-arch { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.35); }
+        .o-arch h5 { color: #58a6ff; } .o-arch .who { color: #79c0ff; }
+
+        .o-plan { background: rgba(210,153,34,0.08); border: 1px solid rgba(210,153,34,0.35); }
+        .o-plan h5 { color: #d29922; } .o-plan .who { color: #e3b341; }
+
+        .o-ops  { background: rgba(63,185,80,0.08); border: 1px solid rgba(63,185,80,0.35); }
+        .o-ops h5 { color: #3fb950; } .o-ops .who { color: #56d364; }
+
+        /* === FOOTER === */
+        .footer {
+            text-align: center;
+            color: #484f58;
+            font-size: 13px;
+            margin-top: 28px;
+        }
+    </style>
+</head>
+<body>
+    <div class="diagram">
+        <div class="diagram-title">Security Posture Consolidation Architecture</div>
+        <div class="diagram-subtitle">From heterogeneous data sources to persona-specific intelligence</div>
+
+        <!-- LAYER 1: DATA SOURCES -->
+        <div class="layer">
+            <div class="sources-box">
+                <h3>☁️ Data Sources</h3>
+                <div class="source-tags">
+                    <span class="source-tag tag-ms">Defender XDR</span>
+                    <span class="source-tag tag-ms">Defender for Cloud</span>
+                    <span class="source-tag tag-ms">Entra ID</span>
+                    <span class="source-tag tag-ms">Purview</span>
+                    <span class="source-tag tag-3p">CrowdStrike</span>
+                    <span class="source-tag tag-3p">Qualys</span>
+                    <span class="source-tag tag-3p">Tenable</span>
+                    <span class="source-tag tag-3p">Palo Alto</span>
+                    <span class="source-tag tag-cld">AWS</span>
+                    <span class="source-tag tag-cld">GCP</span>
+                    <span class="source-tag tag-cld">Azure</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONNECTOR -->
+        <div class="connector">
+            <div class="connector-line"></div>
+            <div class="arrow-down"></div>
+        </div>
+        <div class="connector-labels">
+            <span class="connector-label-item">Sentinel Data Connectors (300+)</span>
+            <span class="connector-label-item">·</span>
+            <span class="connector-label-item">Log Ingestion API / DCR</span>
+        </div>
+
+        <!-- LAYER 2: SENTINEL DATA LAKE -->
+        <div class="layer" style="margin-top: 10px;">
+            <div class="datalake-box">
+                <div class="datalake-badge">SINGLE SOURCE OF TRUTH</div>
+                <h3>🛡️ Microsoft Sentinel Security Data Lake</h3>
+                <div class="sub">Consolidated logs · Normalized tables · Custom tables</div>
+                <div class="table-tags">
+                    <span class="t-tag">SigninLogs</span>
+                    <span class="t-tag">SecurityAlert</span>
+                    <span class="t-tag">SecurityIncident</span>
+                    <span class="t-tag">DeviceEvents</span>
+                    <span class="t-tag">AuditLogs</span>
+                    <span class="t-tag">Custom_CL</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONNECTOR -->
+        <div class="connector">
+            <div class="connector-line"></div>
+        </div>
+
+        <!-- LAYER 3: THREE QUERY ENGINES -->
+        <div class="layer">
+            <div class="three-cols">
+                <div class="col-card c-exp">
+                    <h4>🔗 Exposure Management</h4>
+                    <div class="desc">Attack Surface Graph</div>
+                    <div class="det">ExposureGraphNodes<br>ExposureGraphEdges<br>Attack Paths · Choke Points</div>
+                </div>
+                <div class="col-card c-hunt">
+                    <h4>🔍 Advanced Hunting</h4>
+                    <div class="desc">KQL Query Engine</div>
+                    <div class="det">DeviceTvm* · Device*<br>Alert* · Email*<br>Identity* · CloudAppEvents</div>
+                </div>
+                <div class="col-card c-arg">
+                    <h4>📊 Azure Resource Graph</h4>
+                    <div class="desc">Cloud Posture</div>
+                    <div class="det">securityresources<br>Compliance Assessments<br>Recommendations</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONNECTOR -->
+        <div class="connector">
+            <div class="connector-line"></div>
+        </div>
+
+        <!-- LAYER 4: MCP SERVERS -->
+        <div class="layer">
+            <div class="mcp-strip">
+                <div class="mcp-dot"></div>
+                <span class="lbl">MCP Servers</span>
+                <span class="mcp-pill">Data Exploration</span>
+                <span class="mcp-pill">Triage</span>
+                <span class="mcp-pill">Azure</span>
+                <span class="mcp-pill">Sentinel Graph</span>
+                <span class="mcp-pill">GitHub</span>
+                <span class="mcp-pill">Exposure Mgmt</span>
+                <div class="mcp-dot"></div>
+            </div>
+        </div>
+
+        <!-- CONNECTOR -->
+        <div class="connector">
+            <div class="connector-line connector-line-purple"></div>
+            <div class="arrow-down arrow-down-purple"></div>
+        </div>
+
+        <!-- LAYER 5: AI AGENT -->
+        <div class="layer">
+            <div class="agent-box">
+                <div class="agent-badge">AI-POWERED ORCHESTRATION</div>
+                <h3>🤖 AI Agent — GitHub Copilot + MCP</h3>
+                <div class="sub">Natural language → Multi-source queries → Persona-specific reports</div>
+                <div class="agent-tags">
+                    <span class="a-tag">Query</span>
+                    <span class="a-tag">Correlate</span>
+                    <span class="a-tag">Enrich</span>
+                    <span class="a-tag">Analyze</span>
+                    <span class="a-tag">Generate Reports</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONNECTOR -->
+        <div class="connector">
+            <div class="connector-line connector-line-purple"></div>
+        </div>
+
+        <!-- LAYER 6: PERSONA OUTPUTS -->
+        <div class="layer">
+            <div class="output-grid">
+                <div class="out-card o-ciso">
+                    <div class="ico">📊</div>
+                    <h5>CISO Dashboard</h5>
+                    <div class="who">CISO · VP Security · Board</div>
+                    <div class="what">KPI trends · Secure Score<br>Compliance deltas<br>Risk posture summary</div>
+                </div>
+                <div class="out-card o-arch">
+                    <div class="ico">💥</div>
+                    <h5>Attack Path View</h5>
+                    <div class="who">Security Architect</div>
+                    <div class="what">Choke points · Blast radius<br>Internet exposure map<br>Identity-to-resource paths</div>
+                </div>
+                <div class="out-card o-plan">
+                    <div class="ico">📋</div>
+                    <h5>Remediation Backlog</h5>
+                    <div class="who">Project Manager · IT Director</div>
+                    <div class="what">P1–P4 prioritization<br>Effort estimates · SLAs<br>Ownership mapping</div>
+                </div>
+                <div class="out-card o-ops">
+                    <div class="ico">🔧</div>
+                    <h5>Ops Work Queue</h5>
+                    <div class="who">Infrastructure · Operations</div>
+                    <div class="what">Patch priorities · KB links<br>Affected systems list<br>Actionable work orders</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            CyberProbe — Security Posture Consolidation Architecture · github.com/olchar/CyberProbe
+        </div>
+    </div>
+</body>
+</html>

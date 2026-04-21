@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Circle: From AI-Incident Investigation to an Auto-Generated Sentinel Playbook</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 780px; margin: 40px auto; padding: 0 24px; line-height: 1.7; color: #1a1a1a; background: #ffffff; font-size: 18px; }
+  h1 { font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; color: #000; }
+  h2 { font-size: 24px; font-weight: 700; margin-top: 48px; margin-bottom: 16px; color: #000; border-bottom: 2px solid #0a66c2; padding-bottom: 6px; }
+  h3 { font-size: 20px; font-weight: 600; margin-top: 32px; margin-bottom: 12px; color: #1a1a1a; }
+  p { margin-bottom: 16px; }
+  ul, ol { margin-bottom: 16px; padding-left: 24px; }
+  li { margin-bottom: 10px; }
+  blockquote { border-left: 4px solid #0a66c2; margin: 24px 0; padding: 12px 20px; background: #f3f6f8; font-style: italic; }
+  code { background: #f3f6f8; padding: 2px 6px; border-radius: 3px; font-family: 'Consolas', 'Monaco', monospace; font-size: 15px; }
+  pre { background: #0d1117; color: #e6edf3; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 14px; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 15px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
+  th { background: #f3f6f8; font-weight: 700; }
+  hr { border: none; border-top: 1px solid #e0e0e0; margin: 40px 0; }
+  .subtitle { color: #666; font-size: 16px; margin-bottom: 32px; }
+  .screenshot-placeholder { background: #fff8e1; border: 2px dashed #ffa000; padding: 20px; margin: 20px 0; border-radius: 6px; text-align: center; color: #795548; font-style: italic; }
+  .figure { margin: 24px 0; text-align: center; }
+  .figure img { max-width: 100%; height: auto; border: 1px solid #d0d7de; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  .figure figcaption { margin-top: 8px; font-size: 14px; color: #666; font-style: italic; }
+  .figure-full img { max-height: 600px; object-fit: contain; object-position: top; }
+  .highlight { background: #f0f7ff; padding: 16px 20px; border-radius: 6px; margin: 20px 0; }
+  a { color: #0a66c2; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<h1>Full Circle: From AI-Incident Investigation in VS Code to an Auto-Generated Sentinel Playbook — All in Natural Language</h1>
+<p class="subtitle">By Olivier Charron · April 2026 · #CyberSecurity #AI #SOC #MicrosoftSentinel #SecurityCopilot #MCP #DetectionAsCode</p>
+
+<hr>
+
+<h2>TL;DR</h2>
+<p>In a single afternoon I went from a raw AI-attack alert in Microsoft Sentinel to a <strong>codified, production-ready response playbook</strong> — without writing a single line of KQL or Python by hand.</p>
+
+<p>The chain:</p>
+<ol>
+  <li><strong>Detect</strong> — Defender for Cloud + Prompt Shields + Purview DSPM for AI fired alerts on a user.</li>
+  <li><strong>Investigate</strong> — I opened VS Code, used <strong>CyberProbe</strong> with <strong>GitHub Copilot + MCP servers</strong> to run a full 3-phase investigation.</li>
+  <li><strong>Reason</strong> — <strong>Security Copilot (E5)</strong> added executive context and attack-path reasoning.</li>
+  <li><strong>Codify</strong> — I pasted the investigation narrative into the <strong>Microsoft Sentinel Playbook Generator (preview)</strong> and it wrote a Python playbook that reproduces the investigation on every future alert.</li>
+</ol>
+
+<p>One analyst. Natural language. Full SOC lifecycle.</p>
+
+<hr>
+
+<h2>The Incident</h2>
+<p>An Entra user with heavy security-admin privileges started receiving a burst of AI-targeted alerts over a 6-day window:</p>
+
+<table>
+  <thead><tr><th>Date</th><th>Alert</th><th>Severity</th></tr></thead>
+  <tbody>
+    <tr><td>2026-04-15</td><td>AI Agent Reconnaissance Attempt Detected (Preview)</td><td>Low</td></tr>
+    <tr><td>2026-04-15</td><td>ASCII smuggling attempt detected on an AI agent (Preview)</td><td>High</td></tr>
+    <tr><td>2026-04-15</td><td>User phishing attempt detected on an AI agent (Preview)</td><td>High</td></tr>
+    <tr><td>2026-04-15</td><td>Jailbreak attempt on Microsoft Foundry agent blocked by Prompt Shields (Preview)</td><td>Medium</td></tr>
+    <tr><td>2026-04-17</td><td>Suspected prompt injection using ASCII smuggling detected</td><td>High</td></tr>
+    <tr><td>2026-04-17</td><td>Jailbreak attempt on Azure AI model deployment detected by Prompt Shields</td><td>Medium</td></tr>
+    <tr><td>2026-04-17</td><td>User phishing attempt detected in one of your AI applications</td><td>High</td></tr>
+    <tr><td>2026-04-16 → 21</td><td>3× Purview IRM "Risky AI usage" + DLP "Restrict copilot by label"</td><td>Mixed</td></tr>
+  </tbody>
+</table>
+
+<p>Three attack vectors (ASCII smuggling, jailbreak, AI phishing) against the same user's Azure OpenAI deployment, with Purview Insider Risk backing it up. This was not an isolated alert — it was a campaign.</p>
+
+<div class="screenshot-placeholder">📸 <strong>Screenshot 1</strong> — Sentinel incident page showing the clustered AI alerts on the same user.</div>
+
+<hr>
+
+<h2>Step 1 — Investigate from VS Code (CyberProbe)</h2>
+<p>I opened VS Code in the CyberProbe repo and typed one line to GitHub Copilot:</p>
+
+<blockquote>"Auto-investigate the user with the most AI-attack alerts in the last 7 days."</blockquote>
+
+<p>Behind the scenes, CyberProbe chained these MCP servers automatically:</p>
+
+<table>
+  <thead><tr><th>MCP server</th><th>What it did</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Microsoft Sentinel Data Lake</strong></td><td>Queried 30-day <code>SigninLogs</code> baseline (473 sign-ins, 1 IP)</td></tr>
+    <tr><td><strong>Defender XDR Triage</strong></td><td>Pulled incident details, alert entities, MITRE mapping</td></tr>
+    <tr><td><strong>Microsoft Graph</strong></td><td>Resolved user profile, tenant context, OAuth object IDs</td></tr>
+    <tr><td><strong>Microsoft Learn</strong></td><td>Looked up current Prompt Shields &amp; Purview DSPM docs</td></tr>
+  </tbody>
+</table>
+
+<p>CyberProbe's <code>kql-auto-investigate</code> skill ran the canonical 3-phase workflow: <strong>triage → deep-dive → correlation</strong>.</p>
+
+<p>The key finding came out of Phase 2: the AI-attack source IP <strong>did not appear anywhere</strong> in the user's 30-day Entra sign-in history. That one fact collapsed the whole case. The AI API was being invoked <strong>outside the Entra authentication flow</strong> — meaning a stolen API key or exfiltrated session token, not a compromised user identity.</p>
+
+<p>Phase 3 revealed the cluster: <strong>6 users</strong> sharing the same OAuth object ID on the same Azure OpenAI deployment. It was a systemic abuse pattern, not a single user's problem.</p>
+
+<div class="screenshot-placeholder">📸 <strong>Screenshot 2</strong> — VS Code with Copilot Chat running <code>kql-auto-investigate</code>, showing the Phase 2 <code>ai_api_bypass = True</code> flag.</div>
+
+<figure class="figure">
+  <img src="attack-path-graph-user1.jpg" alt="AI-attack path graph — 4 planes: attacker sources, identity/token, Azure AI/Foundry, alerts &amp; impact" />
+  <figcaption>Fig. 1 — Attack Path Graph from the CyberProbe investigation report. Four planes (Attacker Sources · Identity / Token · Azure AI / Foundry · Alerts &amp; Impact) are linked <strong>only</strong> by the OAuth object ID — the attack never traverses user1's Entra sign-in surface, which is the core diagnostic finding.</figcaption>
+</figure>
+
+<hr>
+
+<h2>Step 2 — The Report</h2>
+<p>CyberProbe's <code>report-generation</code> skill produced a full HTML report with a dark-theme Mermaid attack-path diagram, MITRE mapping, IP enrichment tables, and a mandatory <strong>Methodology</strong> section citing every KQL query, every MCP tool, and every enrichment API.</p>
+
+<div class="highlight">
+  <p>📄 <strong>Read the full sanitized report:</strong><br>
+  <a href="https://github.com/olchar/CyberProbe/blob/main/reports/investigation_user1_2026-04-21.html">investigation_user1_2026-04-21.html</a></p>
+  <p>📦 <strong>Machine-readable JSON:</strong><br>
+  <a href="https://github.com/olchar/CyberProbe/blob/main/reports/investigation_user1_2026-04-21.json">investigation_user1_2026-04-21.json</a></p>
+  <p>🌐 <strong>IP enrichment:</strong><br>
+  <a href="https://github.com/olchar/CyberProbe/blob/main/reports/ip_enrichment_6_ips_2026-04-21.json">ip_enrichment_6_ips_2026-04-21.json</a></p>
+</div>
+
+<figure class="figure figure-full">
+  <img src="investigation_user1_2026-04-21.jpg" alt="CyberProbe investigation report — full HTML view with risk banner, executive summary, attack path graph, baseline profile, and security alerts tables" />
+  <figcaption>Fig. 2 — Full CyberProbe investigation report (dark theme). Sections include: risk banner · evidence-based executive summary · attack path graph · baseline profile · AI-specific alerts · Insider Risk (Purview IRM / DSPM for AI) · DLP matches · correlation findings · recommendations · mandatory methodology. <a href="investigation_user1_2026-04-21.jpg">Open full JPEG</a> · <a href="https://github.com/olchar/CyberProbe/blob/main/reports/investigation_user1_2026-04-21.html">Interactive HTML on GitHub</a>.</figcaption>
+</figure>
+
+<hr>
+
+<h2>Step 3 — Security Copilot Reasoning (E5 / E7 Benefits)</h2>
+<p>With <strong>Security Copilot</strong> enabled in the tenant, I promoted the incident into a guided investigation. The embedded AI produced an executive summary, reframed the MITRE tactics into plain-English business risk, and suggested a prioritized response plan.</p>
+
+<p>The <strong>E5 / E7 AI capacity benefits</strong> give customers monthly Security Copilot usage units that make this reasoning affordable at scale — no separate SKU negotiation required.</p>
+
+<p>This is where the "AI for Security" layer earns its keep: not replacing the analyst's investigation, but <strong>compressing the time</strong> between raw findings and a decision an executive can sign off.</p>
+
+<hr>
+
+<h2>Step 4 — Codify the Workflow as a Sentinel Playbook (Preview)</h2>
+<p>Here's the part that actually changed how I think about SOC work.</p>
+
+<p>Microsoft recently shipped the <strong><a href="https://learn.microsoft.com/azure/sentinel/automation/generate-playbook">Sentinel Playbook Generator (preview)</a></strong> — a Cline-based AI coding agent embedded directly in the Defender portal. You write natural language, it writes Python.</p>
+
+<p>So I wrote a <strong>spec document</strong> for a playbook that reproduces what I had just done manually:</p>
+
+<ul>
+  <li>Trigger on any AI-targeted alert (ASCII smuggling / Jailbreak / Prompt Shields / AI phishing / DSPM for AI)</li>
+  <li>Pull the user's 30-day sign-in baseline via <code>runHuntingQuery</code></li>
+  <li>Check if the attacker IP is in the baseline → flag <code>ai_api_bypass</code></li>
+  <li>Enrich every source IP in parallel (AbuseIPDB + IPInfo + VPNapi)</li>
+  <li>Resolve the OAuth object ID (Entra app → service principal → Azure resource)</li>
+  <li>Cluster-correlate across all users with ≥2 AI alerts in 30d</li>
+  <li>Compute a 3-tier risk score with a defensive decision tree</li>
+  <li>Post a structured Markdown comment to the incident</li>
+  <li>Gate the response actions by risk — <strong>never auto-disable or auto-isolate from a triage playbook</strong> (one-way doors belong in a separate high-confidence playbook)</li>
+</ul>
+
+<div class="highlight">
+  📄 <strong>The full playbook spec is published here:</strong><br>
+  <a href="https://github.com/olchar/CyberProbe/blob/main/security-copilot/playbook-specs/ai-attack-triage-playbook.md">security-copilot/playbook-specs/ai-attack-triage-playbook.md</a>
+</div>
+
+<p>I pasted the spec into the generator's <strong>Plan mode</strong>, reviewed the proposed flow diagram, approved, and switched to <strong>Act mode</strong>. The generator wrote the Python, the integration profile bindings, and the test harness. A single SOC ticket's worth of investigation is now <strong>reusable infrastructure</strong>.</p>
+
+<div class="screenshot-placeholder">📸 <strong>Screenshot 5</strong> — Sentinel Playbook Generator Plan-mode view with the AI-attack triage prompt pasted in.</div>
+
+<div class="screenshot-placeholder">📸 <strong>Screenshot 6</strong> — Act-mode output showing the generated Python playbook + flow diagram.</div>
+
+<h3>The AI-Agent Trust Boundary</h3>
+<p>Here's the part nobody talks about: <strong>the generator writes code. It doesn't tell you whether the code is safe.</strong></p>
+
+<p>So the spec includes a 14-item validation checklist grouped into five categories — <strong>Security · Reliability · Blast-radius · Observability · Regression</strong>. It treats every generated playbook as untrusted until proven otherwise. It's the same discipline you'd apply to a pull request from a new team member, except the &quot;team member&quot; is a language model.</p>
+
+<div class="highlight">
+  <p>💡 This checklist is generic — it applies to <em>any</em> playbook the generator produces, not just this one. Save it, reuse it, make it part of your SOC's code-review kit.</p>
+</div>
+
+<p>If AI-generated automation is going to earn a place in production SOCs, the trust boundary has to be <strong>explicit and testable</strong>. A checklist like this is the minimum viable contract.</p>
+
+<hr>
+
+<h2>The Full Circle</h2>
+<pre>
+┌─────────────┐    ┌──────────────┐    ┌─────────────┐    ┌──────────────┐
+│   DETECT    │ ──▶│  INVESTIGATE │ ──▶│    HUNT     │ ──▶│   AUTOMATE   │
+│             │    │              │    │             │    │              │
+│ Sentinel +  │    │ VS Code +    │    │ Copilot +   │    │ Playbook     │
+│ Defender    │    │ GitHub       │    │ Security    │    │ Generator    │
+│ XDR         │    │ Copilot +    │    │ Copilot E5  │    │ (Cline /     │
+│             │    │ MCP +        │    │             │    │ Python /     │
+│             │    │ CyberProbe   │    │             │    │ Natural Lang)│
+└─────────────┘    └──────────────┘    └─────────────┘    └──────────────┘
+       ▲                                                           │
+       │                                                           │
+       └──────── Back to detect (tune analytics from findings) ◀───┘
+</pre>
+
+<p>Every step is driven by <strong>natural language</strong>. Every artifact is <strong>reproducible</strong>. Every investigation becomes <strong>reusable automation</strong> — the core idea of <strong>detection-as-code</strong> extended to <strong>response-as-code</strong>.</p>
+
+<hr>
+
+<h2>Licensing Prerequisites</h2>
+<p>Here's the honest part you need before trying this: the pipeline relies on multiple Microsoft surfaces, each with its own license. None of this is obscure, but it's worth naming explicitly.</p>
+
+<table>
+  <thead><tr><th>Capability</th><th>Required license / SKU</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Microsoft Sentinel</strong></td><td>Sentinel data ingestion (pay-as-you-go) OR included in Microsoft Defender / E5 bundles</td><td>Required for <code>query_lake</code>, analytic rules, automation rules, playbooks.</td></tr>
+    <tr><td><strong>Microsoft Defender XDR</strong></td><td>Microsoft 365 E5 / E5 Security / standalone Defender plans</td><td>Required for incidents, Advanced Hunting, response actions.</td></tr>
+    <tr><td><strong>Defender for Cloud — AI Threat Protection</strong></td><td>Defender CSPM + Defender for Cloud plan with AI threat protection add-on</td><td>Generates the Prompt Shields / ASCII smuggling / AI phishing alerts.</td></tr>
+    <tr><td><strong>Purview DSPM for AI + Insider Risk Management</strong></td><td>Microsoft 365 E5 Compliance / E5 Information Protection &amp; Governance</td><td>Generates the "Risky AI usage" + IRM alerts used in the cluster correlation.</td></tr>
+    <tr><td><strong>Microsoft Security Copilot</strong></td><td>Security Compute Units (SCUs) standalone, <strong>OR</strong> monthly AI capacity benefits included with Microsoft 365 E5 / E7 (preview)</td><td>Enables embedded AI reasoning in Sentinel/Defender/Purview portals and the Playbook Generator.</td></tr>
+    <tr><td><strong>Sentinel Playbook Generator (preview)</strong></td><td>Security Copilot enabled + Sentinel Contributor RBAC + Entra "Detection Tuning" role</td><td>Limits: 100 playbooks/tenant, 5000 lines per playbook, 10-minute runtime, 8M tokens/day/tenant. Python only.</td></tr>
+    <tr><td><strong>GitHub Copilot</strong></td><td>GitHub Copilot Business or Enterprise</td><td>The IDE-side AI that drives CyberProbe investigations.</td></tr>
+    <tr><td><strong>VS Code + MCP servers</strong></td><td>Free (VS Code), individual MCPs free or self-hosted</td><td><code>mcp.json</code> is shipped in the CyberProbe repo.</td></tr>
+    <tr><td><strong>CyberProbe itself</strong></td><td>MIT License, free, open-source</td><td><a href="https://github.com/olchar/CyberProbe">github.com/olchar/CyberProbe</a></td></tr>
+  </tbody>
+</table>
+
+<div class="highlight">
+  💡 The Microsoft 365 <strong>E5 / E7 bundles</strong> increasingly include monthly Security Copilot capacity benefits — that's the path that makes this entire workflow economically accessible to most SOCs without a separate SCU purchase cycle. Check your EA terms with your Microsoft account team.
+</div>
+
+<hr>
+
+<h2>What to Try First</h2>
+<ol>
+  <li><strong>Clone</strong> <a href="https://github.com/olchar/CyberProbe">github.com/olchar/CyberProbe</a>, open in VS Code, install the MCP servers from <code>.vscode/mcp.json</code>.</li>
+  <li><strong>Run <code>kql-auto-investigate</code></strong> on one of your own AI-related alerts (or any incident).</li>
+  <li><strong>Generate the report</strong> — notice the Methodology section; every query and tool call is cited. That's not a vanity feature; it's what makes the investigation auditable.</li>
+  <li><strong>Read the playbook spec</strong> at <a href="https://github.com/olchar/CyberProbe/blob/main/security-copilot/playbook-specs/ai-attack-triage-playbook.md">security-copilot/playbook-specs/ai-attack-triage-playbook.md</a> — it's paste-ready for the Sentinel Playbook Generator.</li>
+  <li><strong>Write the integration profiles</strong> (Graph-Security, Graph-Defender-XDR, AbuseIPDB, IPInfo, VPNapi) in Sentinel Automation → Integration Profiles.</li>
+  <li><strong>Paste the spec</strong> into the Playbook Generator's Plan mode, review, switch to Act mode.</li>
+  <li><strong>Validate</strong> against the test harness in the spec (three known-good alert IDs).</li>
+</ol>
+
+<hr>
+
+<h2>Closing Thought</h2>
+<p>We used to talk about "closing the loop" from detection to response. With natural-language AI agents in the loop — at every layer — <strong>the loop closes itself</strong>.</p>
+
+<p>Investigation becomes executable.<br>
+Response becomes reviewable code.<br>
+The SOC becomes a place where every incident makes the next incident faster.</p>
+
+<p>That's the full circle. And it's here now.</p>
+
+<hr>
+
+<h2>References</h2>
+<ul>
+  <li><a href="https://learn.microsoft.com/azure/sentinel/automation/generate-playbook">Generate playbooks using AI in Microsoft Sentinel (preview)</a></li>
+  <li><a href="https://learn.microsoft.com/security-copilot/">Microsoft Security Copilot overview</a></li>
+  <li><a href="https://learn.microsoft.com/azure/defender-for-cloud/ai-threat-protection">Microsoft Defender for Cloud — AI Threat Protection</a></li>
+  <li><a href="https://learn.microsoft.com/purview/dspm-for-ai">Microsoft Purview DSPM for AI</a></li>
+  <li><a href="https://github.com/olchar/CyberProbe">CyberProbe on GitHub</a></li>
+  <li><a href="https://github.com/olchar/CyberProbe/blob/main/reports/investigation_user1_2026-04-21.html">Investigation report — user1 AI-attack case</a></li>
+  <li><a href="https://github.com/olchar/CyberProbe/blob/main/security-copilot/playbook-specs/ai-attack-triage-playbook.md">AI Attack Triage Playbook spec</a></li>
+</ul>
+
+<p><em>#SOCAutomation #DetectionAsCode #PromptShields #DSPMforAI #PlaybookGenerator</em></p>
+
+</body>
+</html>

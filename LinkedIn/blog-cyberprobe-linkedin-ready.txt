@@ -1,0 +1,159 @@
+Why I Built CyberProbe — And Why You Should Care About AI in Security Operations
+
+Let me be honest with you.
+
+The pace of change in cybersecurity right now is relentless. And if you're a security professional reading this, you already feel it. New attack techniques. New AI-powered threats. New tables, new APIs, new tools — every single week. The adversaries aren't waiting. They're scaling with AI too.
+
+So the question isn't whether you should adopt AI in your security workflows. The question is how fast you can get there.
+
+That's why I built CyberProbe.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+What Is CyberProbe?
+
+CyberProbe is an open-source security investigation platform built on top of Microsoft Defender XDR and Microsoft Sentinel. It uses AI-assisted workflows — powered by GitHub Copilot and the Model Context Protocol (MCP) — to automate the work that SOC analysts do every day:
+
+→ Investigate incidents across identity, endpoint, email, and cloud in minutes, not hours
+→ Enrich indicators of compromise with multi-source threat intelligence (AbuseIPDB, Shodan, VirusTotal, and more)
+→ Run pre-built KQL queries against 40+ investigation scenarios — no query-writing expertise needed
+→ Generate investigation reports with MITRE ATT&CK mapping, geographic IP analysis, and executive-ready summaries
+→ Take response actions — isolate devices, revoke sessions, block IPs — directly from the investigation workflow
+
+It's 11 specialized AI skills, 50+ MCP tools, and a verified KQL query library — all orchestrated through natural language in VS Code.
+
+You ask Copilot: "Investigate user@contoso.com for suspicious activity in the last 7 days."
+
+And it does. End to end. Queries, enrichment, correlation, report.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Why This Matters Now
+
+We're at an inflection point. Two forces are colliding:
+
+🔷 AI for Security
+
+AI is becoming the force multiplier that security teams desperately need. A single analyst, assisted by AI, can now triage, investigate, and respond to incidents at a pace that would have required a team of five just two years ago. The data volumes we face in modern SOCs — billions of log entries, millions of sign-in events, thousands of alerts — are simply beyond human scale. AI doesn't replace the analyst. It gives the analyst superpowers.
+
+🔷 Security for AI
+
+At the same time, AI itself is becoming a new attack surface. Copilot Studio agents with no authentication. AI workloads with hardcoded credentials. Generative orchestration that can be exploited through prompt injection. These aren't hypothetical risks — they're real, and they're in your environment right now. CyberProbe already includes queries to audit AI agent security posture using the latest Defender XDR tables like AIAgentsInfo. Because defending AI workloads is now part of the job.
+
+The convergence of these two forces means one thing: adopting AI-assisted security tooling is no longer optional.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+It's Not Finished. And That's the Point.
+
+I want to be transparent about something. CyberProbe is not a finished product. It's not a polished SaaS solution with a subscription model. It won't be.
+
+It's a living toolset.
+
+I'm evolving it as fast as the platforms are evolving — and honestly, keeping up is tough. Microsoft ships new Advanced Hunting tables, new MCP capabilities, new Defender integrations faster than any one person can document. Last week I had to update four documentation files just to catch up with the latest AI security tables in the XDR platform.
+
+But that's exactly why I keep building it.
+
+CyberProbe exists to demonstrate what's possible. To show that a security professional, armed with the right AI tools, can build investigation workflows that rival what enterprise SOAR platforms deliver — and do it with open-source components that anyone can learn from.
+
+It's real. It works. I use it in my own investigations.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Uncomfortable Truth
+
+Here's what I see too often in our industry: security teams that are aware AI is transforming the landscape, but haven't started building the muscle memory to use it. They're waiting for the "right" tool. The "mature" platform. The vendor to solve it for them.
+
+That wait is a risk in itself.
+
+The adversaries using AI to generate phishing campaigns, to automate reconnaissance, to discover vulnerabilities at machine speed — they're not waiting for mature tooling. They're using what works today.
+
+We need to match that energy. Not with perfection, but with momentum.
+
+→ You need to be faster. Manual investigation workflows that take hours need to take minutes.
+→ You need to be assisted. The volume of data in modern environments exceeds what any human can process alone.
+→ You need to scale. One analyst with AI-assisted tools needs to cover the ground that used to require a team.
+
+This isn't a technology problem. It's an adaptation problem. And the defenders who adapt first will be the ones who stay ahead.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+What You Can Do Today
+
+If any of this resonates with you, here's my honest advice:
+
+1️⃣ Start experimenting with AI in your security workflows. Whether it's CyberProbe, Security Copilot, or any other tool — the important thing is to start. The learning curve is real, but it's shorter than you think.
+
+2️⃣ Learn KQL. It's the query language that powers Defender XDR, Sentinel, and most of Microsoft's security data plane. It's not going away. AI can help you write it, but understanding what it does makes you 10x more effective.
+
+3️⃣ Understand the MCP ecosystem. Model Context Protocol is becoming the standard for how AI agents interact with security tools. Knowing how MCP servers work — what data they expose, how they authenticate, what their limitations are — is a skill that will matter enormously in the next 12 months.
+
+4️⃣ Think in workflows, not queries. The real power isn't in a single KQL query. It's in chaining investigation steps: pull the incident → extract entities → enrich IPs → check sign-in patterns → correlate with alerts → generate a report. That's what AI-assisted tools like CyberProbe automate.
+
+5️⃣ Share what you build. The security community gets stronger when we share our tools, our patterns, and our lessons learned. CyberProbe is open source because I believe the best defense is a collective one.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Next Phase — This Is Not a Bubble
+
+I've been in this industry for more than 25 years. I've seen technology waves come and go. I've lived through the early days of firewalls, the shift to cloud, the explosion of zero trust. I've seen hype cycles inflate and deflate.
+
+AI is not one of them.
+
+In 25 years of doing this, I have never seen anything like what's happening right now. The speed at which AI is transforming how we build, defend, and operate is unlike anything before. This is not a bubble. This is a fundamental shift in how security work gets done. And if you want to survive in this industry — not just keep up, but actually stay relevant — you absolutely need to be working with AI-assisted tools. Agents, copilots, orchestrated workflows. Human-to-Agent (H2A), Agent-to-Agent (A2A). This is the new operating model.
+
+And here's the thing: the toolset is already available.
+
+In the Microsoft ecosystem alone, look at what's at your fingertips right now:
+
+🔹 AI Foundry — Build and deploy AI models and agents with enterprise-grade security
+🔹 Copilot Studio — Create custom agents for business and security workflows, no deep coding required
+🔹 VS Code — My favorite tool, and the home of CyberProbe. With GitHub Copilot built in, it's the most powerful development environment for AI-assisted security work
+🔹 GitHub Copilot — Your AI pair programmer. Not just for writing code — for writing KQL, building investigation workflows, understanding complex log schemas
+🔹 GitHub CLI — Automate your development workflows from the terminal
+🔹 Microsoft 365 Copilot — AI assistance embedded across the productivity suite
+🔹 Agent 365 — Coming soon, bringing agent capabilities natively into the M365 ecosystem
+
+And if you're running M365 E5, you already have the tools to govern AI workloads — Defender for Cloud Apps for shadow AI discovery, AIAgentsInfo tables in Advanced Hunting to audit Copilot Studio agents, Purview for data security policies around AI interactions. The governance capabilities are there today. Most organizations just haven't turned them on yet.
+
+The barrier to starting is not technology. It's not budget. It's inertia.
+
+It is now or never. The professionals who start building this muscle today — experimenting with agents, learning MCP, understanding how AI fits into their security operations — are the ones who will lead the next phase. The ones who wait will find themselves trying to catch up to a moving target that's accelerating.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+A Note on What's Coming Next
+
+If you need a concrete example of why urgency matters, look at what happened on April 7, 2026.
+
+Anthropic announced Claude Mythos Preview and Project Glasswing (https://www.anthropic.com/glasswing) — a coalition that includes AWS, Apple, Broadcom, Cisco, CrowdStrike, Google, JPMorganChase, the Linux Foundation, Microsoft, NVIDIA, and Palo Alto Networks. Twelve of the most important technology and security companies on Earth, working together on a single initiative. That alone should tell you something.
+
+But here's the part that should keep you up at night: Claude Mythos Preview has autonomously discovered thousands of zero-day vulnerabilities — many of them critical — in every major operating system and every major web browser. It found a 27-year-old vulnerability in OpenBSD, one of the most security-hardened operating systems in the world. It found a 16-year-old bug in FFmpeg that automated testing tools had hit five million times without catching. It chained together multiple Linux kernel vulnerabilities to escalate from ordinary user access to complete machine control. Entirely autonomously. Without human steering.
+
+On SWE-bench Verified, Mythos scored 93.9% — compared to 80.8% for Opus 4.6. On the CyberGym cybersecurity benchmark, it scored 83.1% versus 66.6%. This is not an incremental improvement. This is a step change.
+
+And Anthropic is not making it generally available — because the offensive potential is too high. Mythos surpasses all but the most skilled humans at finding and exploiting software vulnerabilities.
+
+Let that sink in.
+
+Now ask yourself: if a model like Mythos exists today — as a preview — what will the generally available models look like in 12 months? In 24 months? If you haven't started building the foundational skills to work with AI-assisted security tooling — KQL, MCP, agentic workflows, prompt engineering for investigation — you won't just be behind. You will struggle to even understand what these systems are doing. The gap between practitioners who started now and those who waited will be insurmountable.
+
+Project Glasswing is a clear signal: the era of AI-powered cybersecurity is not approaching. It has arrived. The only question is whether you'll be wielding these tools — or scrambling to comprehend them.
+
+And this isn't just Anthropic. Microsoft is already operationalizing AI for security internally. Their MSRC team tested Claude Mythos Preview against CTI-REALM (https://www.microsoft.com/en-us/security/blog/2026/03/20/cti-realm-a-new-benchmark-for-end-to-end-detection-rule-generation-with-ai-agents/), an open-source benchmark they built for end-to-end detection rule generation with AI agents — and reported substantial improvements. When the company responsible for Defender XDR is building benchmarks to measure how AI agents generate detection rules autonomously, the direction is unmistakable.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This Is the Upskilling Moment
+
+CyberProbe is my contribution to that effort — an evolving, working demonstration that AI-assisted security investigation is not a future concept. It's here. It works. And it's how we scale our defense to match the scale of the threat.
+
+If you're interested in exploring it, the project is open source. Try it. Break it. Build on it. And let's keep pushing forward together.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CyberProbe is available on GitHub: https://github.com/olchar/CyberProbe/tree/main — Built with Microsoft Defender XDR, Microsoft Sentinel, GitHub Copilot, and the Model Context Protocol.
+
+Opinions are my own.
+
+#CyberSecurity #AI #SOC #MicrosoftDefender #Sentinel #ThreatHunting #SecurityOperations #AIforSecurity #MCP #GitHubCopilot #DefenderXDR #SecurityAutomation #CopilotStudio #AIFoundry #AIAgents

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Security Posture Question Nobody Can Answer in One Sentence</title>
+    <style>
+        /* Clean styling optimized for copy-paste into LinkedIn article editor */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            max-width: 720px;
+            margin: 40px auto;
+            padding: 0 24px;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #ffffff;
+            font-size: 18px;
+        }
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 8px;
+            color: #000;
+        }
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 48px;
+            margin-bottom: 16px;
+            color: #000;
+        }
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+        p {
+            margin-bottom: 16px;
+        }
+        ul, ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        blockquote {
+            border-left: 4px solid #0a66c2;
+            margin: 24px 0;
+            padding: 12px 20px;
+            background: #f3f6f8;
+            font-style: italic;
+        }
+        strong {
+            font-weight: 700;
+        }
+        em {
+            font-style: italic;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e0e0e0;
+            margin: 40px 0;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+        .highlight {
+            background: #f0f7ff;
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .architecture-diagram {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+            font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: pre;
+            overflow-x: auto;
+            color: #1a1a1a;
+        }
+        .example-card {
+            background: #f8f9fa;
+            border-left: 4px solid #0a66c2;
+            border-radius: 4px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+        .example-card h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #0a66c2;
+        }
+        .example-card .meta {
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        .persona-block {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+        .persona-block strong:first-child {
+            color: #0a66c2;
+        }
+        /* Print-friendly for copy-paste */
+        @media print {
+            body { margin: 0; padding: 20px; }
+        }
+        /* Helper: instructions banner (not part of article) */
+        .instructions {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 40px;
+            font-size: 14px;
+            color: #664d03;
+        }
+        .instructions strong { color: #664d03; }
+    </style>
+</head>
+<body>
+
+<div class="instructions">
+    <strong>📋 How to publish on LinkedIn:</strong> Select everything below this box (Ctrl+A then click below, or manually select from the title down). Copy (Ctrl+C). Go to LinkedIn → Write article → Paste (Ctrl+V). The formatting (headers, bold, lists) will be preserved. Add a cover image in LinkedIn's editor.
+</div>
+
+<h1>The Security Posture Question Nobody Can Answer in One Sentence</h1>
+<p class="subtitle">Olivier Charron · April 2026</p>
+
+<hr>
+
+<p>Lately, I keep getting the same question.</p>
+
+<p>Different people. Different roles. Different words. But always the same question underneath:</p>
+
+<p><strong>"What's our security posture — really?"</strong></p>
+
+<p>And every time, I pause. Not because I don't know. But because the honest answer is: <em>it depends on who's asking, what they need to do with it, and which slice of the environment they care about.</em></p>
+
+<p>That's the problem.</p>
+
+<hr>
+
+<h2>The Reality Nobody Talks About</h2>
+
+<p>Here's what a real enterprise security environment looks like in 2026. Not the vendor slide deck version — the actual one:</p>
+
+<ul>
+    <li>Not one cloud. <strong>Multiple clouds.</strong> Azure, AWS, maybe GCP. Each with its own security console, its own scoring, its own alerts.</li>
+    <li>Not one security stack. <strong>Multiple security solutions.</strong> Some Microsoft, some not. EDR, CSPM, CNAPP, identity protection, email security, DLP — from different vendors, with different taxonomies.</li>
+    <li>Not one vulnerability scanner. <strong>Multiple detection tools.</strong> Qualys, Tenable, Defender Vulnerability Management, container image scanners, IaC scanning, DAST, SAST. Each producing its own reports, its own severity ratings, its own remediation guidance.</li>
+</ul>
+
+<p>The data exists. That's not the problem.</p>
+
+<p><strong>The problem is that it lives in 15 different dashboards, in 15 different formats, speaking 15 different languages — and nobody has the consolidated view that actually enables decisions.</strong></p>
+
+<hr>
+
+<h2>The Real Gap: Same Signal, Different Audiences</h2>
+
+<p>Here's what I see happening in practice. Four groups of people all need to understand security posture — but they need fundamentally different things from it:</p>
+
+<div class="persona-block">
+<p><strong>The CISO / VP Security</strong> asks: <em>"Are we improving? What's our residual risk? Can I stand in front of the board and defend our position?"</em></p>
+<p>What they get: 47 dashboards with different metrics, different scoring methodologies, and no way to reconcile them. A Secure Score here, a risk rating there, a compliance percentage somewhere else. None of them tell the same story.</p>
+</div>
+
+<div class="persona-block">
+<p><strong>The Security Architect</strong> asks: <em>"Where are the critical, exploitable vulnerabilities? What are the attack paths? Which choke points, if remediated, would reduce the most risk?"</em></p>
+<p>What they get: 200-page scan reports from each tool, with thousands of CVEs sorted by CVSS score — but no context on actual exploitability, no mapping to the real attack surface, and no prioritization that accounts for exposure.</p>
+</div>
+
+<div class="persona-block">
+<p><strong>The Project Manager / IT Director</strong> asks: <em>"What should we prioritize? What's the effort? What's the timeline? How do I build a remediation roadmap?"</em></p>
+<p>What they get: Nothing usable. Because the gap between "here are 3,000 vulnerabilities" and "here's what to fix first, and here's how long it will take" is a gap that most security tooling doesn't bridge.</p>
+</div>
+
+<div class="persona-block">
+<p><strong>The Infrastructure / Operations Team</strong> asks: <em>"What do I patch first? On which systems? By when?"</em></p>
+<p>What they get: CVE lists without business context. No understanding of which systems are internet-exposed, which ones sit on attack paths, which ones are choke points that affect 50 other assets downstream.</p>
+</div>
+
+<p>Same data. Four audiences. Four completely different needs. And right now, most organizations are solving this with... spreadsheets. Monthly spreadsheets.</p>
+
+<hr>
+
+<h2>The Consolidation Problem</h2>
+
+<p>Let me name the problem clearly: <strong>Security posture consolidation.</strong></p>
+
+<p>It's not a technology gap — the data sources exist. It's not a tooling gap — the APIs are there. It's an <strong>integration and translation gap.</strong></p>
+
+<p>What's missing is the layer that:</p>
+
+<ol>
+    <li><strong>Consolidates</strong> signals from heterogeneous sources — cloud security posture (CSPM), vulnerability management, endpoint detection, identity posture, compliance benchmarks — into a unified data model</li>
+    <li><strong>Normalizes</strong> findings into a common framework — exposures, attack paths, choke points, blast radius — so a critical CVE from Qualys and a critical finding from Defender speak the same language</li>
+    <li><strong>Adapts the view</strong> based on who's consuming it — the CISO gets a KPI dashboard, the architect gets attack path topology, the project manager gets a prioritized remediation backlog, the infra team gets actionable work orders</li>
+    <li><strong>Automates the refresh</strong> so this isn't a quarterly project that's already stale by the time it's presented — it's a living, queryable posture that updates as the environment changes</li>
+</ol>
+
+<hr>
+
+<h2>How To Actually Build This: The Architecture</h2>
+
+<p>Over the past months, working on <strong>CyberProbe</strong> — an open-source security investigation platform built on Defender XDR, Sentinel, and GitHub Copilot — I've been tackling exactly this challenge through the lens of <strong>Continuous Threat Exposure Management (CTEM)</strong>.</p>
+
+<p>The question I kept coming back to was: <strong>where does the consolidation actually happen? What's the central repository?</strong></p>
+
+<p>Here's the architecture that works.</p>
+
+<h3>Step 1: The Data Lake — Your Single Source of Truth</h3>
+
+<p>The foundation is the <strong>Microsoft Sentinel Security Data Lake</strong>. Not because it's the only option, but because it solves the hardest part of the consolidation problem: <strong>getting all signals into one queryable place.</strong></p>
+
+<p>This is where <strong>data connectors</strong> become critical. Sentinel provides 300+ connectors out of the box — and this is how you bring in signals from sources that aren't Microsoft:</p>
+
+<ul>
+    <li><strong>Microsoft-native connectors:</strong> Defender XDR (incidents, alerts, device events), Defender for Cloud (CSPM findings, compliance scores, recommendations), Entra ID (sign-in logs, audit logs, identity risk), Microsoft Purview (DLP, information protection)</li>
+    <li><strong>Third-party connectors:</strong> CrowdStrike, Palo Alto, Fortinet, AWS CloudTrail, GCP Security Command Center, Qualys, Tenable, Rapid7 — whatever you have, there's likely a connector or a CEF/Syslog/API path</li>
+    <li><strong>Custom connectors:</strong> For anything that doesn't have a native connector, the Log Ingestion API and Data Collection Rules (DCR) let you push any structured data into custom tables</li>
+</ul>
+
+<p>The key insight: <strong>you don't need to rip and replace your existing tools.</strong> You keep your Qualys, your CrowdStrike, your AWS SecurityHub — but you route their signals into the data lake. That's where the consolidation happens.</p>
+
+<h3>Step 2: Exposure Management — The Graph Layer</h3>
+
+<p>Once data is in the lake, you need something that <em>connects the dots</em>. That's where <strong>Microsoft Security Exposure Management</strong> comes in.</p>
+
+<p>Exposure Management isn't just another dashboard. It builds a <strong>graph</strong> — a live model of relationships between your assets, identities, vulnerabilities, and exposures. You connect your solutions into it (Defender for Endpoint, Defender for Cloud, Defender for Identity, third-party vulnerability scanners), and it creates:</p>
+
+<ul>
+    <li><strong>ExposureGraphNodes</strong> — every device, identity, cloud resource, application in your environment</li>
+    <li><strong>ExposureGraphEdges</strong> — the relationships: "this device has RCE vulnerability," "this identity has admin access to," "this resource is internet-facing"</li>
+    <li><strong>Attack paths</strong> — automated discovery of the chains an attacker could follow from initial access to critical assets</li>
+    <li><strong>Choke points</strong> — the nodes where multiple attack paths converge (fix these first for maximum risk reduction)</li>
+</ul>
+
+<p>This is the shift from vulnerability <em>lists</em> to exposure <em>graphs</em>. A CVE in isolation is just a number. A CVE on an internet-exposed device that sits on an attack path to a domain controller — that's a completely different conversation. That graph context is what transforms a 3,000-item CVE list into a 15-item priority list.</p>
+
+<h3>Step 3: AI Agents — The Extraction and Reporting Layer</h3>
+
+<p>Here's where the architecture comes together. You have the data lake (consolidated signals). You have the graph (connected context). Now you need something that can <strong>query across all of it, correlate, and generate persona-specific outputs</strong>.</p>
+
+<p>That's where <strong>AI agents</strong> come in — and specifically, the <strong>Model Context Protocol (MCP)</strong> that allows AI assistants like GitHub Copilot to interact directly with your security data sources:</p>
+
+<ul>
+    <li><strong><a href="https://learn.microsoft.com/azure/sentinel/datalake/sentinel-mcp-data-exploration-tool">Data Exploration</a></strong> — queries KQL against the Sentinel data lake, semantic table search, and entity analysis (SigninLogs, SecurityAlert, AuditLogs, custom tables from third-party connectors)</li>
+    <li><strong><a href="https://learn.microsoft.com/azure/sentinel/datalake/sentinel-mcp-triage-tool">Triage</a></strong> — incident triage and Advanced Hunting (incidents, alerts, evidence, DeviceTvm*, device telemetry, user/machine relationships)</li>
+    <li><strong><a href="https://learn.microsoft.com/azure/developer/azure-mcp-server/overview">Azure</a></strong> — queries cloud infrastructure posture via Azure Resource Graph (Defender for Cloud assessments, compliance scores, security recommendations)</li>
+    <li><strong><a href="https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/set-up-the-github-mcp-server">GitHub</a></strong> — repository context, code search, issues, and pull requests for detection-as-code workflows</li>
+    <li><strong><a href="https://learn.microsoft.com/azure/sentinel/datalake/sentinel-mcp-tools-overview">Sentinel Graph</a></strong> — entity graph exploration, relationship queries, and blast radius analysis</li>
+    <li><strong><a href="https://learn.microsoft.com/azure/sentinel/datalake/sentinel-mcp-agent-creation-tool">Agent Creation</a></strong> — builds Security Copilot agents for complex automated workflows</li>
+    <li><strong><a href="https://learn.microsoft.com/azure/sentinel/datalake/sentinel-mcp-overview">Microsoft Learn</a></strong> — official documentation search and retrieval for remediation guidance</li>
+    <li><strong>Exposure Management</strong> (custom, <a href="https://github.com/olchar/CyberProbe/tree/main/mcp-apps/sentinel-exposure-server">open source</a>) — queries ExposureGraphNodes/Edges for attack paths, choke points, and blast radius</li>
+</ul>
+
+<p>The agent orchestrates across these sources in a single conversation. You ask: <em>"What's our exposure posture?"</em> — and the agent queries the Data Exploration server for Sentinel logs, the Triage server for Advanced Hunting, the Azure server for compliance scores, and the Exposure Management server for attack paths. Then it assembles all of that into a report tailored to whoever is asking.</p>
+
+<p><strong>No agent replaces the analyst.</strong> But an agent that can query 8 MCP servers, correlate findings, and produce 4 different report formats in minutes — that's the only way to make posture consolidation sustainable without a dedicated team.</p>
+
+<h3>The Architecture in One View</h3>
+
+<div class="architecture-diagram">┌──────────────────────────────────────────────────────────────────┐
+│                        DATA SOURCES                              │
+│  Defender XDR · Defender for Cloud · Entra ID · Azure Resources  │
+│  CrowdStrike · Qualys · Tenable · AWS · GCP · Palo Alto · ...   │
+└──────────────────┬───────────────────────────────────────────────┘
+                   │  Sentinel Data Connectors (300+)
+                   │  Log Ingestion API / DCR
+                   ▼
+┌──────────────────────────────────────────────────────────────────┐
+│              SENTINEL SECURITY DATA LAKE                         │
+│  Consolidated logs · Normalized tables · Custom tables           │
+│  SigninLogs · SecurityAlert · DeviceEvents · Custom_CL · ...     │
+└──────────────────┬───────────────────────────────────────────────┘
+                   │
+        ┌──────────┼──────────┐
+        ▼          ▼          ▼
+┌────────────┐ ┌────────┐ ┌─────────────────────┐
+│  Exposure   │ │Advanced│ │  Azure Resource      │
+│  Management │ │Hunting │ │  Graph               │
+│  (Graph)    │ │ (KQL)  │ │  (Cloud Posture)     │
+└──────┬─────┘ └───┬────┘ └──────────┬────────────┘
+       │           │                  │
+       └─────────┬─┘──────────────────┘
+                 │  MCP Servers (AI Agent Interface)
+                 ▼
+┌──────────────────────────────────────────────────────────────────┐
+│              AI AGENT (GitHub Copilot + MCP)                     │
+│  Query · Correlate · Enrich · Analyze · Generate Reports         │
+└──────────────────┬───────────────────────────────────────────────┘
+                   │
+        ┌──────────┼──────────────┬────────────────┐
+        ▼          ▼              ▼                ▼
+   CISO Dashboard  Architect     Remediation     Ops Work
+   (KPI, trends)   (Attack paths) (Prioritized)   Queue</div>
+
+<h3>The Same Data, Multiple Lenses</h3>
+
+<p>Once you have this architecture, generating persona-specific views becomes a <strong>presentation problem</strong>, not a data problem:</p>
+
+<ul>
+    <li><strong>Executive lens:</strong> KPI dashboard — exposure score trend, critical assets remediated, compliance benchmark deltas, month-over-month improvement</li>
+    <li><strong>Architect lens:</strong> Attack path topology — choke points, blast radius analysis, internet exposure map, identity-to-resource paths</li>
+    <li><strong>Planning lens:</strong> Prioritized remediation matrix — P1 through P4, effort estimates, ownership mapping, SLA tracking</li>
+    <li><strong>Operations lens:</strong> Actionable work queue — "Patch these 12 servers this week, here's why they're first, here's the KB article"</li>
+</ul>
+
+<p>Same underlying data. Four outputs. Each one actually useful to its audience.</p>
+
+<hr>
+
+<h2>Concrete Examples: What This Produces</h2>
+
+<p>This isn't theoretical. Here are real report outputs generated by CyberProbe using this exact architecture — AI agent querying across Defender XDR, Sentinel, Exposure Management, and Azure Resource Graph:</p>
+
+<div class="example-card">
+    <h3>📊 Example 1: CSPM Executive KPI Dashboard</h3>
+    <p class="meta"><strong>Audience:</strong> CISO / VP Security</p>
+    <p class="meta"><strong>Data Sources:</strong> Defender for Cloud (compliance scores, Secure Score), Azure Resource Graph (resource inventory, assessments), Sentinel (security alerts trend)</p>
+    <p><strong>What it shows:</strong> An at-a-glance dashboard with color-coded KPI cards — overall Secure Score, compliance percentages by benchmark (CIS, NIST, PCI-DSS), critical recommendations count, month-over-month trends. The CISO gets the answer to "are we improving?" in 30 seconds.</p>
+    <p>🔗 <a href="https://github.com/olchar/CyberProbe/blob/main/reports/cspm_kpi_report_2026-02-19.jpg">View the CSPM KPI Report on GitHub</a></p>
+</div>
+
+<div class="example-card">
+    <h3>💥 Example 2: Blast Radius &amp; Choke Point Analysis</h3>
+    <p class="meta"><strong>Audience:</strong> Security Architect</p>
+    <p class="meta"><strong>Data Sources:</strong> ExposureGraphNodes/Edges (attack paths), Advanced Hunting (device alerts, lateral movement), Sentinel (security incidents)</p>
+    <p><strong>What it shows:</strong> The top choke point devices ranked by high-severity alert count and lateral movement involvement. Mermaid diagrams visualize blast radius — how far an attacker could reach from each compromised node. MITRE ATT&amp;CK tactics mapped to each choke point. The architect sees exactly which 5 devices, if remediated, would collapse the most attack paths.</p>
+    <p>🔗 <a href="https://github.com/olchar/CyberProbe/blob/main/reports/blast_radius_choke_points_2026-02-26.jpg">View the Blast Radius Report on GitHub</a></p>
+</div>
+
+<div class="example-card">
+    <h3>📋 Example 3: Standards Compliance Report</h3>
+    <p class="meta"><strong>Audience:</strong> Compliance / GRC team, Project Manager</p>
+    <p class="meta"><strong>Data Sources:</strong> Azure Resource Graph (securityresources), Defender for Cloud (regulatory compliance assessments)</p>
+    <p><strong>What it shows:</strong> Compliance scores against CIS, NIST 800-53, PCI-DSS, and ISO 27001 benchmarks — with drill-down into failing controls, affected resources, and remediation guidance. Score rings give an immediate visual. The project manager can build a remediation roadmap directly from the failing controls list.</p>
+    <p>🔗 <a href="https://github.com/olchar/CyberProbe/blob/main/reports/standards_compliance_report_2026-04-13.jpg">View the Compliance Report on GitHub</a></p>
+</div>
+
+<div class="example-card">
+    <h3>☁️ Example 4: CNAPP End-to-End Capabilities</h3>
+    <p class="meta"><strong>Audience:</strong> Cloud Security Architect, DevSecOps</p>
+    <p class="meta"><strong>Data Sources:</strong> Defender for Cloud (CSPM, CWPP, containers, DevSecOps), Advanced Hunting (CloudAuditEvents, CloudProcessEvents), Azure Resource Graph</p>
+    <p><strong>What it shows:</strong> Complete CNAPP coverage — from code to cloud. IaC scanning findings, container image vulnerabilities, runtime alerts, Kubernetes cluster posture, CIEM entitlement analysis. The cloud architect sees the full shift-left-to-runtime pipeline in one view.</p>
+    <p>🔗 <a href="https://github.com/olchar/CyberProbe/blob/main/reports/cnapp_end_to_end_scenario_2026-04-12.jpg">View the CNAPP Report on GitHub</a></p>
+</div>
+
+<div class="example-card">
+    <h3>📄 Example 5: Executive Security Report</h3>
+    <p class="meta"><strong>Audience:</strong> C-Suite, Board</p>
+    <p class="meta"><strong>Data Sources:</strong> All of the above, consolidated</p>
+    <p><strong>What it shows:</strong> The 2-page executive briefing — incident summary, posture trend, top risks, key metrics, recommended actions. No technical jargon. Color-coded severity. The CEO can read it in 5 minutes and understand where the organization stands.</p>
+    <p>🔗 <em>Generated from private investigation data — clone the repo and run the <code>report-generation</code> skill to produce your own.</em></p>
+</div>
+
+<p>Every one of these reports was generated by asking the AI agent a natural language question — <em>"Show me our CSPM posture,"</em> <em>"Identify choke points,"</em> <em>"Generate a compliance report"</em> — and letting it orchestrate the queries, correlation, and formatting automatically.</p>
+
+<hr>
+
+<h2>The Uncomfortable Truth</h2>
+
+<p>Most organizations I talk to have all the data they need to answer the security posture question. They have the tools. They have the telemetry. They have the vulnerability scans.</p>
+
+<p>What they don't have is the <strong>connective tissue</strong> between those sources — and the discipline to translate raw findings into decision-ready intelligence for each audience.</p>
+
+<p>And so the CISO goes to the board with a Secure Score that doesn't reflect the real risk. The architect can't prioritize because everything looks critical in isolation. The project manager builds a remediation plan based on incomplete data. And the infra team patches based on CVSS severity instead of actual exposure.</p>
+
+<p>Everyone is working hard. Nobody has the full picture.</p>
+
+<hr>
+
+<h2>What You Can Do Today</h2>
+
+<p>If this sounds like your organization, here's where I'd start:</p>
+
+<ol>
+    <li><strong>Map your data sources.</strong> Before you build anything, inventory every tool that produces security posture data. CSPM, vulnerability scanners, EDR, identity protection, compliance tools. Know what you have.</li>
+    <li><strong>Define your personas and their questions.</strong> Don't build a "unified dashboard" in the abstract. Start with the four questions: What does the CISO need? The architect? The project manager? The ops team? Work backwards from decisions to data.</li>
+    <li><strong>Pick a common language.</strong> Whether it's CTEM, MITRE ATT&amp;CK, or your own framework — normalize findings into a shared taxonomy. "Critical vulnerability on internet-exposed asset in attack path to Tier 0 identity" means the same thing regardless of which scanner found it.</li>
+    <li><strong>Automate the consolidation, not just the scanning.</strong> Most organizations have automated vulnerability scanning. Few have automated the <em>consolidation and translation</em> of those findings into actionable views. That's where the real leverage is.</li>
+    <li><strong>Start with one persona, prove the value, then expand.</strong> Don't try to build everything at once. Build the CISO dashboard first, or the architect's attack path view, or the ops team's work queue. Prove it works. Then extend.</li>
+</ol>
+
+<hr>
+
+<h2>Why This Matters Now</h2>
+
+<p>We're in a moment where the attack surface is expanding faster than most teams can map it. Multi-cloud. SaaS sprawl. AI workloads. Container environments. Identity fabrics spanning multiple providers.</p>
+
+<p>The tools to detect vulnerabilities have never been better. The tools to consolidate, normalize, and communicate posture across an organization? They're still being built.</p>
+
+<p>That's the gap. And it's a gap that matters — because <strong>security posture isn't a number. It's a conversation.</strong> A conversation that needs to happen differently with every stakeholder.</p>
+
+<p>The organizations that figure this out — that build the connective tissue between detection and decision — are the ones that will actually reduce risk, not just measure it.</p>
+
+<hr>
+
+<p><em>CyberProbe's exposure management capability is one approach to this challenge — using AI-assisted workflows to query ExposureGraph, DeviceTvm, Azure Resource Graph, and Defender for Cloud data, then generate persona-specific reports. It's open source and available on GitHub: <a href="https://github.com/olchar/CyberProbe/tree/main">https://github.com/olchar/CyberProbe</a></em></p>
+
+<p><em>Opinions are my own.</em></p>
+
+<p>#CyberSecurity #SecurityPosture #CTEM #ExposureManagement #CISO #MultiCloud #VulnerabilityManagement #DefenderXDR #AI #SecurityOperations #CNAPP #AttackSurface #RiskManagement #CyberProbe</p>
+
+</body>
+</html>
