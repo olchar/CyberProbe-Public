@@ -13,7 +13,7 @@ Create an Automation Rule with these trigger conditions:
 
 | Field | Value |
 |-------|-------|
-| Provider | Azure Security Center · Microsoft 365 Insider Risk Management · Microsoft Data Loss Prevention |
+| Provider | Microsoft Defender for Cloud · Microsoft 365 Insider Risk Management · Microsoft Data Loss Prevention |
 | Alert Title contains any of | `ASCII smuggling`, `Jailbreak`, `Prompt Shields`, `user phishing attempt ... AI`, `AI Agent Reconnaissance`, `Risky AI usage`, `DSPM for AI`, `Restrict copilot by label` |
 | Severity | Medium or High |
 | Workspaces | Select all Sentinel workspaces where Defender for AI / Prompt Shields alerts land |
