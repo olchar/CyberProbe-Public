@@ -35,6 +35,25 @@ function Write-Ok   { param($Msg) Write-Host "    $Msg" -ForegroundColor Green }
 function Write-Warn { param($Msg) Write-Host "!!  $Msg" -ForegroundColor Yellow }
 function Write-Err  { param($Msg) Write-Host "XX  $Msg" -ForegroundColor Red }
 
+# --- Helper: safe UTF-8 file I/O (Option B) ---
+# Avoids PS 5.1 Set-Content -Encoding UTF8 bugs:
+#   1. Prepends a BOM that breaks some Markdown renderers.
+#   2. Get-Content -Raw defaults to Windows-1252, corrupting em-dashes into mojibake.
+# Use these helpers whenever this script (or its callers) reads/writes text files.
+function Read-Utf8File {
+    param([Parameter(Mandatory)][string]$Path)
+    return [System.IO.File]::ReadAllText((Resolve-Path $Path).Path, [System.Text.Encoding]::UTF8)
+}
+function Write-Utf8File {
+    param(
+        [Parameter(Mandatory)][string]$Path,
+        [Parameter(Mandatory)][string]$Content
+    )
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    $resolved = if (Test-Path $Path) { (Resolve-Path $Path).Path } else { [System.IO.Path]::GetFullPath($Path) }
+    [System.IO.File]::WriteAllText($resolved, $Content, $utf8NoBom)
+}
+
 # --- 1. Sanity: we're in the right repo with the right remotes ---
 Write-Step "Checking remotes"
 $remotes = git remote
@@ -79,10 +98,40 @@ Write-Host $ahead -ForegroundColor White
 $commitCount = ($ahead | Measure-Object -Line).Lines
 Write-Ok "$commitCount commit(s) will be promoted."
 
-# --- 5. PII scan against the diff ---
+# --- 5. Encoding preflight: block UTF-8 BOM and mojibake in added/modified text files ---
+Write-Step "Encoding preflight (UTF-8 BOM + mojibake scan)"
+$changedFiles = git diff --name-only --diff-filter=AM public/main..main
+$textExt = @('.md','.txt','.html','.json','.yaml','.yml','.ps1','.py','.kql','.csv')
+$encodingIssues = @()
+foreach ($file in $changedFiles) {
+    if (-not (Test-Path $file)) { continue }
+    $ext = [System.IO.Path]::GetExtension($file).ToLower()
+    if ($textExt -notcontains $ext) { continue }
+    $bytes = [System.IO.File]::ReadAllBytes($file)
+    if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
+        $encodingIssues += [pscustomobject]@{ File = $file; Issue = 'UTF-8 BOM' }
+        continue
+    }
+    # Mojibake heuristics: Windows-1252 interpretation of UTF-8 bytes.
+    # `â€"` (em-dash), `â†'` (arrow), `âœ…` (checkmark), `ðŸ` (emoji prefix).
+    $text = [System.Text.Encoding]::UTF8.GetString($bytes)
+    if ($text -match '(â€[""]|â†’|âœ…|ðŸ[š-œž]|Ã[¢¨©])') {
+        $encodingIssues += [pscustomobject]@{ File = $file; Issue = 'Possible mojibake (Win-1252 → UTF-8 mis-encoding)' }
+    }
+}
+if ($encodingIssues) {
+    Write-Err "Encoding issues detected — these would render incorrectly on GitHub:"
+    foreach ($i in $encodingIssues) { Write-Host "  [$($i.Issue)] $($i.File)" -ForegroundColor Red }
+    Write-Err "Fix by rewriting as UTF-8 without BOM (.NET System.Text.UTF8Encoding `$false)."
+    Write-Err "Use Read-Utf8File / Write-Utf8File helpers in this script."
+    Write-Err "Re-run with -Force to bypass (NOT recommended)."
+    exit 1
+}
+Write-Ok "No BOM or mojibake detected."
+
+# --- 6. PII scan against the diff ---
 if (-not $Force) {
-    Write-Step "Scanning diff for PII patterns (use -Force to skip)"
-    $diff = git diff public/main..main
+    Write-Step "Scanning diff for PII patterns (use -Force to skip)"    $diff = git diff public/main..main
     # Patterns that should NEVER appear in public history.
     # Excludes Microsoft's public demo placeholders (contoso.com, M365x, alpineskihouse.co).
     # Note: pattern strings are assembled from fragments so this script does not
@@ -118,7 +167,7 @@ if (-not $Force) {
     Write-Warn "Skipping PII scan (-Force)"
 }
 
-# --- 6. Confirmation ---
+# --- 7. Confirmation ---
 if ($DryRun) {
     Write-Step "DRY RUN - would push main to public/main"
     Write-Ok "No changes made. Re-run without -DryRun to actually promote."
@@ -133,7 +182,7 @@ if ($confirm -ne 'PROMOTE') {
     exit 0
 }
 
-# --- 7. Push ---
+# --- 8. Push ---
 Write-Step "Pushing to public/main"
 git push public main
 Write-Ok "Done. https://github.com/olchar/CyberProbe/commits/main"

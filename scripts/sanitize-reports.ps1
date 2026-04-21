@@ -33,9 +33,19 @@ $files = @(
   'reports\incident_report_51873_2026-03-18.html',
   'reports\incident_report_55843_2026-03-31.html'
 )
+
+# Option B: always read + write as UTF-8 without BOM via .NET I/O.
+# Avoids two PowerShell 5.1 encoding bugs:
+#   1. Get-Content -Raw defaults to Windows-1252, corrupting multi-byte UTF-8
+#      (em-dash, arrows, checkmarks) into mojibake.
+#   2. Set-Content -Encoding UTF8 prepends a BOM (EF BB BF) which breaks
+#      some Markdown renderers and the `#` heading detector.
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+
 foreach ($f in $files) {
-  $c = Get-Content -Raw $f
+  $full = (Resolve-Path $f).Path
+  $c = [System.IO.File]::ReadAllText($full, [System.Text.Encoding]::UTF8)
   foreach ($k in $map.Keys) { $c = $c -replace $k, $map[$k] }
-  Set-Content -Path $f -Value $c -NoNewline
+  [System.IO.File]::WriteAllText($full, $c, $utf8NoBom)
   Write-Host "Sanitized $f"
 }
