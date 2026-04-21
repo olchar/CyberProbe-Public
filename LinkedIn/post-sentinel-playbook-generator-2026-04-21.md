@@ -1,53 +1,84 @@
-# LinkedIn Post — Sentinel Playbook Generator (Security Copilot)
+# LinkedIn Post — Sentinel AI Playbook Generator (Preview)
 
 **Date:** 2026-04-21
 **Format:** Short post (bilingual EN / FR)
-**Topic:** Security Copilot's Sentinel Playbook Generator, tested on an AI-on-AI attack scenario
+**Topic:** Microsoft Sentinel's AI playbook generator (preview), paired with a real AI-on-AI attack spec from the CyberProbe repo
+**Reference:** https://learn.microsoft.com/en-us/azure/sentinel/automation/generate-playbook
 
 ---
 
 ## 🇬🇧 English
 
-**Security Copilot's new Sentinel Playbook Generator — tested on a real AI-on-AI attack scenario.**
+🚀 **A new milestone in security automation**
 
-The Playbook Generator is a Security Copilot capability: natural-language in, runnable Sentinel Logic App out. It uses Copilot's reasoning + grounding on Defender XDR, Defender for Cloud, MDTI, and Entra ID.
+Microsoft is introducing an AI-driven playbook generator in Microsoft Sentinel, bringing a fundamentally new way to build security automations.
 
-The scenario I fed it: a rogue AI agent automating credential stuffing, adaptive OTP phishing, and session-token abuse — the kind of attack a human SOC can't out-pace.
+➡️ Describe your logic in natural language
+➡️ Get fully functional Python playbooks, ready to use
+➡️ With built-in documentation and visual flow diagrams
 
-I pasted a plain-English spec (entity, triage steps, enrichment, risk tree, containment, reporting). Out came a deployable playbook.
+All directly from the Defender portal — no context switching, no heavy coding required.
 
-What stuck with me:
+This is a strong step toward *"automation as code, generated from intent"*, where security teams can focus on outcomes rather than implementation details. For organisations scaling SOAR, this could significantly reduce the friction between detection and response.
 
-🔹 **Speed** — "prompt → playbook" in minutes, not sprints
-🔹 **Grounding** — Copilot stitches Defender XDR, Defender for Cloud, MDTI, Entra ID natively
-🔹 **Trust boundary** — the generator writes code; it does *not* tell you whether that code is safe
+---
 
-That last one matters. Every generated playbook needs the same 14-point review I'd give a human-written one: no hardcoded tenant data, secrets from connections, idempotent actions, gated write ops, structured logs, regression tests. Security Copilot removes the blank page — not the reviewer.
+**So I tried it on a real scenario.** I took an AI-on-AI attack investigation I had just run — a rogue agent automating credential stuffing, adaptive OTP phishing, and session-token abuse — and turned the forensic playbook into a paste-ready spec for the generator: entity, triage steps, enrichment, risk tree, containment, reporting.
 
-If you're building toward agentic SOC workflows, this is a real step forward. Just don't skip the checklist.
+Open-sourced here → `security-copilot/playbook-specs/ai-attack-triage-playbook.md`
+🔗 https://github.com/olchar/CyberProbe/blob/main/security-copilot/playbook-specs/ai-attack-triage-playbook.md
 
-**#SecurityCopilot #MicrosoftSentinel #AIsecurity #SOC #DefenderXDR**
+What I kept from the experience:
+
+🔹 **Speed** — Plan mode → Act mode → deployable playbook in minutes
+🔹 **Grounding** — integration profiles stitch Graph, Defender XDR, MDTI, Entra ID natively
+🔹 **Trust boundary** — the generator writes code; it does *not* tell you whether that code is safe. The docs are explicit: *"No automatic code validation is provided. Users must manually verify correctness."*
+
+That's why the spec ships with a 14-point validation checklist across five categories (🔒 Security · 🧱 Reliability · 💥 Blast-radius · 📊 Observability · 🔁 Regression). Every generated playbook needs the same review I'd give a human-written one: no hardcoded tenant data, secrets from integration profiles, idempotent actions, gated write ops, structured logs, regression tests.
+
+Removing the blank page ≠ removing the reviewer.
+
+🔗 Microsoft docs: https://learn.microsoft.com/en-us/azure/sentinel/automation/generate-playbook
+🔗 Full repo: https://github.com/olchar/CyberProbe
+
+**#MicrosoftSentinel #SecurityCopilot #AIsecurity #SOC #DefenderXDR #SOAR**
 
 ---
 
 ## 🇫🇷 Français
 
-**Le nouveau générateur de playbooks Sentinel de Security Copilot — testé sur un scénario réel d'attaque pilotée par IA.**
+🚀 **Une nouvelle étape dans l'automatisation de la sécurité**
 
-Le générateur est une capacité de Security Copilot : spec en langage naturel → Logic App Sentinel déployable. Il s'appuie sur le raisonnement de Copilot et son ancrage natif dans Defender XDR, Defender for Cloud, MDTI et Entra ID.
+Microsoft introduit un générateur de playbooks piloté par IA dans Microsoft Sentinel, apportant une manière fondamentalement nouvelle de construire des automatisations de sécurité.
 
-Mon scénario : un agent IA malveillant automatisant credential stuffing, phishing OTP adaptatif et réutilisation de session tokens — le type d'attaque qu'un SOC humain ne peut pas suivre en temps réel.
+➡️ Décrivez votre logique en langage naturel
+➡️ Obtenez des playbooks Python entièrement fonctionnels, prêts à l'emploi
+➡️ Avec documentation intégrée et diagrammes de flux visuels
 
-J'ai fourni un spec rédigé en clair (entité, triage, enrichissement, arbre de risque, confinement, reporting). Sortie : un playbook prêt à déployer.
+Le tout directement depuis le portail Defender — pas de changement de contexte, pas de développement lourd.
+
+C'est un pas important vers *« l'automatisation comme code, générée depuis l'intention »*, où les équipes sécurité se concentrent sur les résultats plutôt que sur les détails d'implémentation. Pour les organisations qui passent le SOAR à l'échelle, cela peut réduire significativement la friction entre détection et réponse.
+
+---
+
+**Je l'ai donc testé sur un scénario réel.** J'ai repris une investigation d'attaque IA contre IA que je venais de mener — un agent malveillant automatisant credential stuffing, phishing OTP adaptatif et réutilisation de session tokens — et j'ai transformé le playbook forensique en spec prête à coller dans le générateur : entité, triage, enrichissement, arbre de risque, confinement, reporting.
+
+Publié en open source ici → `security-copilot/playbook-specs/ai-attack-triage-playbook.md`
+🔗 https://github.com/olchar/CyberProbe/blob/main/security-copilot/playbook-specs/ai-attack-triage-playbook.md
 
 Ce que je retiens :
 
-🔹 **Vitesse** — « prompt → playbook » en quelques minutes
-🔹 **Ancrage** — Copilot intègre nativement Defender XDR, Defender for Cloud, MDTI, Entra ID
-🔹 **Frontière de confiance** — le générateur écrit du code ; il ne vous dit *pas* si ce code est sûr
+🔹 **Vitesse** — mode Plan → mode Act → playbook déployable en quelques minutes
+🔹 **Ancrage** — les profils d'intégration relient nativement Graph, Defender XDR, MDTI, Entra ID
+🔹 **Frontière de confiance** — le générateur écrit du code ; il ne vous dit *pas* si ce code est sûr. La doc est explicite : *« Aucune validation automatique de code n'est fournie. L'utilisateur doit vérifier manuellement. »*
 
-Ce dernier point est critique. Chaque playbook généré mérite la même revue en 14 points qu'un playbook écrit à la main : pas de données tenant codées en dur, secrets via connexions, actions idempotentes, écritures protégées, logs structurés, tests de non-régression. Security Copilot supprime la page blanche — pas le relecteur.
+C'est pourquoi le spec inclut une checklist de validation en 14 points répartie en cinq catégories (🔒 Sécurité · 🧱 Fiabilité · 💥 Rayon d'impact · 📊 Observabilité · 🔁 Non-régression). Chaque playbook généré mérite la même revue qu'un playbook écrit à la main : pas de données tenant codées en dur, secrets via profils d'intégration, actions idempotentes, écritures protégées, logs structurés, tests de non-régression.
 
-Pour qui construit un SOC agentique, c'est un vrai pas en avant. Mais la checklist reste obligatoire.
+Supprimer la page blanche ≠ supprimer le relecteur.
 
-**#SecurityCopilot #MicrosoftSentinel #SécuritéIA #SOC #DefenderXDR**
+🔗 Doc Microsoft : https://learn.microsoft.com/en-us/azure/sentinel/automation/generate-playbook
+🔗 Dépôt complet : https://github.com/olchar/CyberProbe
+
+**#MicrosoftSentinel #SecurityCopilot #SécuritéIA #SOC #DefenderXDR #SOAR**
+
+
