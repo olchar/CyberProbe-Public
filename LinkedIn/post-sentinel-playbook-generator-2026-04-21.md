@@ -25,7 +25,7 @@ This is a strong step toward *"automation as code, generated from intent"*, wher
 
 **So I tried it on a real scenario.** I took an AI-on-AI attack investigation I had just run — a rogue agent automating credential stuffing, adaptive OTP phishing, and session-token abuse — and turned the forensic playbook into a paste-ready spec for the generator: entity, triage steps, enrichment, risk tree, containment, reporting.
 
-Open-sourced here → `security-copilot/playbook-specs/ai-attack-triage-playbook.md`
+Here on GitHub → `security-copilot/playbook-specs/ai-attack-triage-playbook.md`
 🔗 https://github.com/olchar/CyberProbe/blob/main/security-copilot/playbook-specs/ai-attack-triage-playbook.md
 
 What I kept from the experience:
@@ -63,7 +63,7 @@ C'est un pas important vers *« l'automatisation comme code, générée depuis l
 
 **Je l'ai donc testé sur un scénario réel.** J'ai repris une investigation d'attaque IA contre IA que je venais de mener — un agent malveillant automatisant credential stuffing, phishing OTP adaptatif et réutilisation de session tokens — et j'ai transformé le playbook forensique en spec prête à coller dans le générateur : entité, triage, enrichissement, arbre de risque, confinement, reporting.
 
-Publié en open source ici → `security-copilot/playbook-specs/ai-attack-triage-playbook.md`
+Ici sur GitHub → `security-copilot/playbook-specs/ai-attack-triage-playbook.md`
 🔗 https://github.com/olchar/CyberProbe/blob/main/security-copilot/playbook-specs/ai-attack-triage-playbook.md
 
 Ce que je retiens :
@@ -77,6 +77,44 @@ C'est pourquoi le spec inclut une checklist de validation en 14 points répartie
 Supprimer la page blanche ≠ supprimer le relecteur.
 
 🔗 Doc Microsoft : https://learn.microsoft.com/en-us/azure/sentinel/automation/generate-playbook
+🔗 Dépôt complet : https://github.com/olchar/CyberProbe
+
+**#MicrosoftSentinel #SecurityCopilot #SécuritéIA #SOC #DefenderXDR #SOAR**
+
+---
+
+## 🇨🇦 Français (Canada)
+
+🚀 **Une nouvelle étape dans l'automatisation de la sécurité**
+
+Microsoft lance un générateur de playbooks piloté par l'IA dans Microsoft Sentinel, ce qui change fondamentalement la façon de bâtir des automatisations de sécurité.
+
+➡️ Décrivez votre logique en langage naturel
+➡️ Obtenez des playbooks Python pleinement fonctionnels, prêts à utiliser
+➡️ Avec documentation intégrée et diagrammes de flux visuels
+
+Le tout directement à partir du portail Defender — aucun changement de contexte, aucun développement lourd.
+
+C'est un pas important vers « l'automatisation en tant que code, générée à partir de l'intention », où les équipes de sécurité peuvent se concentrer sur les résultats plutôt que sur les détails de mise en œuvre. Pour les organisations qui mettent le SOAR à l'échelle, ça peut réduire considérablement la friction entre détection et réponse.
+
+---
+
+**Je l'ai donc mis à l'essai dans un scénario réel.** J'ai repris une enquête d'attaque « IA contre IA » que je venais de mener — un agent malveillant qui automatisait du « credential stuffing », de l'hameçonnage OTP adaptatif et de la réutilisation de jetons de session — et j'ai transformé le playbook d'investigation en devis prêt à coller dans le générateur : entité, triage, enrichissement, arbre de risque, confinement, rapport.
+
+Ici sur GitHub → `security-copilot/playbook-specs/ai-attack-triage-playbook.md`
+🔗 https://github.com/olchar/CyberProbe/blob/main/security-copilot/playbook-specs/ai-attack-triage-playbook.md
+
+Ce que j'en retiens :
+
+🔹 **Rapidité** — mode Plan → mode Act → playbook déployable en quelques minutes
+🔹 **Ancrage** — les profils d'intégration relient nativement Graph, Defender XDR, MDTI, Entra ID
+🔹 **Frontière de confiance** — le générateur écrit du code; il ne vous dit pas si ce code est sécuritaire. La documentation est claire : « Aucune validation automatique du code n'est fournie. L'utilisateur doit vérifier manuellement l'exactitude. »
+
+C'est pourquoi le devis est accompagné d'une liste de vérification en 14 points, répartie en cinq catégories (🔒 Sécurité · 🧱 Fiabilité · 💥 Rayon d'impact · 📊 Observabilité · 🔁 Non-régression). Chaque playbook généré mérite la même révision qu'un playbook écrit à la main : aucune donnée de locataire codée en dur, secrets gérés via les profils d'intégration, actions idempotentes, opérations d'écriture balisées, journaux structurés, tests de non-régression.
+
+Enlever la page blanche ≠ enlever le réviseur.
+
+🔗 Documentation Microsoft : https://learn.microsoft.com/en-us/azure/sentinel/automation/generate-playbook
 🔗 Dépôt complet : https://github.com/olchar/CyberProbe
 
 **#MicrosoftSentinel #SecurityCopilot #SécuritéIA #SOC #DefenderXDR #SOAR**
