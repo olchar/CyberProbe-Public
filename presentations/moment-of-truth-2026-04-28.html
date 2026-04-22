@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>The Moment of Truth — From Consoles to an Investigation Fabric</title>
+<title>Rewiring the SOC — Fabric over Consoles</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme" />
@@ -186,43 +186,22 @@
 <!-- 1 — Title -->
 <section class="title-slide">
   <div class="kicker">CyberProbe · 2026</div>
-  <h1>The Moment<br/>of Truth.</h1>
-  <p style="font-size:1.1em; color: var(--cp-text); max-width: 32ch;">
-    From <strong>15 consoles</strong> to <em>one investigation fabric</em>.<br/>
-    From SaaS screens to <em>agentic workflows</em>.
+  <h1>Rewiring<br/>the SOC.</h1>
+  <p style="font-size:1.2em; color: var(--cp-accent); max-width: 34ch; margin-top:0.2em;">
+    <em>Fabric over consoles.</em>
+  </p>
+  <p style="font-size:1.05em; color: var(--cp-text); max-width: 36ch;">
+    The shift from <strong>tools you operate</strong><br/>to <em>agents that investigate</em>.
   </p>
   <p class="muted" style="margin-top:2em;">Olivier Charron · CyberProbe — open-source security investigation platform</p>
+  <aside class="notes">
+    Open calmly. This is not a product pitch. The title is the thesis: the SOC is being rewired, and the fabric is starting to matter more than any individual console.
+    Two lines to land: “consoles are still relevant, but for how long?” and “from tools you operate to agents that investigate.”
+    Signal the audience that the next 20 minutes will alternate between mindset slides, one customer case, and a live demo. Invite skepticism — this talk assumes a technical and commercial audience.
+  </aside>
 </section>
 
-<!-- 2 — The question -->
-<section>
-  <h2>The question I keep getting asked</h2>
-  <blockquote class="pull" style="font-size:1.1em;">
-    "What's our security posture — <em>really</em>?"
-  </blockquote>
-  <p>Different people. Different roles. Different words.<br/>Always the same question underneath.</p>
-  <p>And every time, I pause. Not because I don't know.<br/>Because the honest answer is: <em>it depends on who's asking.</em></p>
-  <p class="muted">CISO · Architect · PM · Ops — same signal, four completely different needs.</p>
-  <div class="slide-footer">01 · The question</div>
-</section>
-
-<!-- 3 — The reality in 2026 -->
-<section>
-  <h2>The reality nobody puts on a vendor slide</h2>
-  <div class="grid grid-3">
-    <div class="card"><h4>Multiple clouds</h4><p>Azure + AWS + GCP. Each with its own console, its own scoring, its own alerts.</p></div>
-    <div class="card"><h4>Multiple stacks</h4><p>EDR · CSPM · CNAPP · Identity · Email · DLP — different vendors, different taxonomies.</p></div>
-    <div class="card"><h4>Multiple scanners</h4><p>Qualys · Tenable · MDVM · container · IaC · DAST · SAST — each with its own severity model.</p></div>
-  </div>
-  <p style="margin-top:1em;">The data exists. That's <em>not</em> the problem.</p>
-  <blockquote class="pull">
-    It lives in <strong>15 dashboards</strong>, in <strong>15 formats</strong>, speaking <strong>15 languages</strong> —<br/>
-    and nobody has the consolidated view that actually enables decisions.
-  </blockquote>
-  <div class="slide-footer">02 · The reality</div>
-</section>
-
-<!-- 4 — Moment of truth -->
+<!-- 2 — Moment of truth -->
 <section class="section-divider">
   <h1>This is a moment of truth.</h1>
   <p style="font-size:1.1em; max-width:50ch;">
@@ -230,119 +209,239 @@
     <em>For how long?</em>
   </p>
   <p class="muted">The adversary isn't opening 15 tabs. Neither should we.</p>
+  <aside class="notes">
+    Name the tension honestly. SaaS, dashboards and consoles still work — and for many controls they still should. The question is not “are they useful?” but “are they the right primary interface for the next ten years?”
+    Land the pull quote: the adversary isn’t manually opening fifteen browser tabs. Why are we structuring our defenders’ day around doing exactly that?
+    Pause. Let the room answer in their heads.
+  </aside>
 </section>
 
-<!-- 5 — Four audiences, one signal -->
+<!-- 3 — The shift -->
 <section>
-  <h2>Same signal. Four audiences. Four unmet needs.</h2>
+  <h2>The shift: from unified console to investigation fabric</h2>
   <div class="grid grid-2">
-    <div class="card"><h4>CISO / VP Security</h4>
-      <p><strong>Asks:</strong> Are we improving? What's residual risk? Can I defend it to the board?</p>
-      <p><strong>Gets:</strong> 47 dashboards, irreconcilable scores.</p>
-    </div>
-    <div class="card"><h4>Security Architect</h4>
-      <p><strong>Asks:</strong> Where are the exploitable paths? Which choke points matter most?</p>
-      <p><strong>Gets:</strong> 3,000 CVEs ranked by CVSS, no graph context.</p>
-    </div>
-    <div class="card"><h4>Project Manager</h4>
-      <p><strong>Asks:</strong> What do we prioritize? What's the effort and timeline?</p>
-      <p><strong>Gets:</strong> Unusable lists. Spreadsheets. Monthly.</p>
-    </div>
-    <div class="card"><h4>Infra / Ops</h4>
-      <p><strong>Asks:</strong> What do I patch, on which host, by when?</p>
-      <p><strong>Gets:</strong> CVEs without business context.</p>
-    </div>
-  </div>
-  <div class="slide-footer">03 · The consolidation gap</div>
-</section>
-
-<!-- 6 — The shift -->
-<section>
-  <h2>The shift: from consoles to an investigation fabric</h2>
-  <div class="grid grid-2">
-    <div class="card bad">
-      <h4>Yesterday — Console-centric</h4>
+    <div class="card warn">
+      <h4>Today — Unified XDR console</h4>
+      <p style="margin:0 0 0.4em 0;"><em>Defender XDR already solved the “15 tabs” problem.</em></p>
       <ul>
-        <li>Humans pivot between 15 UIs</li>
-        <li>Context lost at every tab</li>
-        <li>Every vendor wants to be the "single pane"</li>
-        <li>Data pulled <em>into</em> consoles</li>
-        <li>Value = the screen</li>
+        <li>Identity + endpoint + email + cloud apps correlated in one portal</li>
+        <li>Copilot-in-portal assists on the current incident</li>
+        <li>Reasoning scoped to what the vendor ingests</li>
+        <li>Third-party signals need a connector — or they don't show up</li>
+        <li>Expertise lives in the analyst's head and dies when the tab closes</li>
       </ul>
     </div>
     <div class="card good">
-      <h4>Tomorrow — Agent-centric</h4>
+      <h4>Tomorrow — Agentic fabric</h4>
+      <p style="margin:0 0 0.4em 0;"><em>The conversation lives outside any one console.</em></p>
       <ul>
-        <li>One analyst, one prompt, many MCP tools</li>
-        <li>Context carried through every step</li>
-        <li>The <em>data plane</em> is the platform</li>
-        <li>Agents pulled <em>to</em> the data</li>
-        <li>Value = the outcome</li>
+        <li>One prompt orchestrates XDR, Sentinel, Graph, and third-party MCPs as peers</li>
+        <li>Context, queries, and IOCs travel across products</li>
+        <li>Campaign-correlation across 90 days and multiple workspaces</li>
+        <li>Every investigation compounds into code — reports, playbooks, detections</li>
+        <li>Humans stay on the one-way doors; agents do the heavy lifting</li>
       </ul>
     </div>
   </div>
   <p class="muted" style="margin-top:0.8em;">
-    Consoles aren't dying tomorrow. But they're being demoted — from the workplace to a <em>view</em> over the fabric.
+    The real differentiator isn't <em>single pane of glass</em>. It's whether expertise <em>compounds into code</em> or <em>evaporates into a UI session</em>.
   </p>
-  <div class="slide-footer">04 · The shift</div>
+  <div class="slide-footer">01 · The shift</div>
+  <aside class="notes">
+    Open with a correction of a lazy framing: the “15 consoles” critique is a 2020 story. Defender XDR already consolidated identity, endpoint, email, cloud apps and cloud into one portal, with correlated incidents, a unified entity page, one hunting surface, and Copilot-in-portal assistance. Credit that honestly — the room is full of people who shipped it.
+    Then land the real 2026 gap. Four points: (1) the unified console is still a GUI — expertise lives in analysts’ heads, not in reusable code; (2) the workload is bounded by what the vendor ingests — third parties need connectors or stay invisible; (3) a great investigation ends when the tab closes — nothing becomes a playbook, nothing becomes a regression test; (4) reasoning is per-incident, not campaign-wide across 90 days and multiple workspaces.
+    Punch line: the real differentiator is not single pane of glass. It’s whether expertise compounds into code or evaporates into a UI session. Lead into slide 4, where the three postures (SaaS-only, SaaS+Copilot, Agentic) make this operational.
+  </aside>
 </section>
 
-<!-- 7 — Architecture -->
+<!-- 4 — Prep for the agentic conversation -->
 <section>
-  <h2>The architecture that actually works</h2>
+  <h2>Prep yourself for the agentic conversation</h2>
+  <p class="muted">SaaS will still be useful. But will it be <em>the only</em> way the SOC works?</p>
+  <div class="grid grid-3">
+    <div class="card bad">
+      <h4>SaaS-only SOC</h4>
+      <ul>
+        <li>Click-through workflows</li>
+        <li>Vendor-defined pivots</li>
+        <li>Tribal knowledge in analysts' heads</li>
+      </ul>
+    </div>
+    <div class="card warn">
+      <h4>SaaS + Copilot bolt-on</h4>
+      <ul>
+        <li>Chat inside one console</li>
+        <li>Context stops at the vendor's API</li>
+        <li>Still siloed</li>
+      </ul>
+    </div>
+    <div class="card good">
+      <h4>Agentic SOC fabric</h4>
+      <ul>
+        <li>Natural-language across <em>all</em> data</li>
+        <li>Tools chained via MCP</li>
+        <li>Expertise encoded as skills</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:0.8em;">Experienced analysts — the ones who know where to look — <em>already</em> feel the friction of the SaaS-only model.</p>
+  <div class="slide-footer">02 · The agentic conversation</div>
+  <aside class="notes">
+    Position three postures the room will recognize themselves in. SaaS-only: click-through, tribal knowledge in analysts’ heads. SaaS + Copilot bolt-on: chat inside one console, context still stops at the vendor’s API. Agentic fabric: natural language across all data, tools chained via MCP, expertise encoded as skills.
+    Emphasize the middle option — it’s where most serious buyers are today. The talk is about why the middle is a stepping stone, not a destination.
+    Close with: the senior analysts — the ones who already know where to look — are the first to feel the friction.
+  </aside>
+</section>
+
+<!-- 5 — The NYC revealing moment -->
+<section>
+  <h2>The moment it clicked — NYC, Cloud Security SE Training</h2>
+  <blockquote class="pull" style="font-size:1.0em;">
+    The training covered the <em>Sentinel platform</em> and <em>MCP servers</em>.<br/>
+    That's what caught my attention — and reframed everything.
+  </blockquote>
+  <p>Sentinel stopped being "the SIEM" in my head and became the <em>data plane</em>. MCP stopped being a protocol detail and became the <em>operating model</em>.</p>
+  <div class="grid grid-2" style="margin-top:0.6em;">
+    <div class="card">
+      <h4>🧑‍💻 Chris's <em>Security Investigator</em></h4>
+      <p>Another practitioner-built initiative, same insight: put the analyst in the driver's seat with agents + MCP, not another dashboard.</p>
+    </div>
+    <div class="card">
+      <h4>🔍 My own <em>CyberProbe</em></h4>
+      <p>Open-source proof that one senior analyst + the right AI fabric can do the work of a five-person team.</p>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:0.6em;">Both start from the same premise: <em>stop asking which console, start asking which conversation.</em></p>
+  <div class="slide-footer">03 · The revealing moment</div>
+  <aside class="notes">
+    Personal story. At the Cloud Security SE Training in NYC, the content that caught my attention wasn’t a product feature — it was the Sentinel platform framing and the MCP servers. Sentinel stopped being “the SIEM” for me and became the data plane; MCP stopped being a protocol and became the operating model.
+    Name Chris’s Security Investigator as an independent confirmation from another practitioner. Two builders, same insight, zero coordination.
+    Land the pull quote: stop asking which console, start asking which conversation.
+  </aside>
+</section>
+
+<!-- 6 — The customer question -->
+<section>
+  <h2>Then the customer questions started coming in</h2>
+  <p>After building CyberProbe, the pattern was unmistakable.<br/>The question wasn't <em>"which product?"</em> — it was:</p>
+  <blockquote class="pull" style="font-size:1.1em;">
+    "How can <em>Microsoft</em> help us in this context?"
+  </blockquote>
+  <div class="grid grid-3" style="margin-top:0.8em;">
+    <div class="card">
+      <h4>Not just Defender</h4>
+      <p>Great for endpoint, identity, email — but doesn't answer posture on its own.</p>
+    </div>
+    <div class="card">
+      <h4>Not just Sentinel</h4>
+      <p>The data lake matters, but the lake alone isn't a conversation.</p>
+    </div>
+    <div class="card">
+      <h4>A combination</h4>
+      <p>Defender XDR + Sentinel + Defender for Cloud + Exposure Management + Copilot — <em>orchestrated</em>.</p>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:0.6em;">The answer is never one product. It's how the pieces talk to each other — through agents.</p>
+  <div class="slide-footer">04 · Customer questions</div>
+  <aside class="notes">
+    The question from customers is never “which product.” It’s “how can Microsoft help in this context?” Answer honestly: not just Defender, not just Sentinel — a combination orchestrated by agents.
+    This is the bridge slide between “mindset” and “evidence.” From here on we show how the pieces actually talk to each other.
+    Optional transition: “I’ll make this concrete with a real customer conversation.”
+  </aside>
+</section>
+
+<!-- 7 — Hydro-Québec case -->
+<section>
+  <h2>Hydro-Québec — one customer, diverse needs</h2>
+  <p class="muted">CTEM framing. Same data. Very different expectations depending on the audience.</p>
+  <div class="grid grid-2">
+    <div class="card">
+      <h4>🏢 ITDM perspective</h4>
+      <ul>
+        <li>"What's my residual risk this quarter?"</li>
+        <li>"Where should I invest — remediation or detection?"</li>
+        <li>"Can I reconcile posture across Azure + on-prem + third parties?"</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🛡️ SOC analyst perspective</h4>
+      <ul>
+        <li>"Is <em>this</em> alert on a real attack path?"</li>
+        <li>"Which choke point would break the kill chain?"</li>
+        <li>"Who else is affected — blast radius, now."</li>
+      </ul>
+    </div>
+  </div>
+  <blockquote class="pull" style="margin-top:0.8em;">
+    The data was <em>already there</em>. What was missing was the <em>translation layer</em>.
+  </blockquote>
+  <div class="slide-footer">05 · Hydro-Québec</div>
+  <aside class="notes">
+    Same customer, same data, very different expectations depending on the audience. The ITDM wants residual risk, invest direction, reconciled posture across Azure + on-prem + third parties. The SOC analyst wants the attack path, the choke point, and blast radius — right now.
+    The point isn’t that one side is right. The point is that a single dashboard can’t serve both conversations.
+    Land the pull quote: “the data was already there. What was missing was the translation layer.” That translation layer is where agents earn their keep.
+  </aside>
+</section>
+
+<!-- 8 — Curving the toolset -->
+<section>
+  <h2>Curve the toolset to the customer — don't force-fit the customer to the tool</h2>
   <div class="layers">
     <div class="layer l3">
-      <strong>3 · Agents & Skills</strong> — natural-language orchestration
+      <strong>Persona layer</strong> — CISO · ITDM · Architect · SOC · Ops
+      <div style="margin-top:0.3em;">Different questions, different outputs, same agent fabric.</div>
+    </div>
+    <div class="layer l2">
+      <strong>Agent &amp; skill layer</strong> — orchestration via MCP
       <div style="margin-top:0.3em;">
         <span class="chip g">GitHub Copilot</span>
         <span class="chip g">Security Copilot</span>
-        <span class="chip g">MCP servers</span>
-        <span class="chip g">Skills / Playbooks</span>
-      </div>
-    </div>
-    <div class="layer l2">
-      <strong>2 · Exposure Graph</strong> — context &amp; attack paths
-      <div style="margin-top:0.3em;">
-        <span class="chip p">ExposureGraphNodes</span>
-        <span class="chip p">ExposureGraphEdges</span>
-        <span class="chip p">Attack paths</span>
-        <span class="chip p">Choke points</span>
+        <span class="chip g">CyberProbe skills</span>
+        <span class="chip g">Custom agents</span>
       </div>
     </div>
     <div class="layer">
-      <strong>1 · Sentinel Data Lake</strong> — single source of truth
+      <strong>Data &amp; graph layer</strong> — Microsoft &amp; partner signals
       <div style="margin-top:0.3em;">
         <span class="chip">Defender XDR</span>
-        <span class="chip">Entra</span>
-        <span class="chip">Purview</span>
-        <span class="chip">Azure · AWS · GCP</span>
-        <span class="chip">Qualys · CrowdStrike · …</span>
+        <span class="chip">Sentinel Data Lake</span>
+        <span class="chip">Defender for Cloud</span>
+        <span class="chip">Exposure Graph</span>
+        <span class="chip">3rd-party connectors</span>
       </div>
     </div>
   </div>
-  <p class="muted" style="margin-top:0.8em;">
-    You don't rip-and-replace. You <em>route</em> signals into the lake and let the graph + agents do the work.
+  <p class="muted" style="margin-top:0.6em;">
+    One fabric, many conversations. That's how CTEM becomes operational — not a dashboard, but an ongoing dialogue.
   </p>
-  <div class="slide-footer">05 · Architecture</div>
+  <div class="slide-footer">06 · Curving the toolset</div>
+  <aside class="notes">
+    Three layers, bottom up. Data/graph: the signals — Defender XDR, Sentinel Data Lake, Defender for Cloud, Exposure Graph, third-party connectors. Agent/skill: orchestration via MCP — GitHub Copilot, Security Copilot, CyberProbe skills, custom agents. Persona: CISO, ITDM, architect, SOC, Ops — same fabric, different conversations.
+    Close with the CTEM reframe: CTEM isn’t a dashboard, it’s an ongoing dialogue. Dashboards take a snapshot; dialogues stay current.
+  </aside>
 </section>
 
-<!-- 8 — Introducing CyberProbe -->
+<!-- 9 — CyberProbe: the proof -->
 <section class="section-divider">
   <h1>CyberProbe</h1>
   <p style="font-size:1.05em; max-width:52ch;">
-    An <em>open-source</em> proof that one analyst + the right AI fabric<br/>
-    can do the work of a five-person SOC team.
+    My open-source answer to the question <em>"how do we actually have this conversation?"</em>
   </p>
-  <p class="muted">Built on Defender XDR, Sentinel, GitHub Copilot, and MCP. MIT licensed.</p>
+  <p class="muted">Built on Defender XDR, Sentinel, Defender for Cloud, Exposure Management, GitHub Copilot, and MCP. MIT licensed.</p>
+  <aside class="notes">
+    Pause. Change the register — we stop talking about mindset and start showing proof.
+    Frame CyberProbe honestly: it is my open-source answer to “how do we actually have this conversation?”. Not a commercial product, not a vendor play — an MIT-licensed reference implementation that anyone can fork.
+    Keep this slide short; it’s a breath before the demo.
+  </aside>
 </section>
 
-<!-- 9 — What CyberProbe is -->
+<!-- 10 — What's in the box -->
 <section>
   <h2>What's in the box</h2>
   <div class="grid grid-3">
     <div class="card">
       <h4>13 Agent Skills</h4>
-      <p>incident-investigation · threat-enrichment · endpoint-device · ioc-management · exposure-management · defender-response · detection-engineering · report-generation · …</p>
+      <p>incident-investigation · threat-enrichment · endpoint-device · exposure-management · defender-response · detection-engineering · report-generation · …</p>
     </div>
     <div class="card">
       <h4>50+ MCP Tools</h4>
@@ -350,7 +449,7 @@
     </div>
     <div class="card">
       <h4>Verified KQL Library</h4>
-      <p>40+ hunting queries across identity · endpoint · email · network · cloud · SOC metrics — with schema-checked pitfalls baked in.</p>
+      <p>40+ hunting queries across identity · endpoint · email · network · cloud · SOC metrics — with schema pitfalls baked in.</p>
     </div>
     <div class="card">
       <h4>Multi-source Enrichment</h4>
@@ -358,23 +457,35 @@
     </div>
     <div class="card">
       <h4>Reports with Methodology</h4>
-      <p>HTML + JSON, dark theme, MITRE ATT&CK mapping, attack-path graphs. Every finding cites its query.</p>
+      <p>HTML + JSON, dark theme, MITRE ATT&CK, attack-path graphs. Every finding cites its query.</p>
     </div>
     <div class="card">
       <h4>Response &amp; Detection-as-Code</h4>
       <p>Isolate devices · revoke sessions · block IPs. Convert Sigma YAML → Sentinel analytics rules.</p>
     </div>
   </div>
-  <div class="slide-footer">06 · CyberProbe</div>
+  <div class="slide-footer">07 · CyberProbe</div>
+  <aside class="notes">
+    Do not read every card. Scan and call out the three differentiators: (1) 13 agent skills that encode practitioner expertise, (2) 50+ MCP tools including a custom Exposure server, and (3) the mandatory Methodology section on every report — every finding cites the query that produced it, every tool that was used, every fallback that was triggered.
+    If asked: yes, it runs today against Microsoft demo tenants and real customer tenants. The query library has schema pitfalls baked in so users don’t re-learn the hard lessons.
+  </aside>
 </section>
 
-<!-- 10 — Demo intro -->
+<!-- 11 — Demo intro -->
 <section class="section-divider">
   <h1>Demo<br/><span style="font-size:0.55em; color: var(--cp-muted); background:none; -webkit-background-clip:initial; -webkit-text-fill-color: var(--cp-muted); color: var(--cp-muted);">Incident → Investigation → Report → Playbook.</span></h1>
   <p>One analyst. Natural language. Full SOC lifecycle.</p>
+  <p class="muted" style="margin-top:1.2em; font-size:0.75em;">
+    I'm showing it in <strong>VS Code</strong> with GitHub Copilot — but the same skills, MCP servers, and query library also run from the <strong>GitHub CLI</strong>, <strong>Claude Code</strong>, or any MCP-aware client. The fabric doesn't care which chair you sit in.
+  </p>
+  <aside class="notes">
+    Hand-off slide to the live demo. Set expectations: one prompt in VS Code, three phases of investigation, a full report, then a production playbook — all inside a single conversation.
+    Call out portability explicitly: I'm demoing in VS Code with GitHub Copilot because that's where I build, but the exact same skills in `.github/skills/`, the same MCP servers in `.vscode/mcp.json`, and the same query library work from the GitHub CLI, Claude Code (if you have an Anthropic subscription — see CLAUDE.md in the repo), or any other MCP-aware agent. The choice of chair is a preference, not a lock-in. That portability is a feature of the fabric, not of CyberProbe.
+    Before switching to VS Code, make the contract with the room: “if the demo breaks, that’s the most honest moment of the talk — because the fallback story is part of the point.”
+  </aside>
 </section>
 
-<!-- 11 — Demo part 1: investigate -->
+<!-- 12 — Demo part 1: investigate -->
 <section>
   <h2>Demo · Part 1 — Investigate from VS Code</h2>
   <p class="muted">Prompt:</p>
@@ -387,10 +498,15 @@
     <li><strong>Phase 3 cluster</strong> — 6 users sharing one OAuth object ID on the same Foundry deployment.</li>
   </ol>
   <p class="muted">That one fact collapsed the whole case: stolen API key, not compromised identity.</p>
-  <div class="slide-footer">07 · Demo · investigate</div>
+  <div class="slide-footer">08 · Demo · investigate</div>
+  <aside class="notes">
+    Narrate the demo while VS Code is live. One prompt identifies the top user with AI-attack alerts in the last 7 days — Bashir Bouttavong, a Critical asset, 36 alerts, 2.5× baseline rate. Phase 2 adds the 141 sign-ins, the 3 Microsoft-owned London IPs, the clean AbuseIPDB score, zero risky sign-ins. Phase 3 reveals 15+ co-actors in the same multi-stage incident.
+    Emphasize what the skill concluded: this is an insider-risk / risky-AI-usage pattern, not an account compromise. No isolation, no reset — IRM triage, policy tuning, manager review.
+    If the demo fails: show the pre-run HTML report instead, and tell the room which three API fallbacks the skill walked through to get the result. That story is the whole point.
+  </aside>
 </section>
 
-<!-- 12 — Demo part 2: report + playbook -->
+<!-- 13 — Demo part 2: report + playbook -->
 <section>
   <h2>Demo · Part 2 — From narrative to production playbook</h2>
   <div class="grid grid-2">
@@ -409,84 +525,149 @@
         <li>Paste narrative into the <em>Playbook Generator</em></li>
         <li>AI writes Python that reproduces the investigation</li>
         <li>Gated response: triage auto-comments, one-way doors stay human-approved</li>
-        <li>Now runs on <em>every</em> future AI-attack alert</li>
+        <li>Runs on <em>every</em> future AI-attack alert</li>
       </ul>
     </div>
   </div>
   <blockquote class="pull" style="margin-top:0.8em;">
     Full circle — an afternoon of natural language became a <em>codified, reusable SOC capability</em>.
   </blockquote>
-  <div class="slide-footer">08 · Demo · codify</div>
+  <div class="slide-footer">09 · Demo · codify</div>
+  <aside class="notes">
+    Show codification. The narrative becomes a report (HTML + JSON, dark theme, Methodology section, attack-path graph), and the report becomes a Sentinel Playbook via the Preview Playbook Generator. The AI writes Python that reproduces the investigation on every future alert of the same type.
+    Critical frame: response is gated. Auto-comments and triage are safe. One-way doors — isolate a device, reset a password, block a user — stay human-approved.
+    Land the pull quote: “full circle — an afternoon of natural language became a codified, reusable SOC capability.”
+  </aside>
 </section>
 
-<!-- 13 — What this means for the SOC -->
+<!-- 14 — Agentic use cases beyond investigation -->
 <section>
-  <h2>What this means for the SOC</h2>
-  <div class="grid grid-2">
+  <h2>Beyond investigation — where agentic goes next</h2>
+  <p class="muted">Investigating faster is the no-brainer. The real leverage is everywhere <em>else</em> we still move slowly.</p>
+  <div class="grid grid-3">
     <div class="card good">
-      <h4>Be faster</h4>
-      <p>Hour-long investigations collapse to minutes. Triage parallelizes. Baselines are automatic.</p>
+      <h4>🔎 Investigate faster</h4>
+      <p>The baseline win. Hours → minutes. Triage, enrichment, correlation in parallel.</p>
     </div>
-    <div class="card good">
-      <h4>Be assisted</h4>
-      <p>Billions of log rows · millions of sign-ins · thousands of alerts — beyond human scale. AI isn't optional; it's the only way to cover the ground.</p>
+    <div class="card">
+      <h4>🩹 Patch faster</h4>
+      <p>Gather vuln context → map to exposure graph → prioritize by blast radius → open change tickets → track remediation. Today it's weeks. It shouldn't be.</p>
     </div>
-    <div class="card good">
-      <h4>Be scalable</h4>
-      <p>One analyst + agents covers what a five-person team used to. Expertise gets <em>encoded</em>, not just remembered.</p>
+    <div class="card">
+      <h4>🧱 Harden faster</h4>
+      <p>Detection-as-code. Sigma → KQL → analytics rule → deployed. Community intel lands in your tenant the same day.</p>
     </div>
-    <div class="card good">
-      <h4>Be layered</h4>
-      <p>H2A and A2A. Humans set intent; agents execute. One-way doors stay gated by humans — always.</p>
+    <div class="card">
+      <h4>📋 Report faster</h4>
+      <p>ITDM briefings, board decks, compliance evidence — persona-specific outputs from the same fabric.</p>
+    </div>
+    <div class="card">
+      <h4>🏗️ Build faster</h4>
+      <p>New MCP servers, new skills, new connectors — agents help you extend the fabric itself.</p>
+    </div>
+    <div class="card">
+      <h4>🤝 Collaborate faster</h4>
+      <p>H2A + A2A. Hand an investigation to another agent, to a peer, to Security Copilot — with full context.</p>
     </div>
   </div>
-  <p class="muted" style="margin-top:0.8em;">
-    The adversary is already operating this way. The question is how fast defenders close the gap.
-  </p>
-  <div class="slide-footer">09 · SOC operating model</div>
+  <div class="slide-footer">10 · Beyond investigation</div>
+  <aside class="notes">
+    Open the aperture. Investigating faster is the obvious win and the one every vendor demos. The real leverage is in everything we still move slowly on: patching, hardening, reporting, building, collaborating.
+    Emphasize patching and hardening — that’s where agentic reaches Change Management, Vuln Management, Detection Engineering. Reporting persona-specific outputs is where the ITDM vs SOC conversation from the Hydro-Québec slide becomes operational.
+    Say clearly: agentic has to be part of every step, not just triage.
+  </aside>
 </section>
 
-<!-- 14 — What this means for vendors/buyers -->
+<!-- 15 — Why we can't stay slow -->
 <section>
-  <h2>What this means for vendors — and buyers</h2>
+  <h2>Why we can't stay slow — look at what the adversary has</h2>
   <div class="grid grid-2">
-    <div class="card warn">
-      <h4>If your product is a console…</h4>
+    <div class="card bad">
+      <h4>On the offensive side</h4>
       <ul>
-        <li>…it competes with 14 others for attention.</li>
-        <li>Value decays as agents bypass UIs.</li>
-        <li>The "single pane of glass" promise expired.</li>
+        <li><strong>Claude Mythos</strong>-class models purpose-built for offense</li>
+        <li><strong>GPT-5.4-Cyber</strong> weaponizing recon + exploit chaining</li>
+        <li>Automated vuln discovery at machine speed</li>
+        <li>Phishing and social engineering at scale</li>
       </ul>
     </div>
     <div class="card good">
-      <h4>If your product is a data &amp; control plane…</h4>
+      <h4>On the defensive side — we need</h4>
       <ul>
-        <li>Expose clean APIs, MCP servers, graph context.</li>
-        <li>Let agents orchestrate <em>through</em> you.</li>
-        <li>Stickiness = schema + signal quality, not UI.</li>
+        <li>Gather information <em>faster</em></li>
+        <li>Prioritize <em>faster</em></li>
+        <li>Patch and contain <em>faster</em></li>
+        <li>Agentic has to be part of <em>every</em> step — not just triage</li>
       </ul>
     </div>
   </div>
   <blockquote class="pull" style="margin-top:0.8em;">
-    Buyers: stop asking <em>"show me the dashboard."</em><br/>
-    Start asking <em>"show me the API, the MCP tool, and the schema."</em>
+    If the offense is agentic end-to-end, a defense that's agentic only in Phase 1 is already losing.
   </blockquote>
-  <div class="slide-footer">10 · Market shift</div>
+  <div class="slide-footer">11 · The asymmetry</div>
+  <aside class="notes">
+    Bring urgency without fear-mongering. The offensive side has purpose-built models — Claude Mythos-class, GPT-5.4-Cyber — automating recon, exploit chaining, and phishing at machine speed. If we match that only in Phase 1 triage and leave the rest manual, the asymmetry wins.
+    The defensive answer isn’t more tools. It’s agentic coverage end-to-end: gather faster, prioritize faster, patch and contain faster.
+    Pull quote to land: “if the offense is agentic end-to-end, a defense that’s agentic only in Phase 1 is already losing.”
+  </aside>
 </section>
 
-<!-- 15 — Call to action -->
+<!-- 16 — Humans + agents: what comes next -->
+<section>
+  <h2>In a world of humans <em>and</em> agents — what comes next?</h2>
+  <p class="muted">CyberProbe shows how agents <em>investigate</em>. The next question is how you <em>operate</em> them when there are thousands of them working next to your people.</p>
+  <div class="grid grid-2">
+    <div class="card">
+      <h4>Agents need the same fabric humans already have</h4>
+      <ul>
+        <li><strong>Identity</strong> — a real identity per agent, not a shared key</li>
+        <li><strong>Access</strong> — least-privilege, conditional, auditable</li>
+        <li><strong>Security &amp; governance</strong> — the same controls as any workforce</li>
+        <li><strong>Lifecycle</strong> — onboarding, review, offboarding</li>
+        <li><strong>Compliance</strong> — discoverable, auditable, explainable</li>
+      </ul>
+    </div>
+    <div class="card good">
+      <h4>Microsoft's answer: <em>Agent 365</em></h4>
+      <ul>
+        <li>Agents as first-class <strong>identities in Entra</strong></li>
+        <li>Governed, monitored, and managed like any worker</li>
+        <li>Built into the same platform your humans already run on</li>
+        <li>The operating layer for the H2A + A2A world</li>
+      </ul>
+      <p class="muted" style="margin-top:0.6em; font-size:0.85em;">See the Agent 365 customer deck for the full picture.</p>
+    </div>
+  </div>
+  <blockquote class="pull" style="margin-top:0.8em;">
+    We've spent 20 years building identity, security, and governance for humans. Agents need all of it — on day one.
+  </blockquote>
+  <div class="slide-footer">12 · Humans + agents</div>
+  <aside class="notes">
+    Bookend the talk. CyberProbe and the demo answered one half of the question: how do agents investigate. This slide answers the other half: in a world of humans and agents, what's the operating layer?
+    Name it: Microsoft Agent 365. It treats agents as first-class identities in Entra, with the same controls, governance, and lifecycle we already apply to employees — access reviews, conditional access, monitoring, compliance, offboarding. The fabric CyberProbe rides on is the same fabric Agent 365 governs.
+    Key line to land: 'we've spent 20 years building identity, security, and governance for humans. Agents need all of it — on day one.' If the room wants depth, point them at the Microsoft Agent 365 customer pitch deck for the product view; CyberProbe is a practitioner view of why it matters.
+    Transition to CTA: the muscle we're building this week, this month, this quarter — is exactly the muscle that scales when agents become as numerous as people.
+  </aside>
+</section>
+
+<!-- 17 — Call to action -->
 <section class="title-slide">
   <div class="kicker">Your move</div>
   <h1>Start building<br/>the muscle.</h1>
   <div class="grid grid-2" style="margin-top:1em;">
-    <div class="card"><h4>This week</h4><p>Pick one investigation you hate doing. Automate it with an agent + one MCP server.</p></div>
+    <div class="card"><h4>This week</h4><p>Pick one investigation you hate. Automate it with an agent + one MCP server.</p></div>
     <div class="card"><h4>This month</h4><p>Route one third-party signal into the lake. Let the graph connect it.</p></div>
-    <div class="card"><h4>This quarter</h4><p>Codify your top-5 playbooks as detection-as-code. Stop re-living the same incident.</p></div>
+    <div class="card"><h4>This quarter</h4><p>Extend agentic beyond triage — patching, hardening, reporting. Pick one.</p></div>
     <div class="card"><h4>Always</h4><p>Keep humans on the one-way doors. Agents propose, humans dispose.</p></div>
   </div>
   <p class="muted" style="margin-top:1.2em;">
     CyberProbe is open source — <a href="https://github.com/olchar/CyberProbe">github.com/olchar/CyberProbe</a> · MIT · fork it, break it, make it yours.
   </p>
+  <aside class="notes">
+    Close with action, not applause. This week: pick one investigation you hate and automate it with an agent plus one MCP server. This month: route a third-party signal into the lake and let the graph connect it. This quarter: extend agentic beyond triage — patching, hardening, reporting. Always: humans on the one-way doors. Agents propose, humans dispose.
+    The repo is MIT-licensed. Fork it, break it, make it yours.
+    Invite the room to a short Q&amp;A and point to the two LinkedIn articles as further reading — “The security-posture question nobody can answer in one sentence” and “Why I built CyberProbe.” Both are on-thesis with this talk.
+  </aside>
 </section>
 
 </div>
