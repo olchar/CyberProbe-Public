@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Moment of Truth — From Consoles to an Investigation Fabric</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css" />
+<style>
+  :root {
+    --cp-bg:       #0b1020;
+    --cp-bg-2:     #111a33;
+    --cp-accent:   #4cc2ff;
+    --cp-accent-2: #7c5cff;
+    --cp-good:     #3ddc97;
+    --cp-warn:     #ffb454;
+    --cp-bad:      #ff5c7a;
+    --cp-text:     #e6ecf5;
+    --cp-muted:    #9aa7bd;
+  }
+  .reveal { color: var(--cp-text); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+  .reveal .slides section { text-align: left; }
+  .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    color: #fff; text-transform: none; letter-spacing: -0.01em; font-weight: 600;
+  }
+  .reveal h1 { font-size: 2.4em; line-height: 1.1; }
+  .reveal h2 { font-size: 1.7em; }
+  .reveal h3 { font-size: 1.25em; color: var(--cp-accent); }
+  .reveal p, .reveal li { color: var(--cp-text); font-size: 0.78em; line-height: 1.5; }
+  .reveal .muted { color: var(--cp-muted); font-size: 0.7em; }
+  .reveal em  { color: var(--cp-accent); font-style: normal; }
+  .reveal strong { color: #fff; }
+  .reveal a { color: var(--cp-accent); }
+  .reveal section { background: var(--cp-bg); }
+  body { background: var(--cp-bg); }
+
+  /* ---- Responsive / scrollable slides ----------------------------------- *
+   * Reveal.js hides overflow by default which clips content on smaller
+   * resolutions. We allow each slide to scroll vertically if its content
+   * exceeds the viewport, while keeping the deck looking identical on
+   * large screens.                                                          */
+  .reveal .slides {
+    overflow: visible !important;
+  }
+  .reveal .slides > section,
+  .reveal .slides > section > section {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    max-height: 100vh;
+    /* Custom scrollbar so it matches the dark theme */
+    scrollbar-width: thin;
+    scrollbar-color: var(--cp-accent-2) transparent;
+  }
+  .reveal .slides > section::-webkit-scrollbar,
+  .reveal .slides > section > section::-webkit-scrollbar {
+    width: 8px;
+  }
+  .reveal .slides > section::-webkit-scrollbar-thumb,
+  .reveal .slides > section > section::-webkit-scrollbar-thumb {
+    background: var(--cp-accent-2);
+    border-radius: 4px;
+  }
+  .reveal .slides > section::-webkit-scrollbar-track,
+  .reveal .slides > section > section::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  /* Small screens: relax the design width so text reflows */
+  @media (max-width: 900px), (max-height: 640px) {
+    .reveal h1 { font-size: 1.9em !important; }
+    .reveal h2 { font-size: 1.35em !important; }
+    .reveal .grid-3, .reveal .grid-4 { grid-template-columns: 1fr 1fr !important; }
+    .reveal .grid-2 { grid-template-columns: 1fr !important; }
+  }
+
+  /* Gradient title slide */
+  .title-slide {
+    background: radial-gradient(circle at 25% 20%, rgba(124,92,255,0.35), transparent 55%),
+                radial-gradient(circle at 80% 85%, rgba(76,194,255,0.30), transparent 55%),
+                var(--cp-bg) !important;
+  }
+  .title-slide h1 {
+    font-size: 3.2em; font-weight: 700; line-height: 1.05;
+    background: linear-gradient(120deg, #4cc2ff 0%, #7c5cff 60%, #ff5c7a 110%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .title-slide .kicker { color: var(--cp-accent); letter-spacing: 0.2em; text-transform: uppercase; font-size: 0.7em; }
+
+  /* Section dividers */
+  .section-divider {
+    background: linear-gradient(135deg, var(--cp-bg-2) 0%, var(--cp-bg) 100%) !important;
+  }
+  .section-divider h1 {
+    font-size: 2.6em;
+    background: linear-gradient(120deg, #4cc2ff, #7c5cff);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  /* Cards / grids */
+  .grid { display: grid; gap: 1em; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .card {
+    background: rgba(124,92,255,0.08);
+    border: 1px solid rgba(124,92,255,0.25);
+    border-radius: 12px;
+    padding: 0.9em 1em;
+  }
+  .card h4 { color: var(--cp-accent); font-size: 0.9em; margin: 0 0 0.3em 0; }
+  .card p, .card li { font-size: 0.68em; margin: 0.2em 0; color: var(--cp-text); }
+  .card.good   { border-color: rgba(61,220,151,0.5); background: rgba(61,220,151,0.08); }
+  .card.good h4 { color: var(--cp-good); }
+  .card.warn   { border-color: rgba(255,180,84,0.5); background: rgba(255,180,84,0.08); }
+  .card.warn h4 { color: var(--cp-warn); }
+  .card.bad    { border-color: rgba(255,92,122,0.5); background: rgba(255,92,122,0.08); }
+  .card.bad h4 { color: var(--cp-bad); }
+
+  /* Layered architecture bars */
+  .layers { display: flex; flex-direction: column; gap: 0.4em; }
+  .layer {
+    padding: 0.6em 0.9em; border-radius: 8px;
+    background: linear-gradient(90deg, rgba(76,194,255,0.12), rgba(124,92,255,0.12));
+    border-left: 4px solid var(--cp-accent);
+  }
+  .layer strong { color: var(--cp-accent); }
+  .layer.l2 { border-left-color: var(--cp-accent-2); }
+  .layer.l2 strong { color: var(--cp-accent-2); }
+  .layer.l3 { border-left-color: var(--cp-good); }
+  .layer.l3 strong { color: var(--cp-good); }
+
+  /* Demo steps */
+  .steps { counter-reset: step; }
+  .steps > li {
+    list-style: none; position: relative; padding-left: 2.2em; margin: 0.5em 0;
+    font-size: 0.78em;
+  }
+  .steps > li::before {
+    counter-increment: step; content: counter(step);
+    position: absolute; left: 0; top: 0;
+    width: 1.6em; height: 1.6em; border-radius: 50%;
+    background: linear-gradient(135deg, var(--cp-accent), var(--cp-accent-2));
+    color: #fff; font-weight: 700; text-align: center; line-height: 1.6em;
+    font-size: 0.9em;
+  }
+
+  /* Inline chips */
+  .chip {
+    display: inline-block; padding: 0.15em 0.6em; border-radius: 999px;
+    font-size: 0.65em; margin: 0.1em 0.2em;
+    background: rgba(76,194,255,0.15); color: var(--cp-accent);
+    border: 1px solid rgba(76,194,255,0.35);
+  }
+  .chip.p { background: rgba(124,92,255,0.15); color: var(--cp-accent-2); border-color: rgba(124,92,255,0.35); }
+  .chip.g { background: rgba(61,220,151,0.15); color: var(--cp-good); border-color: rgba(61,220,151,0.35); }
+  .chip.w { background: rgba(255,180,84,0.15); color: var(--cp-warn); border-color: rgba(255,180,84,0.35); }
+
+  /* Footer */
+  .slide-footer {
+    position: absolute; bottom: 0.8em; right: 1.2em;
+    color: var(--cp-muted); font-size: 0.55em; letter-spacing: 0.05em;
+  }
+
+  /* Quote */
+  blockquote.pull {
+    border: none; padding: 0.6em 1em;
+    border-left: 4px solid var(--cp-accent-2);
+    background: rgba(124,92,255,0.08);
+    font-style: italic; color: var(--cp-text);
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.7em; }
+  th, td { text-align: left; padding: 0.4em 0.6em; border-bottom: 1px solid rgba(154,167,189,0.15); }
+  th { color: var(--cp-accent); font-weight: 600; }
+
+  code, pre { font-family: 'Cascadia Code', 'Consolas', monospace; }
+  pre { font-size: 0.55em; line-height: 1.4; }
+  .reveal pre code { background: #0a0f1f; border: 1px solid rgba(124,92,255,0.2); border-radius: 8px; padding: 0.8em; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- 1 — Title -->
+<section class="title-slide">
+  <div class="kicker">CyberProbe · 2026</div>
+  <h1>The Moment<br/>of Truth.</h1>
+  <p style="font-size:1.1em; color: var(--cp-text); max-width: 32ch;">
+    From <strong>15 consoles</strong> to <em>one investigation fabric</em>.<br/>
+    From SaaS screens to <em>agentic workflows</em>.
+  </p>
+  <p class="muted" style="margin-top:2em;">Olivier Charron · CyberProbe — open-source security investigation platform</p>
+</section>
+
+<!-- 2 — The question -->
+<section>
+  <h2>The question I keep getting asked</h2>
+  <blockquote class="pull" style="font-size:1.1em;">
+    "What's our security posture — <em>really</em>?"
+  </blockquote>
+  <p>Different people. Different roles. Different words.<br/>Always the same question underneath.</p>
+  <p>And every time, I pause. Not because I don't know.<br/>Because the honest answer is: <em>it depends on who's asking.</em></p>
+  <p class="muted">CISO · Architect · PM · Ops — same signal, four completely different needs.</p>
+  <div class="slide-footer">01 · The question</div>
+</section>
+
+<!-- 3 — The reality in 2026 -->
+<section>
+  <h2>The reality nobody puts on a vendor slide</h2>
+  <div class="grid grid-3">
+    <div class="card"><h4>Multiple clouds</h4><p>Azure + AWS + GCP. Each with its own console, its own scoring, its own alerts.</p></div>
+    <div class="card"><h4>Multiple stacks</h4><p>EDR · CSPM · CNAPP · Identity · Email · DLP — different vendors, different taxonomies.</p></div>
+    <div class="card"><h4>Multiple scanners</h4><p>Qualys · Tenable · MDVM · container · IaC · DAST · SAST — each with its own severity model.</p></div>
+  </div>
+  <p style="margin-top:1em;">The data exists. That's <em>not</em> the problem.</p>
+  <blockquote class="pull">
+    It lives in <strong>15 dashboards</strong>, in <strong>15 formats</strong>, speaking <strong>15 languages</strong> —<br/>
+    and nobody has the consolidated view that actually enables decisions.
+  </blockquote>
+  <div class="slide-footer">02 · The reality</div>
+</section>
+
+<!-- 4 — Moment of truth -->
+<section class="section-divider">
+  <h1>This is a moment of truth.</h1>
+  <p style="font-size:1.1em; max-width:50ch;">
+    Consoles, SaaS, and dashboards are still relevant.<br/>
+    <em>For how long?</em>
+  </p>
+  <p class="muted">The adversary isn't opening 15 tabs. Neither should we.</p>
+</section>
+
+<!-- 5 — Four audiences, one signal -->
+<section>
+  <h2>Same signal. Four audiences. Four unmet needs.</h2>
+  <div class="grid grid-2">
+    <div class="card"><h4>CISO / VP Security</h4>
+      <p><strong>Asks:</strong> Are we improving? What's residual risk? Can I defend it to the board?</p>
+      <p><strong>Gets:</strong> 47 dashboards, irreconcilable scores.</p>
+    </div>
+    <div class="card"><h4>Security Architect</h4>
+      <p><strong>Asks:</strong> Where are the exploitable paths? Which choke points matter most?</p>
+      <p><strong>Gets:</strong> 3,000 CVEs ranked by CVSS, no graph context.</p>
+    </div>
+    <div class="card"><h4>Project Manager</h4>
+      <p><strong>Asks:</strong> What do we prioritize? What's the effort and timeline?</p>
+      <p><strong>Gets:</strong> Unusable lists. Spreadsheets. Monthly.</p>
+    </div>
+    <div class="card"><h4>Infra / Ops</h4>
+      <p><strong>Asks:</strong> What do I patch, on which host, by when?</p>
+      <p><strong>Gets:</strong> CVEs without business context.</p>
+    </div>
+  </div>
+  <div class="slide-footer">03 · The consolidation gap</div>
+</section>
+
+<!-- 6 — The shift -->
+<section>
+  <h2>The shift: from consoles to an investigation fabric</h2>
+  <div class="grid grid-2">
+    <div class="card bad">
+      <h4>Yesterday — Console-centric</h4>
+      <ul>
+        <li>Humans pivot between 15 UIs</li>
+        <li>Context lost at every tab</li>
+        <li>Every vendor wants to be the "single pane"</li>
+        <li>Data pulled <em>into</em> consoles</li>
+        <li>Value = the screen</li>
+      </ul>
+    </div>
+    <div class="card good">
+      <h4>Tomorrow — Agent-centric</h4>
+      <ul>
+        <li>One analyst, one prompt, many MCP tools</li>
+        <li>Context carried through every step</li>
+        <li>The <em>data plane</em> is the platform</li>
+        <li>Agents pulled <em>to</em> the data</li>
+        <li>Value = the outcome</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:0.8em;">
+    Consoles aren't dying tomorrow. But they're being demoted — from the workplace to a <em>view</em> over the fabric.
+  </p>
+  <div class="slide-footer">04 · The shift</div>
+</section>
+
+<!-- 7 — Architecture -->
+<section>
+  <h2>The architecture that actually works</h2>
+  <div class="layers">
+    <div class="layer l3">
+      <strong>3 · Agents & Skills</strong> — natural-language orchestration
+      <div style="margin-top:0.3em;">
+        <span class="chip g">GitHub Copilot</span>
+        <span class="chip g">Security Copilot</span>
+        <span class="chip g">MCP servers</span>
+        <span class="chip g">Skills / Playbooks</span>
+      </div>
+    </div>
+    <div class="layer l2">
+      <strong>2 · Exposure Graph</strong> — context &amp; attack paths
+      <div style="margin-top:0.3em;">
+        <span class="chip p">ExposureGraphNodes</span>
+        <span class="chip p">ExposureGraphEdges</span>
+        <span class="chip p">Attack paths</span>
+        <span class="chip p">Choke points</span>
+      </div>
+    </div>
+    <div class="layer">
+      <strong>1 · Sentinel Data Lake</strong> — single source of truth
+      <div style="margin-top:0.3em;">
+        <span class="chip">Defender XDR</span>
+        <span class="chip">Entra</span>
+        <span class="chip">Purview</span>
+        <span class="chip">Azure · AWS · GCP</span>
+        <span class="chip">Qualys · CrowdStrike · …</span>
+      </div>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:0.8em;">
+    You don't rip-and-replace. You <em>route</em> signals into the lake and let the graph + agents do the work.
+  </p>
+  <div class="slide-footer">05 · Architecture</div>
+</section>
+
+<!-- 8 — Introducing CyberProbe -->
+<section class="section-divider">
+  <h1>CyberProbe</h1>
+  <p style="font-size:1.05em; max-width:52ch;">
+    An <em>open-source</em> proof that one analyst + the right AI fabric<br/>
+    can do the work of a five-person SOC team.
+  </p>
+  <p class="muted">Built on Defender XDR, Sentinel, GitHub Copilot, and MCP. MIT licensed.</p>
+</section>
+
+<!-- 9 — What CyberProbe is -->
+<section>
+  <h2>What's in the box</h2>
+  <div class="grid grid-3">
+    <div class="card">
+      <h4>13 Agent Skills</h4>
+      <p>incident-investigation · threat-enrichment · endpoint-device · ioc-management · exposure-management · defender-response · detection-engineering · report-generation · …</p>
+    </div>
+    <div class="card">
+      <h4>50+ MCP Tools</h4>
+      <p>Sentinel Data Lake · Defender XDR Triage · Microsoft Graph · Sentinel Graph · Azure · Microsoft Learn · custom Exposure server</p>
+    </div>
+    <div class="card">
+      <h4>Verified KQL Library</h4>
+      <p>40+ hunting queries across identity · endpoint · email · network · cloud · SOC metrics — with schema-checked pitfalls baked in.</p>
+    </div>
+    <div class="card">
+      <h4>Multi-source Enrichment</h4>
+      <p>AbuseIPDB · IPInfo · VPNapi · Shodan · VirusTotal — parallelized, cached, reused across investigations.</p>
+    </div>
+    <div class="card">
+      <h4>Reports with Methodology</h4>
+      <p>HTML + JSON, dark theme, MITRE ATT&CK mapping, attack-path graphs. Every finding cites its query.</p>
+    </div>
+    <div class="card">
+      <h4>Response &amp; Detection-as-Code</h4>
+      <p>Isolate devices · revoke sessions · block IPs. Convert Sigma YAML → Sentinel analytics rules.</p>
+    </div>
+  </div>
+  <div class="slide-footer">06 · CyberProbe</div>
+</section>
+
+<!-- 10 — Demo intro -->
+<section class="section-divider">
+  <h1>Demo<br/><span style="font-size:0.55em; color: var(--cp-muted); background:none; -webkit-background-clip:initial; -webkit-text-fill-color: var(--cp-muted); color: var(--cp-muted);">Incident → Investigation → Report → Playbook.</span></h1>
+  <p>One analyst. Natural language. Full SOC lifecycle.</p>
+</section>
+
+<!-- 11 — Demo part 1: investigate -->
+<section>
+  <h2>Demo · Part 1 — Investigate from VS Code</h2>
+  <p class="muted">Prompt:</p>
+  <pre><code class="language-text">Auto-investigate the user with the most AI-attack alerts in the last 7 days.</code></pre>
+  <ol class="steps">
+    <li><strong>Classify entity</strong> — UPN, last-30d baseline via <code>SigninLogs</code> (473 sign-ins, 1 IP).</li>
+    <li><strong>Pull incidents &amp; alerts</strong> — Defender XDR Triage MCP: 8 AI-targeted alerts, 3 attack vectors.</li>
+    <li><strong>Enrich IPs in parallel</strong> — AbuseIPDB · IPInfo · VPNapi · Shodan.</li>
+    <li><strong>Phase 2 finding</strong> — attacker IP <em>not in</em> 30-day Entra sign-in history → <code>ai_api_bypass = True</code>.</li>
+    <li><strong>Phase 3 cluster</strong> — 6 users sharing one OAuth object ID on the same Foundry deployment.</li>
+  </ol>
+  <p class="muted">That one fact collapsed the whole case: stolen API key, not compromised identity.</p>
+  <div class="slide-footer">07 · Demo · investigate</div>
+</section>
+
+<!-- 12 — Demo part 2: report + playbook -->
+<section>
+  <h2>Demo · Part 2 — From narrative to production playbook</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h4>📄 Report (CyberProbe)</h4>
+      <ul>
+        <li>HTML + JSON, dark theme</li>
+        <li>Attack-path Mermaid graph</li>
+        <li>MITRE ATT&CK mapping</li>
+        <li>Mandatory <em>Methodology</em> section — every query, every tool, every API</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>⚙️ Sentinel Playbook (Preview)</h4>
+      <ul>
+        <li>Paste narrative into the <em>Playbook Generator</em></li>
+        <li>AI writes Python that reproduces the investigation</li>
+        <li>Gated response: triage auto-comments, one-way doors stay human-approved</li>
+        <li>Now runs on <em>every</em> future AI-attack alert</li>
+      </ul>
+    </div>
+  </div>
+  <blockquote class="pull" style="margin-top:0.8em;">
+    Full circle — an afternoon of natural language became a <em>codified, reusable SOC capability</em>.
+  </blockquote>
+  <div class="slide-footer">08 · Demo · codify</div>
+</section>
+
+<!-- 13 — What this means for the SOC -->
+<section>
+  <h2>What this means for the SOC</h2>
+  <div class="grid grid-2">
+    <div class="card good">
+      <h4>Be faster</h4>
+      <p>Hour-long investigations collapse to minutes. Triage parallelizes. Baselines are automatic.</p>
+    </div>
+    <div class="card good">
+      <h4>Be assisted</h4>
+      <p>Billions of log rows · millions of sign-ins · thousands of alerts — beyond human scale. AI isn't optional; it's the only way to cover the ground.</p>
+    </div>
+    <div class="card good">
+      <h4>Be scalable</h4>
+      <p>One analyst + agents covers what a five-person team used to. Expertise gets <em>encoded</em>, not just remembered.</p>
+    </div>
+    <div class="card good">
+      <h4>Be layered</h4>
+      <p>H2A and A2A. Humans set intent; agents execute. One-way doors stay gated by humans — always.</p>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:0.8em;">
+    The adversary is already operating this way. The question is how fast defenders close the gap.
+  </p>
+  <div class="slide-footer">09 · SOC operating model</div>
+</section>
+
+<!-- 14 — What this means for vendors/buyers -->
+<section>
+  <h2>What this means for vendors — and buyers</h2>
+  <div class="grid grid-2">
+    <div class="card warn">
+      <h4>If your product is a console…</h4>
+      <ul>
+        <li>…it competes with 14 others for attention.</li>
+        <li>Value decays as agents bypass UIs.</li>
+        <li>The "single pane of glass" promise expired.</li>
+      </ul>
+    </div>
+    <div class="card good">
+      <h4>If your product is a data &amp; control plane…</h4>
+      <ul>
+        <li>Expose clean APIs, MCP servers, graph context.</li>
+        <li>Let agents orchestrate <em>through</em> you.</li>
+        <li>Stickiness = schema + signal quality, not UI.</li>
+      </ul>
+    </div>
+  </div>
+  <blockquote class="pull" style="margin-top:0.8em;">
+    Buyers: stop asking <em>"show me the dashboard."</em><br/>
+    Start asking <em>"show me the API, the MCP tool, and the schema."</em>
+  </blockquote>
+  <div class="slide-footer">10 · Market shift</div>
+</section>
+
+<!-- 15 — Call to action -->
+<section class="title-slide">
+  <div class="kicker">Your move</div>
+  <h1>Start building<br/>the muscle.</h1>
+  <div class="grid grid-2" style="margin-top:1em;">
+    <div class="card"><h4>This week</h4><p>Pick one investigation you hate doing. Automate it with an agent + one MCP server.</p></div>
+    <div class="card"><h4>This month</h4><p>Route one third-party signal into the lake. Let the graph connect it.</p></div>
+    <div class="card"><h4>This quarter</h4><p>Codify your top-5 playbooks as detection-as-code. Stop re-living the same incident.</p></div>
+    <div class="card"><h4>Always</h4><p>Keep humans on the one-way doors. Agents propose, humans dispose.</p></div>
+  </div>
+  <p class="muted" style="margin-top:1.2em;">
+    CyberProbe is open source — <a href="https://github.com/olchar/CyberProbe">github.com/olchar/CyberProbe</a> · MIT · fork it, break it, make it yours.
+  </p>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    controls: true,
+    progress: true,
+    // Responsive sizing: keep a design baseline but allow the theme to scale
+    // to any resolution, and allow vertical scrolling when a slide overflows.
+    width: 1280,
+    height: 760,
+    margin: 0.06,
+    minScale: 0.2,
+    maxScale: 2.0,
+    // Let long slides scroll instead of being clipped or auto-shrunk.
+    center: false,
+    disableLayout: false,
+    plugins: [ RevealHighlight, RevealNotes ]
+  });
+</script>
+</body>
+</html>
