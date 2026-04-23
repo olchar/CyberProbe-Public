@@ -1,7 +1,7 @@
 # LinkedIn Post — AI-Powered Defense for an AI-Accelerated Threat Landscape
 
 **Date:** 2026-04-23
-**Format:** Short post (bilingual EN / FR) — under 3000 chars each
+**Format:** Short bilingual post (EN + FR combined under 3000 chars)
 **Reference:** https://www.microsoft.com/en-us/security/blog/2026/04/22/ai-powered-defense-for-an-ai-accelerated-threat-landscape/
 
 ---
@@ -10,26 +10,21 @@
 
 🛡️ **The defender's turn to use AI at scale**
 
-Microsoft just published a pivotal post by Ales Holecek: *AI-powered defense for an AI-accelerated threat landscape*. The window between vulnerability discovery and exploitation is collapsing — models now autonomously chain low-severity issues into working exploits. The same capabilities, turned toward defenders, can tilt the balance back.
+Key post by Ales Holecek — *AI-powered defense for an AI-accelerated threat landscape*. Models now autonomously chain low-severity issues into working exploits; turned toward defenders, the same capabilities tilt the balance back.
 
-Three commitments stood out:
+Three commitments:
 
-🔹 **AI-led vulnerability discovery in the SDL** — advanced models (starting with Claude Mythos Preview, evaluated via the open-source CTI-REALM benchmark) are wired directly into Microsoft's Security Development Lifecycle. PaaS/SaaS customers get mitigations automatically; on-prem and self-hosted customers must stay current — patching is now a fundamental requirement.
+🔹 **AI-led discovery in the SDL** — advanced models (Claude Mythos Preview, evaluated via the open-source CTI-REALM benchmark) wired into Microsoft's Security Development Lifecycle. PaaS/SaaS customers get mitigations automatically; on-prem must stay current.
 
-🔹 **AI-ready posture across five dimensions** — patching, open-source, customer source code, internet-facing assets, baseline hygiene. Microsoft Security Exposure Management now surfaces this through a new blade: **Secure Now** — paired with Defender EASM, GitHub Advanced Security + CodeQL + Copilot Autofix, and Baseline Security Mode.
+🔹 **AI-ready posture, five dimensions** — patching, open-source, source code, internet-facing assets, baseline hygiene. Surfaced in a new Exposure Management blade: **Secure Now**, with Defender EASM, GitHub Advanced Security + Copilot Autofix, and Baseline Security Mode.
 
-🔹 **AI-powered solutions at scale** — Defender detections sim-shipping with updates, plus a multi-model AI-driven scanning harness in preview **June 2026**.
+🔹 **AI solutions at scale** — Defender detections sim-shipping with updates, plus a multi-model AI scanning harness in preview **June 2026**.
 
-**For customers concerned about "cybersecurity models":** Microsoft's approach is explicitly **multi-model and benchmark-driven**. No single model defines the strategy — each is continuously evaluated against open-source benchmarks like CTI-REALM before integration. Results are paired with prioritization, exploitability context, and the MSRC pipeline (Update Tuesday, MAPP) so findings become actionable protection, not noise.
+On "cybersecurity models": explicitly **multi-model and benchmark-driven**. Continuous evaluation against CTI-REALM, paired with prioritization and the MSRC pipeline (Update Tuesday, MAPP). Same engineering discipline as the rest of the Secure Future Initiative — findings become protection, not noise.
 
-AI-for-security is shipped with the same engineering discipline as the rest of the Secure Future Initiative — evaluated, prioritized, productized.
+**Patch. Reduce exposure. Let AI-powered security do the heavy lifting.**
 
-The direction is clear: **patch, reduce exposure, let AI-powered security do the heavy lifting**.
-
-🔗 https://www.microsoft.com/en-us/security/blog/2026/04/22/ai-powered-defense-for-an-ai-accelerated-threat-landscape/
 🔗 https://security.microsoft.com/securenow
-
-**#MicrosoftSecurity #ExposureManagement #CTEM #SecureFutureInitiative #AIsecurity #DefenderXDR**
 
 ---
 
@@ -37,23 +32,20 @@ The direction is clear: **patch, reduce exposure, let AI-powered security do the
 
 🛡️ **Aux défenseurs d'utiliser l'IA à l'échelle**
 
-Microsoft vient de publier un billet majeur signé Ales Holecek : *AI-powered defense for an AI-accelerated threat landscape*. La fenêtre entre découverte et exploitation d'une vulnérabilité s'effondre — les modèles savent désormais chaîner seuls des failles mineures en exploits fonctionnels. Les mêmes capacités, orientées défense, peuvent rééquilibrer la balance.
+Billet clé d'Ales Holecek — *AI-powered defense for an AI-accelerated threat landscape*. Les modèles chaînent désormais seuls des failles mineures en exploits fonctionnels ; orientées défense, ces mêmes capacités rééquilibrent la balance.
 
-Trois engagements à retenir :
+Trois engagements :
 
-🔹 **Découverte de vulnérabilités pilotée par l'IA dans le SDL** — des modèles avancés (à commencer par Claude Mythos Preview, évalué via le benchmark open-source CTI-REALM) sont intégrés au Security Development Lifecycle de Microsoft. Les clients PaaS/SaaS reçoivent les mitigations automatiquement ; les clients on-prem et auto-hébergés doivent rester à jour — le patching devient une exigence fondamentale.
+🔹 **Découverte par l'IA dans le SDL** — modèles avancés (Claude Mythos Preview, évalué via le benchmark open-source CTI-REALM) intégrés au Security Development Lifecycle. Clients PaaS/SaaS mitigués automatiquement ; on-prem doit rester à jour.
 
-🔹 **Posture « AI-ready » sur cinq dimensions** — patching, open source, code client, exposition Internet, hygiène de base. Microsoft Security Exposure Management expose désormais cette guidance via un nouveau *blade* : **Secure Now** — couplé à Defender EASM, GitHub Advanced Security + CodeQL + Copilot Autofix, et Baseline Security Mode.
+🔹 **Posture « AI-ready » sur cinq dimensions** — patching, open source, code source, exposition Internet, hygiène de base. Exposée dans un nouveau blade Exposure Management : **Secure Now**, avec Defender EASM, GitHub Advanced Security + Copilot Autofix, et Baseline Security Mode.
 
-🔹 **Solutions IA à l'échelle** — détections Defender en *sim-ship* avec les mises à jour, plus un harnais de scan multi-modèles en préversion en **juin 2026**.
+🔹 **Solutions IA à l'échelle** — détections Defender en *sim-ship* avec les mises à jour, harnais de scan multi-modèles en préversion en **juin 2026**.
 
-**Pour les clients inquiets des « modèles cybersécurité » :** l'approche est explicitement **multi-modèle et guidée par benchmarks**. Aucun modèle unique ne définit la stratégie — chacun est évalué en continu contre CTI-REALM avant intégration. Les résultats sont couplés à la priorisation, au contexte d'exploitabilité et au pipeline MSRC (Update Tuesday, MAPP) pour que les découvertes deviennent de la protection actionnable.
+Sur les « modèles cybersécurité » : approche **multi-modèle, guidée par benchmarks**. Évaluation continue contre CTI-REALM, priorisation, pipeline MSRC (Update Tuesday, MAPP). Même discipline que le reste du Secure Future Initiative — des découvertes qui deviennent de la protection, pas du bruit.
 
-L'IA-pour-la-sécurité est livrée avec la même discipline d'ingénierie que le reste du Secure Future Initiative — évaluée, priorisée, produite.
+**Patcher. Réduire l'exposition. Laisser l'IA défensive faire le gros du travail.**
 
-La direction est claire : **patcher, réduire l'exposition, laisser la sécurité pilotée par l'IA faire le gros du travail**.
-
-🔗 https://www.microsoft.com/en-us/security/blog/2026/04/22/ai-powered-defense-for-an-ai-accelerated-threat-landscape/
 🔗 https://security.microsoft.com/securenow
 
-**#MicrosoftSecurity #ExposureManagement #CTEM #SecureFutureInitiative #AIsecurity #DefenderXDR**
+**#MicrosoftSecurity #ExposureManagement #SecureFutureInitiative #AIsecurity #DefenderXDR**
