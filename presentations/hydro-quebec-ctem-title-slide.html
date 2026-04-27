@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hydro-Québec — CTEM in practice</title>
+<style>
+  :root {
+    --cp-bg:       #0b1020;
+    --cp-bg-2:     #111a33;
+    --cp-accent:   #4cc2ff;
+    --cp-accent-2: #7c5cff;
+    --cp-text:     #e6ecf5;
+    --cp-muted:    #9aa7bd;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--cp-bg);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--cp-text);
+    min-height: 100vh;
+  }
+  .slide {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    min-height: 720px;
+    padding: 8vh 9vw;
+    background: var(--cp-bg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  /* Decorative circles, same vibe as the sample slide */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(0.5px);
+    pointer-events: none;
+    opacity: 0.85;
+  }
+  .blob-1 {
+    width: 52vw; height: 52vw;
+    top: -18vw; left: -12vw;
+    background: radial-gradient(circle at 50% 50%,
+                #2a1f6b 0%, #1a1446 55%, rgba(17,26,51,0) 72%);
+  }
+  .blob-2 {
+    width: 36vw; height: 36vw;
+    bottom: -12vw; right: -8vw;
+    background: radial-gradient(circle at 50% 50%,
+                #123248 0%, #0e2438 55%, rgba(17,26,51,0) 72%);
+  }
+  .content { position: relative; z-index: 2; max-width: 82%; }
+  .kicker {
+    color: var(--cp-accent);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0 0 1.2rem 0;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(3.5rem, 9vw, 8.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+  }
+  h1 .line1 {
+    display: block;
+    color: var(--cp-accent);
+  }
+  h1 .line2 {
+    display: block;
+    background: linear-gradient(120deg, #7c5cff 0%, #a78bff 60%, #7c5cff 110%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .subtitle {
+    margin: 1.6rem 0 0 0;
+    font-size: clamp(1.3rem, 2.2vw, 2rem);
+    color: var(--cp-accent);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .tagline {
+    margin: 1.8rem 0 0 0;
+    font-size: clamp(1.05rem, 1.5vw, 1.4rem);
+    color: #d7dee8;
+    font-weight: 400;
+    line-height: 1.45;
+    max-width: 60ch;
+  }
+  .tagline strong { color: #ffffff; font-weight: 700; }
+  .tagline em {
+    color: var(--cp-accent);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .footer {
+    position: absolute;
+    left: 9vw;
+    bottom: 6vh;
+    color: var(--cp-muted);
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    z-index: 2;
+  }
+  @media (max-width: 820px) {
+    .content { max-width: 100%; }
+    .slide { padding: 8vh 6vw; }
+  }
+</style>
+</head>
+<body>
+  <section class="slide">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="content">
+      <p class="kicker">Case study · 2026</p>
+      <h1>
+        <span class="line1">Hydro-Québec.</span>
+        <span class="line2">CTEM in practice.</span>
+      </h1>
+      <p class="subtitle">One customer, two conversations.</p>
+      <p class="tagline">
+        From <strong>posture dashboards for ITDMs</strong> to <em>attack-path triage for the SOC</em> —
+        powered by the same data, translated by agents.
+      </p>
+    </div>
+    <div class="footer">CyberProbe — open-source security investigation platform</div>
+  </section>
+</body>
+</html>

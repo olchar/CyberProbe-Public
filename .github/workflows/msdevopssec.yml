@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: ["main"]
 
+# Restrict default GITHUB_TOKEN permissions at the workflow (top) level.
+# Individual jobs can elevate scopes as needed.
+permissions: read-all
+
 jobs:
   security:
     runs-on: ubuntu-latest
