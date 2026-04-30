@@ -115,7 +115,13 @@ foreach ($file in $changedFiles) {
     # Mojibake heuristics: Windows-1252 interpretation of UTF-8 bytes.
     # `â€"` (em-dash), `â†'` (arrow), `âœ…` (checkmark), `ðŸ` (emoji prefix).
     $text = [System.Text.Encoding]::UTF8.GetString($bytes)
-    if ($text -match '(â€[""]|â†’|âœ…|ðŸ[š-œž]|Ã[¢¨©])') {
+    # Mojibake detection: a few common Win-1252-of-UTF8 sequences. Patterns assembled from char codes
+    # so this script does not flag itself when scanning its own diff.
+    $mb1 = [char]0x00E2 + [char]0x20AC      # â€  (em-dash, smart quotes lead-in)
+    $mb2 = [char]0x00E2 + [char]0x2020      # â†  (arrows lead-in)
+    $mb3 = [char]0x00E2 + [char]0x0153      # âœ  (checkmark lead-in)
+    $mb4 = [char]0x00F0 + [char]0x0178      # ðŸ  (4-byte emoji lead-in)
+    if ($text.Contains($mb1) -or $text.Contains($mb2) -or $text.Contains($mb3) -or $text.Contains($mb4)) {
         $encodingIssues += [pscustomobject]@{ File = $file; Issue = 'Possible mojibake (Win-1252 → UTF-8 mis-encoding)' }
     }
 }
