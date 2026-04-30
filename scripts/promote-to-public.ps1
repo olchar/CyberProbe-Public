@@ -105,6 +105,8 @@ $textExt = @('.md','.txt','.html','.json','.yaml','.yml','.ps1','.py','.kql','.c
 $encodingIssues = @()
 foreach ($file in $changedFiles) {
     if (-not (Test-Path $file)) { continue }
+    # Skip the promote script itself — it intentionally contains mojibake reference chars.
+    if ($file -match 'promote-to-public\.ps1$') { continue }
     $ext = [System.IO.Path]::GetExtension($file).ToLower()
     if ($textExt -notcontains $ext) { continue }
     $bytes = [System.IO.File]::ReadAllBytes($file)
