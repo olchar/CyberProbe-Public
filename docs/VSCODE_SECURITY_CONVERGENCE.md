@@ -99,8 +99,11 @@ Microsoft is treating VS Code as the **detection-engineering and automation IDE*
 
 | Asset | Path |
 |---|---|
-| AI Security Posture report (current) | [reports-private/ai_security_posture_report_2026-04-30.html](../reports-private/ai_security_posture_report_2026-04-30.html) |
-| AI Agent Inventory report | [reports-private/ai_agent_posture_report_2026-04-30.json](../reports-private/ai_agent_posture_report_2026-04-30.json) |
 | Sentinel MCP integration in this repo | [.vscode/mcp.json](../.vscode/mcp.json) |
 | Auto-investigation skill | [.github/skills/kql-auto-investigate/SKILL.md](../.github/skills/kql-auto-investigate/SKILL.md) |
 | Detection engineering skill (Sigma → analytic rules) | [.github/skills/detection-engineering/SKILL.md](../.github/skills/detection-engineering/SKILL.md) |
+| Exposure management skill | [.github/skills/exposure-management/SKILL.md](../.github/skills/exposure-management/SKILL.md) |
+| Sample reports | [reports/](../reports/) |
+
+> **Note:** AI security posture and AI agent inventory reports referenced in earlier drafts of this document were generated against a live Microsoft demo tenant and are kept in the private `reports-private/` directory (gitignored). They are not published to this public repository.
+
