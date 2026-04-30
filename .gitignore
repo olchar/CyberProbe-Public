@@ -49,6 +49,10 @@ Thumbs.db
 # Private scripts (environment-specific, personal utilities)
 scripts-private/
 
+# Personal/marketing content — kept out of all repos
+LinkedIn/
+presentations/
+
 # Secrets — NEVER commit these
 enrichment/config.json
 enrichment/running_vms.json
