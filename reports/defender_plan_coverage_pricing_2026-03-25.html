@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defender for Cloud — Plan Coverage & Pricing Matrix</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #21262d;
+            --bg-hover: #292e36;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --border-color: #30363d;
+            --accent-red: #f85149;
+            --accent-orange: #d29922;
+            --accent-yellow: #e3b341;
+            --accent-green: #3fb950;
+            --accent-blue: #58a6ff;
+            --accent-purple: #a371f7;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #f778ba;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container { max-width: 1500px; margin: 0 auto; }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1a1f29 0%, #0d1117 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header .subtitle { color: var(--text-secondary); font-size: 1.1rem; }
+
+        header .date-badge {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 16px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            color: #fff;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* Summary Cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+        }
+
+        .stat-card.blue::before { background: var(--accent-blue); }
+        .stat-card.green::before { background: var(--accent-green); }
+        .stat-card.red::before { background: var(--accent-red); }
+        .stat-card.orange::before { background: var(--accent-orange); }
+        .stat-card.purple::before { background: var(--accent-purple); }
+        .stat-card.cyan::before { background: var(--accent-cyan); }
+        .stat-card.pink::before { background: var(--accent-pink); }
+
+        .stat-card .value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-card .label {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card.blue .value { color: var(--accent-blue); }
+        .stat-card.green .value { color: var(--accent-green); }
+        .stat-card.red .value { color: var(--accent-red); }
+        .stat-card.orange .value { color: var(--accent-orange); }
+        .stat-card.purple .value { color: var(--accent-purple); }
+        .stat-card.cyan .value { color: var(--accent-cyan); }
+        .stat-card.pink .value { color: var(--accent-pink); }
+
+        /* Sections */
+        .section {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Category Headers */
+        .category-header {
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .category-header.servers {
+            border-left: 4px solid var(--accent-blue);
+            background: linear-gradient(90deg, rgba(88,166,255,0.12) 0%, rgba(0,0,0,0) 100%);
+        }
+        .category-header.containers {
+            border-left: 4px solid var(--accent-cyan);
+            background: linear-gradient(90deg, rgba(0,212,255,0.1) 0%, rgba(0,0,0,0) 100%);
+        }
+        .category-header.storage {
+            border-left: 4px solid var(--accent-green);
+            background: linear-gradient(90deg, rgba(63,185,80,0.1) 0%, rgba(0,0,0,0) 100%);
+        }
+        .category-header.databases {
+            border-left: 4px solid var(--accent-orange);
+            background: linear-gradient(90deg, rgba(210,153,34,0.1) 0%, rgba(0,0,0,0) 100%);
+        }
+        .category-header.cspm {
+            border-left: 4px solid var(--accent-purple);
+            background: linear-gradient(90deg, rgba(163,113,247,0.1) 0%, rgba(0,0,0,0) 100%);
+        }
+        .category-header.devsec {
+            border-left: 4px solid var(--accent-pink);
+            background: linear-gradient(90deg, rgba(247,120,186,0.1) 0%, rgba(0,0,0,0) 100%);
+        }
+
+        .category-header h2 {
+            margin: 0; padding: 0; border: none;
+            font-size: 1.3rem;
+        }
+        .category-header p { color: var(--text-secondary); margin-top: 4px; font-size: 0.9rem; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        td { font-size: 0.875rem; }
+        tr:hover td { background-color: var(--bg-hover); }
+
+        td.qty {
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            font-size: 1rem;
+        }
+
+        /* Plan badges */
+        .plan-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 2px 3px;
+            white-space: nowrap;
+        }
+
+        .badge-servers     { background: rgba(88,166,255,0.18); color: var(--accent-blue); border: 1px solid rgba(88,166,255,0.3); }
+        .badge-containers  { background: rgba(0,212,255,0.14); color: var(--accent-cyan); border: 1px solid rgba(0,212,255,0.3); }
+        .badge-storage     { background: rgba(63,185,80,0.15); color: var(--accent-green); border: 1px solid rgba(63,185,80,0.3); }
+        .badge-databases   { background: rgba(210,153,34,0.15); color: var(--accent-orange); border: 1px solid rgba(210,153,34,0.3); }
+        .badge-cspm        { background: rgba(163,113,247,0.15); color: var(--accent-purple); border: 1px solid rgba(163,113,247,0.3); }
+        .badge-devsec      { background: rgba(247,120,186,0.15); color: var(--accent-pink); border: 1px solid rgba(247,120,186,0.3); }
+        .badge-na          { background: rgba(139,148,158,0.15); color: var(--text-secondary); border: 1px solid rgba(139,148,158,0.3); }
+
+        /* Visual matrix */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+        .plan-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .plan-card-header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .plan-card-header h3 {
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .plan-card-header .total-assets {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
+        .plan-card-header .total-assets strong {
+            color: var(--text-primary);
+        }
+
+        .plan-card.servers .plan-card-header   { background: linear-gradient(90deg, rgba(88,166,255,0.08) 0%, var(--bg-primary) 100%); }
+        .plan-card.containers .plan-card-header { background: linear-gradient(90deg, rgba(0,212,255,0.08) 0%, var(--bg-primary) 100%); }
+        .plan-card.storage .plan-card-header    { background: linear-gradient(90deg, rgba(63,185,80,0.08) 0%, var(--bg-primary) 100%); }
+        .plan-card.databases .plan-card-header  { background: linear-gradient(90deg, rgba(210,153,34,0.08) 0%, var(--bg-primary) 100%); }
+        .plan-card.cspm .plan-card-header       { background: linear-gradient(90deg, rgba(163,113,247,0.08) 0%, var(--bg-primary) 100%); }
+        .plan-card.devsec .plan-card-header     { background: linear-gradient(90deg, rgba(247,120,186,0.08) 0%, var(--bg-primary) 100%); }
+
+        .plan-card-body {
+            padding: 16px 20px;
+        }
+
+        .asset-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(48,54,61,0.5);
+        }
+
+        .asset-row:last-child { border-bottom: none; }
+
+        .asset-row .asset-name {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .asset-row .asset-qty {
+            font-weight: 700;
+            font-size: 1rem;
+            min-width: 80px;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .asset-row .asset-bar {
+            flex: 0.6;
+            margin: 0 16px;
+            height: 8px;
+            background: var(--bg-card);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .asset-row .asset-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .servers .asset-bar-fill    { background: linear-gradient(90deg, var(--accent-blue), #79c0ff); }
+        .containers .asset-bar-fill { background: linear-gradient(90deg, var(--accent-cyan), #7ee8fa); }
+        .storage .asset-bar-fill    { background: linear-gradient(90deg, var(--accent-green), #7ee8a5); }
+        .databases .asset-bar-fill  { background: linear-gradient(90deg, var(--accent-orange), #f0c75e); }
+        .cspm .asset-bar-fill       { background: linear-gradient(90deg, var(--accent-purple), #c9a5f7); }
+        .devsec .asset-bar-fill     { background: linear-gradient(90deg, var(--accent-pink), #f9a8d4); }
+
+        /* Sankey-style summary */
+        .sankey-section {
+            margin-top: 16px;
+        }
+
+        .sankey-row {
+            display: grid;
+            grid-template-columns: 280px 1fr 280px;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 6px;
+        }
+
+        .sankey-left, .sankey-right {
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sankey-left {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+        }
+
+        .sankey-right {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+        }
+
+        .sankey-connector {
+            height: 3px;
+            position: relative;
+        }
+
+        .sankey-connector::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 2px;
+        }
+
+        .sankey-connector.servers::before    { background: var(--accent-blue); }
+        .sankey-connector.containers::before { background: var(--accent-cyan); }
+        .sankey-connector.storage::before    { background: var(--accent-green); }
+        .sankey-connector.databases::before  { background: var(--accent-orange); }
+        .sankey-connector.cspm::before       { background: var(--accent-purple); }
+        .sankey-connector.devsec::before     { background: var(--accent-pink); }
+
+        /* Donut chart */
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .donut-wrapper {
+            text-align: center;
+        }
+
+        .donut-wrapper p {
+            margin-top: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .legend-item .legend-qty {
+            color: var(--text-secondary);
+            margin-left: auto;
+            font-variant-numeric: tabular-nums;
+            min-width: 70px;
+            text-align: right;
+        }
+
+        /* Pricing notes */
+        .pricing-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        .pricing-note .icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .pricing-note .note-text { color: var(--text-secondary); }
+        .pricing-note .note-text strong { color: var(--text-primary); }
+
+        /* Methodology */
+        .methodology {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .methodology h4 {
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .methodology ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .methodology li {
+            padding: 3px 0;
+        }
+
+        .methodology li::before {
+            content: '→ ';
+            color: var(--accent-blue);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sankey-row { grid-template-columns: 1fr; gap: 4px; }
+            .sankey-connector { display: none; }
+            .chart-container { flex-direction: column; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media print {
+            body { background: #fff; color: #1a1a1a; }
+            .section, .stat-card, .plan-card { border-color: #ccc; background: #f8f8f8; }
+            header { background: #f0f4f8; }
+            header h1 { -webkit-text-fill-color: #0366d6; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <header>
+            <h1>Defender for Cloud — Plan Coverage & Pricing Matrix</h1>
+            <p class="subtitle">Asset-to-Plan Mapping for CNAPP Offering Pricing</p>
+            <span class="date-badge">March 25, 2026</span>
+            <div style="margin-top:10px; font-size:0.85rem; color:var(--text-secondary);">
+                💲 All prices in <strong style="color:var(--accent-blue);">CAD (Canada – Dollar)</strong> &bull; Region: <strong style="color:var(--accent-blue);">Canada Central</strong> &bull; Validated against Azure Pricing Calculator export (March 26, 2026)
+            </div>
+        </header>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- CUSTOMER VIEW vs DEFENDER COVERAGE                 -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2>🔍 Customer View vs. Defender Coverage</h2>
+            <p style="color:var(--text-secondary); margin-bottom:20px; font-size:0.9rem;">
+                Left column shows what the customer wants to protect. Right column shows how Microsoft Defender for Cloud covers it.
+            </p>
+
+            <!-- Row 1: Virtual Machines — CSPM + CWPP -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:12px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">🖥️ Virtual Machines</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-blue); font-variant-numeric:tabular-nums;">964</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-blue); font-size:1.4rem;">→</div>
+                <div style="background:rgba(88,166,255,0.06); border:1px solid rgba(88,166,255,0.3); border-radius:8px; padding:14px 18px;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.5px; margin-bottom:4px;">CSPM + CWPP</div>
+                    <div><span class="plan-badge badge-servers">Defender for Servers P2</span> <span class="plan-badge badge-cspm">Defender CSPM</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">Runtime threat detection, EDR, vulnerability assessment, agentless scanning + posture, attack paths</div>
+                </div>
+            </div>
+
+            <!-- Row 2: Container Hosts (EKS) — CSPM + CWPP -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:12px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">📦 Container Hosts (EKS)</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-cyan); font-variant-numeric:tabular-nums;">1</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-cyan); font-size:1.4rem;">→</div>
+                <div style="background:rgba(88,166,255,0.06); border:1px solid rgba(88,166,255,0.3); border-radius:8px; padding:14px 18px;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.5px; margin-bottom:4px;">CSPM + CWPP</div>
+                    <div><span class="plan-badge badge-containers">Defender for Containers</span> <span class="plan-badge badge-cspm">Defender CSPM</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">Runtime threat detection, audit log analysis, DaemonSet sensor + posture, attack paths</div>
+                </div>
+            </div>
+
+            <!-- Row 3: Lambda — CSPM Coverage -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:12px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">⚡ Serverless Functions (AWS Lambda)</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-purple); font-variant-numeric:tabular-nums;">4,910</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-purple); font-size:1.4rem;">→</div>
+                <div style="background:rgba(188,140,255,0.06); border:1px solid rgba(188,140,255,0.3); border-radius:8px; padding:14px 18px;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--accent-purple); letter-spacing:0.5px; margin-bottom:4px;">CSPM</div>
+                    <div><span class="plan-badge badge-cspm">Defender CSPM</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">Posture assessment, misconfiguration detection, attack path analysis, security graph. <span style="color:var(--accent-purple);">CWPP runtime protection not available</span> — Defender for Servers covers VMs (EC2) only.</div>
+                </div>
+            </div>
+
+            <!-- Row 4: ECS Fargate — CSPM Coverage -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:12px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">🚢 Serverless Containers (ECS Fargate)</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-purple); font-variant-numeric:tabular-nums;">1,400</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-purple); font-size:1.4rem;">→</div>
+                <div style="background:rgba(188,140,255,0.06); border:1px solid rgba(188,140,255,0.3); border-radius:8px; padding:14px 18px;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--accent-purple); letter-spacing:0.5px; margin-bottom:4px;">CSPM</div>
+                    <div><span class="plan-badge badge-cspm">Defender CSPM</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">Agentless discovery, posture assessment, misconfiguration detection, attack path analysis. <span style="color:var(--accent-purple);">CWPP runtime protection not available</span> — Defender for Containers covers EKS node-based workloads.</div>
+                </div>
+            </div>
+
+            <!-- Row 5: Container Images (ECR) — CSPM + CWPP -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:12px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">🐳 Registry Container Images (ECR)</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-cyan); font-variant-numeric:tabular-nums;">1,797</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-cyan); font-size:1.4rem;">→</div>
+                <div style="background:rgba(88,166,255,0.06); border:1px solid rgba(88,166,255,0.3); border-radius:8px; padding:14px 18px;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.5px; margin-bottom:4px;">CSPM + CWPP</div>
+                    <div><span class="plan-badge badge-containers">Defender for Containers</span> <span class="plan-badge badge-cspm">Defender CSPM</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">Image vulnerability scanning, registry protection, admission control + posture, attack paths</div>
+                </div>
+            </div>
+
+            <!-- Row 6: Object Storage — CSPM Coverage -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:12px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">🗄️ Object Storage (AWS S3)</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-purple); font-variant-numeric:tabular-nums;">4,204</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-purple); font-size:1.4rem;">→</div>
+                <div style="background:rgba(188,140,255,0.06); border:1px solid rgba(188,140,255,0.3); border-radius:8px; padding:14px 18px;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--accent-purple); letter-spacing:0.5px; margin-bottom:4px;">CSPM</div>
+                    <div><span class="plan-badge badge-cspm">Defender CSPM</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">Posture assessment, misconfiguration detection, data-aware security, attack path analysis. Billable CSPM resource ($7.01/bucket/mo CAD). <span style="color:var(--accent-purple);">CWPP not available</span> — Defender for Storage covers Azure storage services only.</div>
+                </div>
+            </div>
+
+            <!-- Row 7: DynamoDB — CSPM -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:12px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">🗃️ Managed Database (DynamoDB)</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-purple); font-variant-numeric:tabular-nums;">369</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-purple); font-size:1.4rem;">→</div>
+                <div style="background:rgba(188,140,255,0.06); border:1px solid rgba(188,140,255,0.3); border-radius:8px; padding:14px 18px;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--accent-purple); letter-spacing:0.5px; margin-bottom:4px;">CSPM</div>
+                    <div><span class="plan-badge badge-cspm">Defender CSPM</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">Data-aware posture assessment, misconfiguration detection, attack path analysis, security graph. Non-billable CSPM resource.</div>
+                </div>
+            </div>
+
+            <!-- Row 8: RDS SQL — CSPM + CWPP -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:12px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">🗃️ Managed Database (RDS SQL)</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-orange); font-variant-numeric:tabular-nums;">200</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-orange); font-size:1.4rem;">→</div>
+                <div style="background:rgba(88,166,255,0.06); border:1px solid rgba(88,166,255,0.3); border-radius:8px; padding:14px 18px;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.5px; margin-bottom:4px;">CSPM + CWPP</div>
+                    <div><span class="plan-badge badge-databases">Defender for Databases</span> <span class="plan-badge badge-cspm">Defender CSPM</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">SQL injection, anomalous access, brute-force detection + posture, attack paths</div>
+                </div>
+            </div>
+
+            <!-- Row 9: Non-OS Disks (EBS) — Bundled CWPP -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:12px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">💾 Non-OS Disks (AWS EBS)</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-blue); font-variant-numeric:tabular-nums;">7,248</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-blue); font-size:1.4rem;">→</div>
+                <div style="background:rgba(88,166,255,0.06); border:1px solid rgba(88,166,255,0.3); border-radius:8px; padding:14px 18px;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.5px; margin-bottom:4px;">CSPM + CWPP (bundled)</div>
+                    <div><span class="plan-badge badge-servers">Defender for Servers P2</span> <span class="plan-badge badge-cspm">Defender CSPM</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">Disk exposure &amp; malware context bundled with parent VM coverage. No extra charge.</div>
+                </div>
+            </div>
+
+            <!-- Row 10: Aurora Cluster — CSPM + CWPP -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:12px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">🗃️ Managed Database (Aurora)</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-orange); font-variant-numeric:tabular-nums;">150</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-orange); font-size:1.4rem;">→</div>
+                <div style="background:rgba(88,166,255,0.06); border:1px solid rgba(88,166,255,0.3); border-radius:8px; padding:14px 18px;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.5px; margin-bottom:4px;">CSPM + CWPP</div>
+                    <div><span class="plan-badge badge-databases">Defender for Databases</span> <span class="plan-badge badge-cspm">Defender CSPM</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">SQL PaaS threat detection + posture, attack paths</div>
+                </div>
+            </div>
+
+            <!-- Row 11: Asset Metadata — CSPM -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:12px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">📋 Asset Metadata</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-purple); font-variant-numeric:tabular-nums;">3,421</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-purple); font-size:1.4rem;">→</div>
+                <div style="background:rgba(188,140,255,0.06); border:1px solid rgba(188,140,255,0.3); border-radius:8px; padding:14px 18px;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--accent-purple); letter-spacing:0.5px; margin-bottom:4px;">CSPM</div>
+                    <div><span class="plan-badge badge-cspm">Defender CSPM</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">Cloud security graph, inventory, risk prioritization, attack path analysis. Non-billable CSPM resource.</div>
+                </div>
+            </div>
+
+            <!-- Row 12: Developers — CSPM + CWPP -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:12px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">👩‍💻 Developers (Git Contributors)</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-pink); font-variant-numeric:tabular-nums;">406</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--accent-pink); font-size:1.4rem;">→</div>
+                <div style="background:rgba(88,166,255,0.06); border:1px solid rgba(88,166,255,0.3); border-radius:8px; padding:14px 18px;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.5px; margin-bottom:4px;">CSPM + CWPP</div>
+                    <div><span class="plan-badge badge-devsec">GitHub Advanced Security</span> <span class="plan-badge badge-cspm">Defender CSPM</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">CodeQL code scanning, secret scanning, dependency review, push protection + DevOps posture, attack paths, PR annotations</div>
+                </div>
+            </div>
+
+            <!-- Row 13: CNAPP Users -->
+            <div style="display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; margin-bottom:4px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px; opacity:0.6;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Customer Requirement</div>
+                            <div style="font-weight:600;">👤 CNAPP Users</div>
+                        </div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--text-secondary); font-variant-numeric:tabular-nums;">30</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; color:var(--text-secondary); font-size:1.4rem;">→</div>
+                <div style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; padding:14px 18px; opacity:0.6;">
+                    <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:4px;">Defender Coverage</div>
+                    <div><span class="plan-badge badge-na">Not a billable resource</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">Portal/dashboard access — CNAPP users are not licensed per user in Defender for Cloud</div>
+                </div>
+            </div>
+
+            <!-- Summary bar -->
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px; padding:16px; background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px;">
+                <div style="font-size:0.8rem; color:var(--text-secondary); margin-right:auto; display:flex; align-items:center;"><strong style="color:var(--text-primary); margin-right:6px;">CNAPP Coverage:</strong> 13 asset types — <span style="color:var(--accent-purple); font-weight:600; margin-left:4px;">CSPM across all assets</span> + <span style="color:var(--accent-blue); font-weight:600; margin-left:4px;">CWPP where applicable</span></div>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <span class="plan-badge badge-cspm">CSPM (all assets)</span>
+                    <span class="plan-badge badge-servers">Servers P2</span>
+                    <span class="plan-badge badge-containers">Containers</span>
+                    <span class="plan-badge badge-databases">Databases</span>
+                    <span class="plan-badge badge-devsec">GH Advanced Security</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- CNAPP COVERAGE MODEL: CSPM + CWPP                 -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <div class="section" style="border-color:rgba(188,140,255,0.4); background:linear-gradient(135deg, rgba(188,140,255,0.04) 0%, var(--bg-secondary) 100%);">
+            <h2 style="color:var(--accent-purple);">🛡️ CNAPP Coverage Model — CSPM + CWPP</h2>
+            <p style="color:var(--text-secondary); margin-bottom:8px; font-size:0.9rem;">
+                <strong>CNAPP = CSPM + CWPP.</strong> All 13 asset types receive <strong>Defender CSPM</strong> coverage (posture assessment, misconfiguration detection, attack paths, security graph). Assets with supported runtime agents <em>also</em> receive <strong>CWPP</strong> workload protection (threat detection, EDR, vulnerability scanning).
+            </p>
+            <p style="color:var(--text-secondary); margin-bottom:20px; font-size:0.85rem;">
+                🟣 <strong>CSPM</strong> = Cloud Security Posture Management &nbsp;|&nbsp; 🔵 <strong>CWPP</strong> = Cloud Workload Protection Platform
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Asset Category</th>
+                        <th>Qty</th>
+                        <th style="text-align:center;">CSPM<br><span style="font-weight:400; font-size:0.75rem; color:var(--accent-purple);">Posture &amp; Attack Paths</span></th>
+                        <th style="text-align:center;">CWPP<br><span style="font-weight:400; font-size:0.75rem; color:var(--accent-blue);">Runtime Protection</span></th>
+                        <th>CWPP Plan</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight:600;">🖥️ EC2 Virtual Machines</td>
+                        <td class="qty">964</td>
+                        <td style="text-align:center; color:var(--accent-purple); font-size:1.1rem;">✅</td>
+                        <td style="text-align:center; color:var(--accent-blue); font-size:1.1rem;">✅</td>
+                        <td><span class="plan-badge badge-servers">Defender for Servers P2</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">Full EDR, vulnerability assessment, JIT, FIM, agentless scanning</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600;">☸️ EKS Kubernetes</td>
+                        <td class="qty">1 cluster</td>
+                        <td style="text-align:center; color:var(--accent-purple); font-size:1.1rem;">✅</td>
+                        <td style="text-align:center; color:var(--accent-blue); font-size:1.1rem;">✅</td>
+                        <td><span class="plan-badge badge-containers">Defender for Containers</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">Runtime threat detection, audit log analysis, DaemonSet sensor</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600;">🐳 ECR Container Images</td>
+                        <td class="qty">1,797</td>
+                        <td style="text-align:center; color:var(--accent-purple); font-size:1.1rem;">✅</td>
+                        <td style="text-align:center; color:var(--accent-blue); font-size:1.1rem;">✅</td>
+                        <td><span class="plan-badge badge-containers">Defender for Containers</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">Image vulnerability scanning, registry protection, admission control</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600;">🗃️ RDS SQL</td>
+                        <td class="qty">200</td>
+                        <td style="text-align:center; color:var(--accent-purple); font-size:1.1rem;">✅</td>
+                        <td style="text-align:center; color:var(--accent-blue); font-size:1.1rem;">✅</td>
+                        <td><span class="plan-badge badge-databases">Defender for Databases</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">SQL injection, anomalous access, brute-force detection</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600;">🗃️ Aurora</td>
+                        <td class="qty">150</td>
+                        <td style="text-align:center; color:var(--accent-purple); font-size:1.1rem;">✅</td>
+                        <td style="text-align:center; color:var(--accent-blue); font-size:1.1rem;">✅</td>
+                        <td><span class="plan-badge badge-databases">Defender for Databases</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">SQL threat detection — same plan as RDS</td>
+                    </tr>
+                    <tr style="background:rgba(188,140,255,0.04);">
+                        <td style="font-weight:600; color:var(--accent-purple);">🗄️ AWS S3 Buckets</td>
+                        <td class="qty" style="color:var(--accent-purple);">4,204</td>
+                        <td style="text-align:center; color:var(--accent-purple); font-size:1.1rem;">✅</td>
+                        <td style="text-align:center; color:var(--text-secondary); font-size:0.85rem;">—</td>
+                        <td><span class="plan-badge badge-cspm">CSPM</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">Posture, misconfiguration, data-aware security. Defender for Storage is Azure-only.</td>
+                    </tr>
+                    <tr style="background:rgba(188,140,255,0.04);">
+                        <td style="font-weight:600; color:var(--accent-purple);">⚡ AWS Lambda</td>
+                        <td class="qty" style="color:var(--accent-purple);">4,910</td>
+                        <td style="text-align:center; color:var(--accent-purple); font-size:1.1rem;">✅</td>
+                        <td style="text-align:center; color:var(--text-secondary); font-size:0.85rem;">—</td>
+                        <td><span class="plan-badge badge-cspm">CSPM</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">Posture, misconfiguration, attack paths. Defender for Servers covers VMs only.</td>
+                    </tr>
+                    <tr style="background:rgba(188,140,255,0.04);">
+                        <td style="font-weight:600; color:var(--accent-purple);">🚢 ECS Fargate</td>
+                        <td class="qty" style="color:var(--accent-purple);">1,400</td>
+                        <td style="text-align:center; color:var(--accent-purple); font-size:1.1rem;">✅</td>
+                        <td style="text-align:center; color:var(--text-secondary); font-size:0.85rem;">—</td>
+                        <td><span class="plan-badge badge-cspm">CSPM</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">Agentless discovery, posture. Defender for Containers covers EKS node-based workloads.</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600;">🗃️ DynamoDB</td>
+                        <td class="qty">369</td>
+                        <td style="text-align:center; color:var(--accent-purple); font-size:1.1rem;">✅</td>
+                        <td style="text-align:center; color:var(--text-secondary); font-size:0.85rem;">—</td>
+                        <td><span class="plan-badge badge-cspm">CSPM (data-aware)</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">NoSQL — posture &amp; attack paths. Not a billable CSPM resource.</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600;">💾 Non-OS Disks (EBS)</td>
+                        <td class="qty">7,248</td>
+                        <td style="text-align:center; color:var(--accent-purple); font-size:1.1rem;">✅</td>
+                        <td style="text-align:center; color:var(--accent-blue); font-size:1.1rem;">✅</td>
+                        <td><span class="plan-badge badge-servers">Bundled w/ Servers P2</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">Disk exposure context bundled with parent VM protection</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600;">📦 Asset Metadata</td>
+                        <td class="qty">3,421</td>
+                        <td style="text-align:center; color:var(--accent-purple); font-size:1.1rem;">✅</td>
+                        <td style="text-align:center; color:var(--text-secondary); font-size:0.85rem;">N/A</td>
+                        <td><span class="plan-badge badge-cspm">CSPM</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">Security graph, resource relationships. Non-billable.</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600;">👥 CNAPP Users</td>
+                        <td class="qty">30</td>
+                        <td style="text-align:center; color:var(--text-secondary); font-size:0.85rem;">Portal</td>
+                        <td style="text-align:center; color:var(--text-secondary); font-size:0.85rem;">N/A</td>
+                        <td><span class="plan-badge badge-na">Not billable</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">Dashboard access — not a metered resource</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600;">👨‍💻 Developers (ADO/GH)</td>
+                        <td class="qty">406</td>
+                        <td style="text-align:center; color:var(--accent-purple); font-size:1.1rem;">✅</td>
+                        <td style="text-align:center; color:var(--accent-blue); font-size:1.1rem;">✅</td>
+                        <td><span class="plan-badge badge-devsec">GH Advanced Security</span></td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">CodeQL, secret scanning, dependency scanning, push protection</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pricing-note" style="margin-top:16px; border-color:rgba(188,140,255,0.3);">
+                <span class="icon">💡</span>
+                <span class="note-text"><strong>CNAPP value:</strong> Even where CWPP runtime agents cannot be deployed (S3, Lambda, Fargate), Defender CSPM provides continuous posture assessment, misconfiguration detection, attack path analysis, and security graph insights. These assets are fully visible in the CNAPP security posture and integrated into the unified security graph alongside CWPP-protected workloads.</span>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- PLANS REQUIRED — Calculator-ready inputs           -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2>🛒 Plans Required — CWPP + CSPM</h2>
+            <p style="color:var(--text-secondary); margin-bottom:8px; font-size:0.9rem;">
+                5 plans provide full CNAPP coverage. CSPM covers all assets; CWPP plans add runtime protection for supported workloads. Each row below is one line in the <a href="https://azure.microsoft.com/en-us/pricing/calculator/?service=defender-for-cloud" style="color:var(--accent-blue);" target="_blank">Azure Pricing Calculator</a>.
+                All prices in <strong style="color:var(--accent-blue);">CAD</strong> (Canada Central region) — sourced from <a href="https://prices.azure.com/api/retail/prices?currencyCode=CAD" style="color:var(--accent-blue);" target="_blank">Azure Retail Prices API</a> and validated against the Azure Pricing Calculator export.
+            </p>
+            <p style="color:var(--accent-orange); margin-bottom:20px; font-size:0.85rem; font-weight:600;">
+                ⚠️ "Calculator Input" is the value you enter directly — some quantities are converted from raw asset counts.
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:36px;">#</th>
+                        <th>Plan</th>
+                        <th>Calculator Line Item</th>
+                        <th>Raw Asset Count</th>
+                        <th style="text-align:right;">Calculator Input</th>
+                        <th>Unit in Calculator</th>
+                        <th>Unit Price (CAD PAYG)</th>
+                        <th style="text-align:right;">Est. Monthly (CAD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 1 — Servers P2: VMs only -->
+                    <tr>
+                        <td rowspan="2" style="font-weight:700; color:var(--accent-blue); vertical-align:top; padding-top:16px;">1</td>
+                        <td rowspan="2" style="vertical-align:top; padding-top:12px;"><span class="plan-badge badge-servers">Defender for Servers P2</span></td>
+                        <td>EC2 Virtual Machines</td>
+                        <td style="color:var(--text-secondary);">964 VMs</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-blue);">964</td>
+                        <td>Servers</td>
+                        <td>$20.00/server/mo</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-blue);">$19,282</td>
+                    </tr>
+                    <!-- 1b — Servers: EBS disks (bundled) -->
+                    <tr style="opacity:0.5;">
+                        <td>Non-OS Disks (EBS)</td>
+                        <td style="color:var(--text-secondary);">7,248 disks</td>
+                        <td class="qty" style="text-align:right; color:var(--text-secondary);">—</td>
+                        <td>Bundled w/ VMs</td>
+                        <td>$0 (included)</td>
+                        <td class="qty" style="text-align:right; color:var(--text-secondary);">$0</td>
+                    </tr>
+                    <!-- 2a — Containers: EKS vCores -->
+                    <tr>
+                        <td rowspan="2" style="font-weight:700; color:var(--accent-cyan); vertical-align:top; padding-top:16px;">2</td>
+                        <td rowspan="2" style="vertical-align:top; padding-top:12px;"><span class="plan-badge badge-containers">Defender for Containers</span></td>
+                        <td>Kubernetes Nodes (EKS)</td>
+                        <td style="color:var(--text-secondary);">1 cluster</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-cyan);"><span style="color:var(--accent-orange);">❓ TBD</span></td>
+                        <td>vCores</td>
+                        <td>$9.42/vCore/mo</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-orange);">Needs vCore count</td>
+                    </tr>
+                    <!-- 2b — Containers: Image scanning -->
+                    <tr>
+                        <td>Image Scanning (ECR)</td>
+                        <td style="color:var(--text-secondary);">1,797 images</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-cyan);">1,797</td>
+                        <td>Image digests</td>
+                        <td>$0.40/digest (after free tier)</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-cyan);">See note ¹</td>
+                    </tr>
+                    <!-- REMOVED: Defender for Storage — not applicable to AWS S3 -->
+                    <!-- 3 — Databases -->
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-orange);">3</td>
+                        <td><span class="plan-badge badge-databases">Defender for Databases</span></td>
+                        <td>SQL Instances (RDS + Aurora)</td>
+                        <td style="color:var(--text-secondary);">200 RDS + 150 Aurora</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-orange);">350</td>
+                        <td>Instances</td>
+                        <td>$20.52/instance/mo</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-orange);">$7,183</td>
+                    </tr>
+                    <!-- 4 — CSPM -->
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-purple);">4</td>
+                        <td><span class="plan-badge badge-cspm">Defender CSPM</span></td>
+                        <td>Billable Resources (EC2 + S3 + RDS)</td>
+                        <td style="color:var(--text-secondary);">964 EC2 + 4,204 S3 + 350 RDS</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-purple);">5,518</td>
+                        <td>Billable resources</td>
+                        <td>$7.01/resource/mo</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-purple);">$38,581</td>
+                    </tr>
+                    <!-- 5 — GH Advanced Security -->
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-pink);">5</td>
+                        <td><span class="plan-badge badge-devsec">GitHub Advanced Security</span></td>
+                        <td>Active Committers</td>
+                        <td style="color:var(--text-secondary);">406 developers</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-pink);">406</td>
+                        <td>Active committers</td>
+                        <td>~$67/committer/mo</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-pink);">$27,202</td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" style="padding:8px 12px; background:rgba(188,140,255,0.06); border-left:3px solid var(--accent-pink); font-size:0.85rem; color:var(--text-secondary);">
+                            ⚠️ <strong>Note:</strong> GitHub Advanced Security for Azure DevOps (GHAzDO) is billed under <strong>Azure DevOps</strong>, not Defender for Cloud. It does not appear in the Defender for Cloud section of the Azure Pricing Calculator. Validate pricing separately via <a href="https://azure.microsoft.com/pricing/details/devops/azure-devops-services/" style="color:var(--accent-pink);">Azure DevOps pricing</a>.
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- Subtotal row -->
+                <tfoot>
+                    <tr style="border-top:2px solid var(--accent-blue);">
+                        <td colspan="7" style="text-align:right; font-weight:600; padding-top:16px;">Estimated Monthly Subtotal (known quantities):</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-blue); font-size:1.1rem; padding-top:16px;">$92,248</td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" style="padding:6px 12px; font-size:0.82rem; color:var(--text-secondary); text-align:right;">
+                            ✅ Defender for Cloud portion validated: Azure Calculator export shows <strong style="color:var(--accent-blue);">$65,734.16 CAD</strong> (CSPM $38,580.52 + CWPP $27,153.65). Our line items total ~$65,046 + image scans $713 = ~$65,759 (difference due to per-unit rounding vs calculator’s internal precision).
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7" style="text-align:right; font-weight:600; color:var(--accent-orange);">+ Containers EKS vCores (TBD):</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-orange); font-size:0.9rem;">Pending customer input</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- Calculation Rationale — How each value was derived -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div style="margin-top:28px; padding:20px 24px; background:rgba(88,166,255,0.04); border:1px solid rgba(88,166,255,0.15); border-radius:10px;">
+                <h3 style="color:var(--accent-blue); margin-top:0; margin-bottom:16px; font-size:1.05rem;">📐 Calculation Rationale — How Each Value Was Derived</h3>
+
+                <!-- Plan 1: Servers P2 -->
+                <div style="margin-bottom:20px; padding:14px 16px; background:rgba(88,166,255,0.06); border-left:3px solid var(--accent-blue); border-radius:0 6px 6px 0;">
+                    <div style="font-weight:700; color:var(--accent-blue); margin-bottom:6px;">1 — Defender for Servers P2: $19,282/mo (CAD)</div>
+                    <div style="color:var(--text-secondary); font-size:0.88rem; line-height:1.6;">
+                        <div><strong>Input:</strong> 964 EC2 instances (customer-provided)</div>
+                        <div><strong>Calculator field:</strong> "Servers outside Azure" → enter <strong>964</strong> servers</div>
+                        <div><strong>Calculation:</strong> 964 servers × $20.00/server/month = <strong>$19,282</strong></div>
+                        <div><strong>Unit price derivation:</strong> Azure Retail Prices API (CAD, Canada Central): $0.0274/server/hour. At 730 hours/month: $0.0274 × 730 = $20.00/server/month</div>
+                        <div><strong>EBS disks (7,248):</strong> Not separately billable. Agentless disk scanning and malware detection are bundled with the Servers P2 license covering the parent VM. No additional line item.</div>
+                        <div style="margin-top:4px;"><strong>Assumption:</strong> All 964 VMs are in running state. Deallocated/stopped VMs are excluded from billing per <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-servers-overview" style="color:var(--accent-blue);">Microsoft Learn</a>.</div>
+                    </div>
+                </div>
+
+                <!-- Plan 2: Containers -->
+                <div style="margin-bottom:20px; padding:14px 16px; background:rgba(0,200,200,0.04); border-left:3px solid var(--accent-cyan); border-radius:0 6px 6px 0;">
+                    <div style="font-weight:700; color:var(--accent-cyan); margin-bottom:6px;">2 — Defender for Containers: TBD</div>
+                    <div style="color:var(--text-secondary); font-size:0.88rem; line-height:1.6;">
+                        <div><strong>Input:</strong> 1 EKS cluster + 1,797 ECR container images (customer-provided)</div>
+                        <div><strong>Calculator field:</strong> "Container — vCores" → enter the <strong>total vCore count</strong> across all EKS worker nodes</div>
+                        <div><strong>Calculation:</strong> [vCores TBD] × $9.42/vCore/month = TBD</div>
+                        <div><strong>Why vCores, not nodes:</strong> Defender for Containers bills by vCore, not by node or cluster. The customer must provide the total vCore count across all worker nodes in the EKS cluster.</div>
+                        <div><strong>Unit price derivation:</strong> Azure Retail Prices API (CAD, Canada Central): $0.0129/vCore/hour (vCore Pack). At 730 hours/month: $0.0129 × 730 = $9.42/vCore/month</div>
+                        <div><strong>Image scanning:</strong> 20 free vulnerability assessments per charged vCore per month. If the cluster has ≥90 vCores → all 1,797 images are covered free (90 × 20 = 1,800). Otherwise, overage is $0.40/image digest.</div>
+                        <div><strong>ECS Fargate (1,320 tasks):</strong> Serverless — not covered by Defender for Containers runtime protection (DaemonSet requires worker nodes). Covered by CSPM posture only. Not billable under Containers plan.</div>
+                    </div>
+                </div>
+
+                <!-- Plan 3: Databases -->
+                <div style="margin-bottom:20px; padding:14px 16px; background:rgba(227,179,65,0.06); border-left:3px solid var(--accent-orange); border-radius:0 6px 6px 0;">
+                    <div style="font-weight:700; color:var(--accent-orange); margin-bottom:6px;">3 — Defender for Databases: $7,183/mo (CAD)</div>
+                    <div style="color:var(--text-secondary); font-size:0.88rem; line-height:1.6;">
+                        <div><strong>Input:</strong> 200 RDS instances + 150 Aurora instances = 350 total (customer-provided)</div>
+                        <div><strong>Calculator fields:</strong> In the Azure Calculator under "Defender for open-source relational databases", use:</div>
+                        <div style="margin:6px 0 6px 16px;">
+                            <div>• <strong>MySQL:</strong> Enter count of MySQL-engine RDS + Aurora MySQL-compatible instances</div>
+                            <div>• <strong>PostgreSQL:</strong> Enter count of PostgreSQL-engine RDS + Aurora PostgreSQL-compatible instances</div>
+                            <div>• <strong>MariaDB:</strong> Enter count of MariaDB-engine RDS instances (if any)</div>
+                        </div>
+                        <div><strong>Why MySQL/PostgreSQL:</strong> Both are priced at <strong>$20.52/instance/month (CAD)</strong> in the Azure Calculator. The total cost is identical regardless of how you split them (350 × $20.52 = $7,183 either way). We used the combined count because the customer did not provide the per-engine breakdown.</div>
+                        <div><strong>⚠️ SQL Server engine exception:</strong> If any RDS instances run <strong>SQL Server</strong> engine, those should go under "SQL Database outside Azure" at <strong>$0.0276/vCore/hour</strong> (~$20.15/vCore/month CAD). This is a vCore-based model, not per-instance — requires knowing the vCore count of those specific instances.</div>
+                        <div><strong>"SQL Database on Azure" ($20.52/server/mo CAD):</strong> This field is for Azure SQL Database only — not applicable to AWS RDS.</div>
+                        <div><strong>DynamoDB (369 tables):</strong> NoSQL database — not covered by Defender for Databases (which targets relational databases). Also not a billable CSPM resource. Benefits from CSPM posture features at no additional charge.</div>
+                        <div><strong>Aurora billing note:</strong> Aurora instances are billed per instance, same as RDS. Aurora is MySQL/PostgreSQL-compatible, so it maps to those calculator fields.</div>
+                    </div>
+                </div>
+
+                <!-- Plan 4: CSPM -->
+                <div style="margin-bottom:20px; padding:14px 16px; background:rgba(188,140,255,0.06); border-left:3px solid var(--accent-purple); border-radius:0 6px 6px 0;">
+                    <div style="font-weight:700; color:var(--accent-purple); margin-bottom:6px;">4 — Defender CSPM: $38,581/mo (CAD)</div>
+                    <div style="color:var(--text-secondary); font-size:0.88rem; line-height:1.6;">
+                        <div><strong>Input:</strong> 964 EC2 + 4,204 S3 + 350 RDS = 5,518 billable resources</div>
+                        <div><strong>Calculator field:</strong> "Defender CSPM" → enter <strong>5,518</strong> billable resources</div>
+                        <div><strong>Calculation:</strong> 5,518 × $7.01/resource/month ≈ <strong>$38,581</strong> (Azure Calculator shows <strong>$38,580.52</strong>)</div>
+                        <div><strong>Unit price derivation:</strong> Azure Retail Prices API (CAD, Global): $0.0096/resource/hour. At 730 hours/month: $0.0096 × 730 = $7.008 ≈ $7.01/resource/month</div>
+                        <div><strong>AWS billable resource types</strong> (per <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-cloud-security-posture-management#plan-pricing" style="color:var(--accent-purple);">Microsoft Learn</a>):</div>
+                        <div style="margin:6px 0 6px 16px;">
+                            <div>• <strong>Compute:</strong> EC2 instances (excl. deallocated) — <strong>964</strong></div>
+                            <div>• <strong>Storage:</strong> S3 buckets — <strong>4,204</strong></div>
+                            <div>• <strong>Databases:</strong> RDS instances (incl. Aurora) — <strong>350</strong></div>
+                        </div>
+                        <div><strong>NOT billable CSPM resources:</strong> Lambda (4,910), ECS Fargate (1,320), DynamoDB (369), EBS disks (7,248), asset metadata (3,421), developers (406), CNAPP users (30). These benefit from foundational and/or paid CSPM features but are not counted in the billable resource total.</div>
+                        <div><strong>CSPM is billed independently from CWPP plans:</strong> EC2 instances are billed under <em>both</em> Servers P2 ($20.00 CAD) and CSPM ($7.01 CAD). These are separate, additive charges — enabling Servers P2 does not include or replace the CSPM charge. Foundational CSPM (free) provides basic recommendations and secure score; Defender CSPM (paid) adds attack paths, security explorer, regulatory compliance, governance, and data-aware posture.</div>
+                        <div style="margin-top:4px;"><strong>⚠️ Upcoming change (April 1, 2026):</strong> AWS Lambda functions will become billable CSPM resources. Estimated impact: ~4,910 functions ÷ 8 (resource grouping ratio per MS Learn) ≈ 614 billable resources × $7.01 = <strong>+$4,304/mo CAD</strong>. Not included in current subtotal.</div>
+                    </div>
+                </div>
+
+                <!-- Plan 5: GHAzDO -->
+                <div style="margin-bottom:4px; padding:14px 16px; background:rgba(219,127,213,0.06); border-left:3px solid var(--accent-pink); border-radius:0 6px 6px 0;">
+                    <div style="font-weight:700; color:var(--accent-pink); margin-bottom:6px;">5 — GitHub Advanced Security: $27,202/mo (CAD est.)</div>
+                    <div style="color:var(--text-secondary); font-size:0.88rem; line-height:1.6;">
+                        <div><strong>Input:</strong> 406 developers (customer-provided)</div>
+                        <div><strong>Calculator:</strong> Not in Defender for Cloud calculator. Use <a href="https://azure.microsoft.com/pricing/details/devops/azure-devops-services/" style="color:var(--accent-pink);">Azure DevOps pricing page</a>.</div>
+                        <div><strong>Calculation:</strong> 406 active committers × ~$67/committer/month (CAD est.) = <strong>$27,202</strong></div>
+                        <div><strong>Unit price note:</strong> The USD list price is ~$49/committer/month. The CAD estimate (~$67) is derived from the same exchange ratio observed in the Defender for Cloud calculator (×1.37). Confirm the exact CAD rate on the <a href="https://azure.microsoft.com/pricing/details/devops/azure-devops-services/" style="color:var(--accent-pink);">Azure DevOps pricing page</a> with CAD currency selected.</div>
+                        <div><strong>Billing model:</strong> GHAzDO charges per <em>active committer</em> — a unique user with ≥1 push to a GHAzDO-enabled repo in the billing cycle. The 406 figure assumes all developers are active committers; actual count may be lower.</div>
+                        <div><strong>What's included:</strong> CodeQL code scanning, secret scanning, dependency scanning, and push protection.</div>
+                        <div><strong>DevOps posture features:</strong> Attack paths, security explorer, and PR annotations for IaC findings require Defender CSPM (Plan #4) in addition to GHAzDO. These are CSPM features, not GHAzDO features — but they need both plans enabled to work together.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conversion notes -->
+            <div style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
+                <div class="pricing-note">
+                    <span class="icon">¹</span>
+                    <span class="note-text"><strong>Container image scanning free tier:</strong> 20 free vulnerability assessments per charged vCore per month. Only scans beyond that are $0.40/image digest (CAD). With the total vCore count unknown, the overage can't be estimated yet. If the cluster has ≥90 vCores, all 1,797 images are covered free. <a href="https://azure.microsoft.com/en-us/pricing/details/defender-for-cloud/" style="color:var(--accent-blue);" target="_blank">Source</a></span>
+                </div>
+                <div class="pricing-note">
+                    <span class="icon">❓</span>
+                    <span class="note-text"><strong>Information needed from customer to complete estimate:</strong>
+                        <div style="margin-top:6px;">
+                            <div>① <strong>EKS cluster vCore count</strong> — How many vCores across all Kubernetes worker nodes? (Enter in calculator as "vCores")</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- CSPM/CWPP coverage notes -->
+            <div style="margin-top:16px; display:flex; flex-direction:column; gap:10px;">
+                <div class="pricing-note" style="border-color:rgba(188,140,255,0.3);">
+                    <span class="icon">🟣</span>
+                    <span class="note-text"><strong>S3 buckets (CSPM only):</strong> Defender for Storage is an Azure-only CWPP plan (Azure Blob, Azure Files, Data Lake). AWS S3 is fully covered by Defender CSPM — posture assessment, misconfiguration detection, data-aware security, and attack path analysis. S3 buckets are billable CSPM resources at $7.01/resource/month (CAD). <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-storage-introduction" style="color:var(--accent-blue);" target="_blank">Defender for Storage docs</a></span>
+                </div>
+                <div class="pricing-note" style="border-color:rgba(188,140,255,0.3);">
+                    <span class="icon">🟣</span>
+                    <span class="note-text"><strong>Lambda functions (CSPM only):</strong> Defender for Servers covers VMs (Azure, AWS EC2, GCP Compute). AWS Lambda is serverless and does not support Arc agent deployment. Lambda is covered by Defender CSPM for posture and misconfiguration assessment. <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-servers-overview" style="color:var(--accent-blue);" target="_blank">Defender for Servers overview</a></span>
+                </div>
+                <div class="pricing-note" style="border-color:rgba(188,140,255,0.3);">
+                    <span class="icon">🟣</span>
+                    <span class="note-text"><strong>ECS Fargate (CSPM only):</strong> Defender for Containers supports EKS (DaemonSet sensor on worker nodes). ECS Fargate is serverless — covered by Defender CSPM for agentless discovery and posture. <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/support-matrix-defender-for-containers" style="color:var(--accent-blue);" target="_blank">Containers support matrix</a></span>
+                </div>
+                <div class="pricing-note">
+                    <span class="icon">⚠️</span>
+                    <span class="note-text"><strong>DynamoDB (369):</strong> Benefits from Defender CSPM data-aware posture features but is <strong>not a billable CSPM resource</strong>. Per <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-cloud-security-posture-management#plan-pricing" style="color:var(--accent-blue);">Microsoft Learn</a>, AWS billable resources are limited to EC2 instances, S3 buckets, and RDS instances. DynamoDB is NoSQL — no Defender for Databases charge applies either.</span>
+                </div>
+                <div class="pricing-note">
+                    <span class="icon">ℹ️</span>
+                    <span class="note-text"><strong>Asset Metadata (3,421) & Developers (406):</strong> These resources benefit from CSPM features (security graph, DevOps posture, attack paths) but are <strong>not billable CSPM resources</strong>. Billing applies only to Compute, Storage, and Database resource types.</span>
+                </div>
+                <div class="pricing-note">
+                    <span class="icon">⚠️</span>
+                    <span class="note-text"><strong>Non-OS Disks / EBS (7,248):</strong> Disk exposure and malware context are bundled features of Defender for Servers covering the parent VMs. No separate billing line.</span>
+                </div>
+                <div class="pricing-note">
+                    <span class="icon">ℹ️</span>
+                    <span class="note-text"><strong>CNAPP Users (30):</strong> Portal access only — not a billable Defender for Cloud resource. No plan needed.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- SECTION: Missing Data & Assumptions                -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2>⚠️ Missing Data & Assumptions to Validate</h2>
+            <p style="color:var(--text-secondary); margin-bottom:20px; font-size:0.9rem;">
+                The following items are either missing from the estimate or based on assumptions that should be confirmed with the customer before finalizing pricing.
+            </p>
+
+            <!-- Missing values — need customer input -->
+            <h3 style="color:var(--accent-orange); margin-bottom:12px; font-size:1rem;">❓ Missing Values — Customer Input Required</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:36px;">#</th>
+                        <th>Item</th>
+                        <th>What's Missing</th>
+                        <th>Pricing Impact</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-orange);">1</td>
+                        <td>EKS vCore Count</td>
+                        <td>Only "1 cluster" provided — need total vCores across all Kubernetes worker nodes</td>
+                        <td>Can't price Defender for Containers ($9.42/vCore/mo CAD)</td>
+                        <td><span style="background:rgba(227,179,65,0.15); color:var(--accent-orange); padding:2px 8px; border-radius:4px; font-size:0.8rem; font-weight:600;">BLOCKING</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-orange);">2</td>
+                        <td>Container Image Scanning Overage</td>
+                        <td>Free tier = 20 scans/vCore/month. With vCore count unknown, can't calculate overage for 1,797 images</td>
+                        <td>Could be $0 (if ≥90 vCores) or up to ~$713/mo CAD (if no free tier coverage)</td>
+                        <td><span style="background:rgba(227,179,65,0.15); color:var(--accent-orange); padding:2px 8px; border-radius:4px; font-size:0.8rem; font-weight:600;">DEPENDS ON #1</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Not yet reflected in subtotal -->
+            <h3 style="color:var(--accent-red); margin-top:24px; margin-bottom:12px; font-size:1rem;">🔴 Not Yet Reflected in the $92,248 Subtotal</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:36px;">#</th>
+                        <th>Item</th>
+                        <th>Detail</th>
+                        <th style="text-align:right;">Est. Monthly Impact</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-red);">3</td>
+                        <td>April 2026 Serverless Billing Change</td>
+                        <td>Starting April 1, 2026, Lambda functions become CSPM-billable. ~4,910 functions ÷ 8 resources per function = ~614 billable resources × $7.01/mo CAD</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-red);">+$4,304/mo</td>
+                        <td><span style="background:rgba(248,81,73,0.15); color:var(--accent-red); padding:2px 8px; border-radius:4px; font-size:0.8rem; font-weight:600;">UPCOMING</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-red);">4</td>
+                        <td>EKS vCore Cost (Containers)</td>
+                        <td>Defender for Containers line item — waiting on vCore count from item #1</td>
+                        <td class="qty" style="text-align:right; color:var(--accent-orange);">TBD × $9.42</td>
+                        <td><span style="background:rgba(227,179,65,0.15); color:var(--accent-orange); padding:2px 8px; border-radius:4px; font-size:0.8rem; font-weight:600;">BLOCKING</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Assumptions to double-check -->
+            <h3 style="color:var(--accent-blue); margin-top:24px; margin-bottom:12px; font-size:1rem;">🔍 Assumptions to Validate with Customer</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:36px;">#</th>
+                        <th>Item</th>
+                        <th>Current Assumption</th>
+                        <th>Risk if Incorrect</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-blue);">5</td>
+                        <td>Active Committers (406)</td>
+                        <td>Assumed all 406 developers are active committers</td>
+                        <td>GHAzDO bills only committers with ≥1 push in billing cycle — actual count may be lower, reducing the $27,202/mo line</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-blue);">6</td>
+                        <td>EC2 Count (964)</td>
+                        <td>Assumed all 964 VMs are running</td>
+                        <td>Deallocated VMs are excluded from both Servers P2 and CSPM billing — count may be lower</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-blue);">7</td>
+                        <td>RDS Engine Split</td>
+                        <td>All 350 instances priced at $20.52/instance/mo CAD (MySQL/PostgreSQL)</td>
+                        <td>If any are <strong>SQL Server engine</strong> on RDS, those fall under "SQL Database outside Azure" at $0.0276/vCore/hr (~$20.15/vCore/mo CAD) — different calculator field and potentially different total</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Pricing completeness summary -->
+            <div style="margin-top:20px; padding:16px 20px; background:rgba(227,179,65,0.08); border:1px solid rgba(227,179,65,0.25); border-radius:8px;">
+                <div style="font-weight:700; color:var(--accent-orange); margin-bottom:8px;">📊 Pricing Completeness Summary</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; font-size:0.9rem;">
+                    <div>
+                        <div style="color:var(--text-secondary);">Known & Priced</div>
+                        <div style="color:var(--accent-blue); font-size:1.1rem; font-weight:600;">$92,248/mo</div>
+                        <div style="color:var(--text-secondary); font-size:0.8rem;">Servers P2 + Databases + CSPM + GHAzDO (CAD)</div>
+                    </div>
+                    <div>
+                        <div style="color:var(--text-secondary);">Upcoming (Apr 2026)</div>
+                        <div style="color:var(--accent-red); font-size:1.1rem; font-weight:600;">+$4,304/mo</div>
+                        <div style="color:var(--text-secondary); font-size:0.8rem;">Lambda serverless CSPM billing (CAD)</div>
+                    </div>
+                    <div>
+                        <div style="color:var(--text-secondary);">Pending Customer Input</div>
+                        <div style="color:var(--accent-orange); font-size:1.1rem; font-weight:600;">TBD</div>
+                        <div style="color:var(--text-secondary); font-size:0.8rem;">EKS vCores + image scanning overage</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- SECTION: Microsoft Learn Pricing References        -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2>📖 Microsoft Learn — Plan Pricing References</h2>
+            <p style="color:var(--text-secondary); margin-bottom:20px; font-size:0.9rem;">
+                Official Microsoft documentation and pricing pages used to build this matrix. All prices below are USD list prices from documentation — the report uses <strong style="color:var(--accent-blue);">CAD equivalents</strong> sourced from the Azure Retail Prices API (Canada Central). See the
+                <a href="https://azure.microsoft.com/en-us/pricing/details/defender-for-cloud/" style="color:var(--accent-blue);" target="_blank">Defender for Cloud pricing page</a>
+                for current rates and the
+                <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/cost-calculator" style="color:var(--accent-blue);" target="_blank">cost calculator</a>
+                for estimation.
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:40px;">#</th>
+                        <th>Plan</th>
+                        <th>Unit Price (USD PAYG + CAD)</th>
+                        <th>Billing Model</th>
+                        <th>Notes from Documentation</th>
+                        <th>Reference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 1 — Defender for Servers -->
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-blue);">1</td>
+                        <td><span class="plan-badge badge-servers">Defender for Servers</span></td>
+                        <td style="font-variant-numeric:tabular-nums;">
+                            <div><strong>P1:</strong> $4.906/server/month (USD)</div>
+                            <div><strong>P2:</strong> $14.60/server/month (USD)</div>
+                            <div style="color:var(--accent-blue); font-size:0.8rem; margin-top:4px;">CAD: P2 = $20.00/server/month</div>
+                        </td>
+                        <td>Per server / month</td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">
+                            P2 includes vulnerability assessment, JIT VM access, adaptive application controls, file integrity monitoring, and agentless scanning. Serverless functions protection is a sub-plan of Defender for Servers.
+                        </td>
+                        <td style="font-size:0.82rem;">
+                            <div><a href="https://azure.microsoft.com/en-us/pricing/details/defender-for-cloud/#pricing" style="color:var(--accent-blue);" target="_blank">Pricing page</a></div>
+                            <div><a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/plan-defender-for-servers-select-plan" style="color:var(--accent-blue);" target="_blank">Select a plan (Learn)</a></div>
+                            <div><a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-servers-overview" style="color:var(--accent-blue);" target="_blank">Overview (Learn)</a></div>
+                        </td>
+                    </tr>
+                    <!-- 2 — Defender for Containers -->
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-cyan);">2</td>
+                        <td><span class="plan-badge badge-containers">Defender for Containers</span></td>
+                        <td style="font-variant-numeric:tabular-nums;">
+                            <div><strong>Nodes:</strong> $6.8693/vCore/month (USD)</div>
+                            <div><strong>Image scan:</strong> $0.29/image digest (USD)</div>
+                            <div style="color:var(--accent-blue); font-size:0.8rem; margin-top:4px;">CAD: $9.42/vCore + $0.40/digest</div>
+                        </td>
+                        <td>Per vCore / month + per image scanned</td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">
+                            Price based on vCores in Kubernetes worker nodes. Includes 20 free monthly vulnerability assessments per charged vCore. Subsequent scans at $0.40/image digest (CAD). CWPP runtime protection for EKS node-based workloads. ECS Fargate is covered by CSPM posture management.
+                        </td>
+                        <td style="font-size:0.82rem;">
+                            <div><a href="https://azure.microsoft.com/en-us/pricing/details/defender-for-cloud/#pricing" style="color:var(--accent-blue);" target="_blank">Pricing page</a></div>
+                            <div><a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction" style="color:var(--accent-blue);" target="_blank">Overview (Learn)</a></div>
+                        </td>
+                    </tr>
+                    <!-- 3 — Defender for Storage (Azure-only CWPP — informational) -->
+                    <tr style="opacity:0.6;">
+                        <td style="font-weight:700; color:var(--text-secondary);">3</td>
+                        <td><span class="plan-badge badge-storage" style="opacity:0.7;">Defender for Storage</span><br><span style="font-size:0.7rem; color:var(--accent-purple); font-weight:600;">AZURE-ONLY CWPP</span></td>
+                        <td style="font-variant-numeric:tabular-nums;">
+                            <div><strong>Base:</strong> $10/storage account/month</div>
+                            <div><strong>Malware scan:</strong> $0.15/GB scanned</div>
+                        </td>
+                        <td>Per storage account / month</td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">
+                            Azure-only CWPP plan — protects Azure Blob, Azure Files, and Data Lake Storage Gen2. AWS S3 buckets are covered by <strong>Defender CSPM</strong> for posture management. Shown here for reference only.
+                        </td>
+                        <td style="font-size:0.82rem;">
+                            <div><a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-storage-introduction" style="color:var(--accent-blue);" target="_blank">Overview (Learn)</a></div>
+                        </td>
+                    </tr>
+                    <!-- 4 — Defender for Databases -->
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-orange);">4</td>
+                        <td><span class="plan-badge badge-databases">Defender for Databases</span></td>
+                        <td style="font-variant-numeric:tabular-nums;">
+                            <div><strong>SQL (Azure-connected):</strong> $15/instance/month (USD)</div>
+                            <div><strong>SQL (non-Arc):</strong> $10.95/instance/vCore/month (USD)</div>
+                            <div><strong>MySQL / PostgreSQL:</strong> $15/instance/month (USD)</div>
+                            <div style="color:var(--accent-blue); font-size:0.8rem; margin-top:4px;">CAD: MySQL/PostgreSQL = $20.52/instance/month</div>
+                        </td>
+                        <td>Per instance / month</td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">
+                            Applies to Azure SQL Database, Azure SQL Managed Instance, SQL elastic pools, Synapse dedicated SQL pool, SQL on Azure VMs, SQL on Arc-enabled resources, and AWS RDS SQL / Aurora. Covers SQL injection, anomalous access, and brute-force detection.
+                        </td>
+                        <td style="font-size:0.82rem;">
+                            <div><a href="https://azure.microsoft.com/en-us/pricing/details/defender-for-cloud/#pricing" style="color:var(--accent-blue);" target="_blank">Pricing page</a></div>
+                            <div><a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-databases-introduction" style="color:var(--accent-blue);" target="_blank">Overview (Learn)</a></div>
+                        </td>
+                    </tr>
+                    <!-- 5 — Defender CSPM -->
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-purple);">5</td>
+                        <td><span class="plan-badge badge-cspm">Defender CSPM</span></td>
+                        <td style="font-variant-numeric:tabular-nums;">
+                            <div><strong>$5.11</strong>/billable resource/month (USD)</div>
+                            <div style="color:var(--accent-blue); font-size:0.8rem; margin-top:4px;">CAD: $7.01/billable resource/month</div>
+                        </td>
+                        <td>Per billable resource / month</td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">
+                            <strong>Billable resources only:</strong> VMs, Storage Accounts, OSS DBs, SQL PaaS & Servers on Machines, and Serverless functions & web apps. Serverless billing begins April 1, 2026 (1 billable resource = 8 functions/web apps). All other resources (metadata, DevOps repos, DynamoDB, etc.) benefit from CSPM features but are <em>not billed</em>.
+                        </td>
+                        <td style="font-size:0.82rem;">
+                            <div><a href="https://azure.microsoft.com/en-us/pricing/details/defender-for-cloud/#pricing" style="color:var(--accent-blue);" target="_blank">Pricing page</a></div>
+                            <div><a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-cloud-security-posture-management#plan-pricing" style="color:var(--accent-blue);" target="_blank">CSPM Pricing (Learn)</a></div>
+                            <div><a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-cloud-security-posture-management#supported-clouds-and-resources" style="color:var(--accent-blue);" target="_blank">Billable resources (Learn)</a></div>
+                        </td>
+                    </tr>
+                    <!-- 6 — GitHub Advanced Security -->
+                    <tr>
+                        <td style="font-weight:700; color:var(--accent-pink);">6</td>
+                        <td><span class="plan-badge badge-devsec">GitHub Advanced Security</span></td>
+                        <td style="font-variant-numeric:tabular-nums;">
+                            <div><strong>GHAzDO:</strong> ~$49/active committer/month (USD)</div>
+                            <div style="color:var(--accent-blue); font-size:0.8rem; margin-top:4px;">CAD est.: ~$67/active committer/month</div>
+                        </td>
+                        <td>Per active committer / month</td>
+                        <td style="font-size:0.82rem; color:var(--text-secondary);">
+                            GitHub Advanced Security for Azure DevOps (GHAzDO) is licensed per active committer. Covers CodeQL code scanning, secret scanning, dependency scanning, and push protection. Only unique committers with ≥1 commit in the billing cycle are counted. DevOps posture features (attack paths, security explorer, PR annotations) also require Defender CSPM.
+                        </td>
+                        <td style="font-size:0.82rem;">
+                            <div><a href="https://azure.microsoft.com/en-us/products/devops/github-advanced-security" style="color:var(--accent-blue);" target="_blank">GHAzDO Pricing</a></div>
+                            <div><a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-devops-introduction" style="color:var(--accent-blue);" target="_blank">DevOps security (Learn)</a></div>
+                            <div><a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/devops-support" style="color:var(--accent-blue);" target="_blank">DevOps support matrix</a></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- CSPM Billable Resources callout -->
+            <div class="pricing-note" style="margin-top:16px;">
+                <span class="icon">📌</span>
+                <span class="note-text"><strong>Defender CSPM — Billable Resource Types</strong> (per <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-cloud-security-posture-management#supported-clouds-and-resources" style="color:var(--accent-blue);" target="_blank">Microsoft Learn</a>):<br>
+                <strong>Azure:</strong> VMs, VM scale sets, classic VMs | Storage accounts (with blob containers or file shares) | SQL servers, PostgreSQL/MySQL/MariaDB servers, Synapse workspaces<br>
+                <strong>AWS:</strong> EC2 instances | S3 buckets | RDS instances<br>
+                <strong>GCP:</strong> Compute instances, instance groups | Storage buckets | Cloud SQL instances<br>
+                <em style="color:var(--text-secondary);">Starting April 1, 2026: Serverless functions & web apps (1 billable resource = 8 functions/web apps)</em>
+                </span>
+            </div>
+
+            <!-- Pre-purchase plan callout -->
+            <div class="pricing-note">
+                <span class="icon">💰</span>
+                <span class="note-text"><strong>Pre-Purchase Savings:</strong> The <a href="https://azure.microsoft.com/en-us/pricing/details/defender-for-cloud/#pricing" style="color:var(--accent-blue);" target="_blank">1-Year Pre-Purchase Plan</a> offers 10–22% savings on commit units applied across all plans. Example: $100K commit = 18% discount ($82K). Commit units draw down at retail prices across any Defender for Cloud plan.</span>
+            </div>
+
+            <!-- General documentation links -->
+            <div class="pricing-note">
+                <span class="icon">📚</span>
+                <span class="note-text"><strong>General Documentation:</strong>
+                    <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction" style="color:var(--accent-blue);" target="_blank">Defender for Cloud overview</a> •
+                    <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/cost-calculator" style="color:var(--accent-blue);" target="_blank">Cost calculator guide</a> •
+                    <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/support-matrix-defender-for-cloud" style="color:var(--accent-blue);" target="_blank">Support matrix (regional availability)</a> •
+                    <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/multicloud-resource-types-support" style="color:var(--accent-blue);" target="_blank">Multicloud resource support</a>
+                </span>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- SECTION: Methodology                               -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2>📐 Methodology</h2>
+            <div class="methodology">
+                <h4>Data Source</h4>
+                <ul>
+                    <li>Customer-provided asset inventory spreadsheet (12 asset categories, AWS + Azure)</li>
+                    <li>Plan mapping based on Microsoft Defender for Cloud official documentation (March 2026)</li>
+                    <li>Pricing sourced from <a href="https://prices.azure.com/api/retail/prices?currencyCode=CAD" style="color:var(--accent-blue);" target="_blank">Azure Retail Prices API</a> (CAD, Canada Central, accessed March 26, 2026) and validated against <a href="https://azure.microsoft.com/en-us/pricing/calculator/?service=defender-for-cloud" style="color:var(--accent-blue);" target="_blank">Azure Pricing Calculator export</a> ($65,734.16 CAD)</li>
+                    <li>CSPM billable resource definition sourced from <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-cloud-security-posture-management#plan-pricing" style="color:var(--accent-blue);" target="_blank">Microsoft Learn CSPM overview</a></li>
+                </ul>
+                <h4 style="margin-top:12px;">CSPM / CWPP Coverage Analysis (March 25, 2026)</h4>
+                <ul>
+                    <li><strong style="color:var(--accent-purple);">All 13 asset types receive Defender CSPM coverage</strong> — posture assessment, misconfiguration detection, attack path analysis, security graph</li>
+                    <li>CWPP runtime protection available for: EC2 VMs (Servers P2), EKS (Containers), ECR images (Containers), RDS/Aurora (Databases), EBS (bundled), Developers (GH Advanced Security)</li>
+                    <li>CSPM-only assets (no CWPP runtime agent): S3 buckets, Lambda functions, ECS Fargate — verified against Microsoft Learn support matrices</li>
+                    <li>Defender for Storage: <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-storage-introduction" style="color:var(--accent-blue);" target="_blank">docs confirm</a> Azure Blob/Files/Data Lake only — S3 covered by CSPM posture</li>
+                    <li>Defender for Servers: <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-servers-overview" style="color:var(--accent-blue);" target="_blank">overview confirms</a> VMs on Azure, AWS EC2, GCP Compute — Lambda covered by CSPM posture</li>
+                    <li>Defender for Containers: <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/support-matrix-defender-for-containers" style="color:var(--accent-blue);" target="_blank">support matrix</a> lists AKS, EKS, GKE, Arc-enabled K8s — Fargate covered by CSPM posture</li>
+                </ul>
+                <h4 style="margin-top:12px;">Plan Assignment Logic</h4>
+                <ul>
+                    <li>Each asset category mapped to its <strong>CWPP plan</strong> where runtime agent deployment is supported, plus <strong>Defender CSPM</strong> for all assets</li>
+                    <li>Assets where CWPP agents cannot be deployed (serverless, non-Azure storage) are covered by CSPM posture management</li>
+                    <li>CSPM billable resources limited to <strong>EC2 instances, S3 buckets, and RDS instances</strong> per Microsoft Learn documentation</li>
+                    <li>DynamoDB classified as non-billable CSPM resource — NoSQL, no SQL threat detection sub-plan applies</li>
+                    <li>Non-OS disks (EBS) mapped to Defender for Servers — disk exposure context is bundled, not separately billed</li>
+                    <li>Developer seats mapped to both Defender CSPM (DevOps posture) and GitHub Advanced Security (code scanning)</li>
+                    <li>CNAPP users (30) flagged as non-billable — portal access, not a metered resource</li>
+                </ul>
+                <h4 style="margin-top:12px;">Tool Stack</h4>
+                <ul>
+                    <li>Report generated by CyberProbe (GitHub Copilot agent) on March 25, 2026</li>
+                    <li>Coverage verified against Microsoft Learn documentation (fetched March 25, 2026)</li>
+                    <li>HTML dark-theme template consistent with CyberProbe reporting standards</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            CyberProbe — Defender for Cloud Plan Coverage & Pricing Matrix &bull; Generated March 25, 2026 &bull; For internal pricing use only
+        </footer>
+
+    </div>
+</body>
+</html>
